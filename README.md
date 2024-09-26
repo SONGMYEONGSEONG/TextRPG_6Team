@@ -1,0 +1,2 @@
+# TextRPG_6Team
+SSC_Unity_6Gen_6Team_TextRPG
