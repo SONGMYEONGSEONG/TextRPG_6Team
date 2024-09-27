@@ -13,6 +13,7 @@ namespace SpartaDungeon.Scene
 
         public bool isContinue;
         string name;
+
         void GameStart()
         {
             Console.WriteLine("Sparta Dungeon");
@@ -100,6 +101,9 @@ namespace SpartaDungeon.Scene
                     if (jobTypeNum >= 1 || jobTypeNum <= 4)
                     {
                         player = new Character(name, jobTypeNum);
+                        Console.Clear();
+                        Console.WriteLine($"{player.Job}을/를 선택하셨습니다.");
+                        break;
                     }
                     else
                     {
