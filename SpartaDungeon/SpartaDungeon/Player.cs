@@ -22,6 +22,11 @@ namespace SpartaDungeon
         Mage
     }
 
+    /*debug*/
+    //internal class Player : IStatus
+    /*!debug*/
+
+    //public class Player : IStatus
     internal class Player : IStatus
     {
         public string? Name { get; set; }

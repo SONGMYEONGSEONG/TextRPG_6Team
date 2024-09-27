@@ -90,6 +90,11 @@ namespace SpartaDungeon
         // 호출된 메서드가 종료되면 돌아와서 반복
         public void VillageScene()
         {
+            /*Debug*/
+            BattleScene _battleScene = new BattleScene();
+            /*!Debug*/
+
+
             while (true)
             {
                 // 메인 화면 올때마다 플레이어 스텟 최신화
@@ -102,6 +107,9 @@ namespace SpartaDungeon
                 Console.WriteLine("[3] 상점 보기");
                 Console.WriteLine("[4] 휴식하기");
                 Console.WriteLine("[5] 던전 입장");
+                /*debug*/
+                Console.WriteLine("[6]Test : 배틀 Scne 입장");
+                /*!debug*/
                 Console.WriteLine();
                 Console.WriteLine("원하는 활동을 입력해주세요.");
                 Console.Write(">> ");
@@ -129,6 +137,13 @@ namespace SpartaDungeon
                         Console.Clear();
                         dungeon.SelectDungeon(player);
                         break;
+                    /*debug*/
+                    case "6":
+                        Console.Clear();
+                        _battleScene.Initialize(player);
+                        _battleScene.SceneStart();
+                        break;
+                    /*!debug*/
                     default:
                         Console.Clear();
                         Console.WriteLine("잘못된 입력입니다.");
