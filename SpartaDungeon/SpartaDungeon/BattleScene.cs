@@ -60,14 +60,20 @@ namespace SpartaDungeon
         int _allEnemySumHP; //이전 전투에 참여한 모든 적의 HP 총합
         /*!Debug*/
 
-        public BattleScene(/*StageData _stage*/)//stageData를 받아와서 해당 스테이지에 존재하는 Enemy을 호출
+        public void StateInit() //State를 세팅하는 함수
         {
-            _curTurn = Turn.Player; //Scene 생성되면 , 선턴은 바로 플레이어로 지정
+            //스테이지 세팅 코드 작성
+        }
+
+        public void Initialize(Player _player /*,Enemy[] _enemys*/ )//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
+        {
+            _curPlayer = _player;
+
+            _curTurn = Turn.Player; //선턴은 바로 플레이어로 지정
             isAttack = false;
             isSkill = false;
             isPlayerWin = false;
             _allEnemySumHP = 0;
-
 
             /*Debug - 테스트용 Enemy */
             for (int i = 0; i < 4; i++)
@@ -84,13 +90,6 @@ namespace SpartaDungeon
                 _enemyTestList.Add(_enemyTest);
             }
             //
-
-        }
-
-
-        public void Initialize(Player _player /*,Enemy[] _enemys*/ )//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
-        {
-            _curPlayer = _player;
         }
 
         public void SceneStart()
@@ -255,6 +254,11 @@ namespace SpartaDungeon
                 }
 
             }
+        }
+
+        public void SceneExit(ref Player player)
+        {
+            player = _curPlayer;
         }
 
         private void ErrorInput()

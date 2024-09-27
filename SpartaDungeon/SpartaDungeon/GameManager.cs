@@ -93,7 +93,7 @@ namespace SpartaDungeon
         {
             /*Debug*/
             BattleScene _battleScene = new BattleScene();
-            QuestManager _questManager = new QuestManager();
+            QuestScene _questScene = new QuestScene();
             /*!Debug*/
 
 
@@ -111,6 +111,7 @@ namespace SpartaDungeon
                 Console.WriteLine("[5] 던전 입장");
                 /*debug*/
                 Console.WriteLine("[6]Test : 배틀 Scne 입장");
+                Console.WriteLine("[7]Test : 퀘스트 Scne 입장");
                 /*!debug*/
                 Console.WriteLine();
                 Console.WriteLine("원하는 활동을 입력해주세요.");
@@ -144,6 +145,13 @@ namespace SpartaDungeon
                         Console.Clear();
                         _battleScene.Initialize(player);
                         _battleScene.SceneStart();
+                        _battleScene.SceneExit(ref player);
+                        break;
+                    case "7":
+                        Console.Clear();
+                        _questScene.Initialize(player);
+                        _questScene.SceneStart();
+                        _questScene.SceneExit(ref player);
                         break;
                     /*!debug*/
                     default:
