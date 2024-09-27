@@ -1,46 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SpartaDungeon
 {
+
     internal class Store
     {
         public List<Item> WarriorItemList;
         public List<Item> MageItemList;
         public List<Item> StoreItemList = new List<Item>();
 
-        Item warriorLegendMainWeapon = new Item(ITEMTYPE.MainWeapon, "전설 소드", 3000, 30, 5, 15, "사용자를 전설로 만들어주는 검",   false);
-        Item mageLegendMainWeapon    = new Item(ITEMTYPE.MainWeapon, "전설 완드", 3000, 30, 5, 15, "사용자를 전설로 만들어주는 완드", false);
-        Item legendSubWeapon         = new Item(ITEMTYPE.SubWeapon,  "전설 단검", 2500, 20, 3, 5,  "모든 것을 꿰뚫는 전설적인 단검",  false);
-        Item legendArmor             = new Item(ITEMTYPE.Armor,      "전설 아머", 3000, 5, 15, 50, "사용자를 지키는 전설적인 아머",   false);
-        Item warriorRareMainWeapon   = new Item(ITEMTYPE.MainWeapon, "희귀 소드", 1000, 8, 1, 5,   "전설에 가까워지게 하는 검",      false);
-        Item mageRareMainWeapon      = new Item(ITEMTYPE.MainWeapon, "희귀 완드", 1000, 8, 1, 5,   "전설에 가까워지게 하는 완드",     false);
-        Item rareSubWeapon           = new Item(ITEMTYPE.SubWeapon,  "희귀 단검", 700,  5, 1, 0,   "근접한 적을 찌르는 숨겨진 비수",  false);
-        Item rareArmor               = new Item(ITEMTYPE.Armor,      "희귀 갑옷", 1000, 0, 8, 20,  "쉽게 부서지지 않는 단단한 갑옷",  false);
-
-
         // 직업클래스마다 다른 리스트 생성
         public Store()
         {
-            WarriorItemList = new List<Item>();
-            MageItemList = new List<Item>();
 
-            WarriorItemList.Add(warriorLegendMainWeapon);
-            WarriorItemList.Add(legendSubWeapon);
-            WarriorItemList.Add(legendArmor);
-            WarriorItemList.Add(warriorRareMainWeapon);
-            WarriorItemList.Add(rareSubWeapon);
-            WarriorItemList.Add(rareArmor);
+            //WarriorItemList = new List<Item>();
+            //MageItemList = new List<Item>();
 
-            MageItemList.Add(mageLegendMainWeapon);
-            MageItemList.Add(legendSubWeapon);
-            MageItemList.Add(legendArmor);
-            MageItemList.Add(mageRareMainWeapon);
-            MageItemList.Add(rareSubWeapon);
-            MageItemList.Add(rareArmor);
+            //json데이터 넣어주기
+            string relativePath = "../../../Data/items.json";
+            string jsonFilePath = Path.GetFullPath(relativePath);
+            if (File.Exists(jsonFilePath))
+            {
+                string jsonContent = File.ReadAllText(jsonFilePath);
+                StoreItemList = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
+            }
+            
         }
 
         void ShowStoreItemList()
@@ -72,11 +63,16 @@ namespace SpartaDungeon
         {
             if (player.ClassType == CLASSTYPE.Warrior)
             {
-                StoreItemList = WarriorItemList;
+                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("1")
+                    || item.ItemNum.StartsWith("0")).ToList();
+                //StoreItemList = WarriorItemList;
+
             }
             else if (player.ClassType == CLASSTYPE.Mage)
             {
-                StoreItemList = MageItemList;
+                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("4")
+                    || item.ItemNum.StartsWith("0")).ToList();
+                //StoreItemList = MageItemList;
             }
 
             while (true)
