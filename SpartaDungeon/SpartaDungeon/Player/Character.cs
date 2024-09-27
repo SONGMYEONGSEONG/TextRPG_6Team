@@ -79,7 +79,7 @@ namespace SpartaDungeon
         }
 
         public Character(string _name, JobType _jobType, string _job, float _hp, float _mp,
-                         float _atk, float _def, float _agl, float _acc, float _luc, int _gold, float? _intelligence)
+                         float _atk, float _def, float _agl, float _acc, float _luc, int _gold, float? _int)
         {
             Name = _name;
             Level = 1;
@@ -88,7 +88,7 @@ namespace SpartaDungeon
             MaxHp = _hp;
             MaxMp = _mp;
             Attack = _atk;
-            Intelligence = _intelligence;
+            Intelligence = _int;
             Defense = _def;
             Agility = _agl;
             Accuracy = _acc;
