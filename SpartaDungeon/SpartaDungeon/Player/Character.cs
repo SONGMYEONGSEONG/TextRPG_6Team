@@ -10,8 +10,8 @@ namespace SpartaDungeon
     {
         None,
         Warrior,
-        Archer,
         Rogue,
+        Archer,
         Mage
     }
 
@@ -19,8 +19,7 @@ namespace SpartaDungeon
     {
         public string Name { get; set; }
         public int Level { get; set; }
-
-        public JobType JobType { get; set; }
+        public JobType CharacterJobType { get; set; }
         public string Job { get; set; }
         public float MaxHp { get; set; }
         public float CurrentHp { get; set; }
@@ -33,6 +32,7 @@ namespace SpartaDungeon
         public float Agility { get; set; }      // Agl          : 민첩. 내 회피 확률에 영향
         public float Accuracy { get; set; }     // Acc          : 명중. 상대의 회피 확률과 내 공격 크리티컬 확률에 영향
         public float Luck { get; set; }         // Luc of Luk   : 행운. 공격 크리티컬 확률, 보상에 영향
+        public float? Intelligence { get; set; }
         public int Gold { get; set; }
 
         public List<Item> Inventory = new List<Item>();
@@ -51,36 +51,66 @@ namespace SpartaDungeon
             Agility = 10f;
             Accuracy = 10f;
             Luck = 10f;
+            Intelligence = null;
             Gold = 500;
         }
 
-        public Character(string name, JobType jobType, string job, float hp, float mp,
-                         float atk, float def, float agl, float acc, float luc, int gold)
+        public Character(string _name, int _jobTypeNum)
         {
-            Name = name;
+            Name = _name;
             Level = 1;
-            JobType = jobType;
-            Job = job;
-            MaxHp = hp;
-            MaxMp = mp;
-            Attack = atk;
-            Defense = def;
-            Agility = agl;
-            Accuracy = acc;
-            Luck = luc;
-            Gold = gold;
+            if (_jobTypeNum == (int)JobType.Warrior)
+            {
+                // 초기스탯 세팅
+            }
+            else if (_jobTypeNum == (int)JobType.Rogue)
+            {
+
+            }
+            else if (_jobTypeNum == (int)JobType.Archer)
+            {
+
+            }
+            else if (_jobTypeNum == (int)JobType.Mage)
+            {
+                // 초기스탯 세팅
+                Intelligence = 20f;
+            }
+        }
+
+        public Character(string _name, JobType _jobType, string _job, float _hp, float _mp,
+                         float _atk, float _def, float _agl, float _acc, float _luc, int _gold, float? _intelligence)
+        {
+            Name = _name;
+            Level = 1;
+            CharacterJobType = _jobType;
+            Job = _job;
+            MaxHp = _hp;
+            MaxMp = _mp;
+            Attack = _atk;
+            Intelligence = _intelligence;
+            Defense = _def;
+            Agility = _agl;
+            Accuracy = _acc;
+            Luck = _luc;
+            Gold = _gold;
         }
 
         // 플레이어 스탯 갱신
-        public virtual void SetStat()
+        public void SetStat()
         {
 
         }
 
         // 플레이어 상태 보기
-        public virtual void DisplayStatus()
-        { 
+        public void DisplayStatus()
+        {
 
+            // 플레이어 스탯
+            if (Intelligence != null)
+            {
+                Console.WriteLine($"지능: {Intelligence}");
+            }
         }
     }
 }
