@@ -264,6 +264,45 @@ namespace SpartaDungeon
             Console.ReadLine();
         }
 
+        // 회피 확인
+        private bool CheckDodge(Player _curPlayer, EnemyTest _enemy)
+        {
+            Random rand = new Random();
+            float numPossibility = rand.Next(1, 101);
+
+            // 회피확률 어떻게 계산할지 필요함
+            // bool isDodge;
+            //switch (_curTurn)
+            //{
+            //    case Turn.Player:
+            //        return isDodge = dodgeJudgement <= 기본확률 + player.명중 - enemy.민첩 ? true : false;
+            //
+            //    case Turn.Enemy:
+            //        return isDodge = dodgeJudgement <= 기본확률 + enemy.명중 - player.민첩 ? true : false;
+            //}
+
+            return numPossibility <= 10;
+        }
+
+        private bool CheakCritical(Player _curPlayer, EnemyTest _enemy)
+        {
+            Random rand = new Random();
+            float numPossibility = rand.Next(1, 101);
+
+            // 치명타 확률 어떻게 계산할지 필요함
+            // bool isCritical;
+            //switch (_curTurn)
+            //{
+            //    case Turn.Player:
+            //        return iscritical = iscriticalJudgement <= 기본확률 + player.명중 + 행운 - enemy.민첩 ? true : false;
+            //
+            //    case Turn.Enemy:
+            //        return iscritical = iscriticalJudgement <= 기본확률 + enemy.명중 + 행운 - player.민첩 ? true : false;
+            //}
+
+            return numPossibility <= 15;
+        }
+
         private int DamageCaculate(Player _curPlayer , EnemyTest _enemy)
         {
             Random rand = new Random();
