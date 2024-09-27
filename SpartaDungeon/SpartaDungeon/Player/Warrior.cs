@@ -8,9 +8,9 @@ namespace SpartaDungeon
 {
     internal class Warrior : Character
     {
-        public Warrior(string name, JobType jobType, string job, float hp, float mp,
-                       float atk, float def, float agl, float acc, float luc, int gold)
-                       : base (name, jobType, job, hp, mp, atk, def, agl, acc, luc, gold)
+        public Warrior(string _name, JobType _jobType, string _job, float _hp, float _mp,
+                       float _atk, float _def, float _agl, float _acc, float _luc, int _gold, float? _int)
+                       : base(_name, _jobType, _job, _hp, _mp, _atk, _def, _agl, _acc, _luc, _gold, _int)
         {
 
         }
