@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SpartaDungeon
+{
+    internal class PTY
+    {
+        int a = 10;
+        
+    }
+}
