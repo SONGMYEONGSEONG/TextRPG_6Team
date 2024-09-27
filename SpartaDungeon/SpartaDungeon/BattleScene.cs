@@ -23,9 +23,9 @@ namespace SpartaDungeon
     //누구의 턴인지 표시하는 열거형 변수
     enum Turn { Player = 1, Enemy = 2 }
 
-    /*Debug용 Enemy List*/
-    /*Enemy Class 만들때 iStatus 인터페이스 가져오게 선언해야됨*/
-    public class EnemyTest
+    /*Debug*/
+    //Debug용 EnemyTest
+    public class EnemyTest /*Enemy Class 만들때 iStatus 인터페이스 가져오게 선언해야됨*/
     {
         public string? Name { get; set; }
         public int Level { get; set; }
@@ -35,6 +35,7 @@ namespace SpartaDungeon
         public int? CurrentHP { get; set; }
 
     }
+    /*!Debug*/
 
     //전투 할때 사용되는 전투 Scene ( 턴제 전투)
     /*
@@ -46,23 +47,35 @@ namespace SpartaDungeon
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
         Turn _curTurn; //현재 진행중인 유저의 턴
         Player _curPlayer; //현재 전투에 참여한 플레이어 오브젝트
-                           //Enemy[] _enemys;  //현재 전투에 참여한 적 오브젝트들
+        //Enemy[] _enemys;  //현재 전투에 참여한 적 오브젝트들 
+
+        bool isAttack;//[1.공격]을 선택 체크 변수
+        bool isSkill;//[2.스킬]을 선택 체크 변수
 
         /*Debug*/
-        EnemyTest _enemyTest;
+        List<EnemyTest> _enemyTestList = new List<EnemyTest>();
+        /*!Debug*/
 
         public BattleScene()
         {
             _curTurn = Turn.Player; //Scene 생성되면 , 선턴은 바로 플레이어로 지정
+            isAttack = false;
+            isSkill = false;
+
 
             /*Debug - 테스트용 Enemy */
-            _enemyTest = new EnemyTest();
-            _enemyTest.Name = "Test용 몹";
-            _enemyTest.Level = 10;
-            _enemyTest.CharacterAttack = 10;
-            _enemyTest.CharacterDefense = 10;
-            _enemyTest.CharacterMaxHP = 100;
-            _enemyTest.CurrentHP = 100;
+            for (int i = 0; i < 4 ; i ++)
+            {
+                EnemyTest _enemyTest = new EnemyTest();
+                _enemyTest.Name = "Test용 몹";
+                _enemyTest.Level = 10;
+                _enemyTest.CharacterAttack = 10;
+                _enemyTest.CharacterDefense = 10;
+                _enemyTest.CharacterMaxHP = 100;
+                _enemyTest.CurrentHP = 100;
+
+                _enemyTestList.Add(_enemyTest);
+            }
             //
 
         }
@@ -78,6 +91,42 @@ namespace SpartaDungeon
             Update();
         }
 
+        private void EnemysSelectPrint(int enemyIndex)
+        {
+            _strbuilder.Append($"{enemyIndex}. ");
+        }
+
+        //Enemy List를 불러와서 출력함
+        private void EnemysPrint()
+        {
+            string _enemyStatusStr = "";
+            for (int i = 0; i < 4 ; i++) // Enemy 몹 소환, 나중에 List를 받아와서 형식화 해야됨
+            {
+                _strbuilder.Clear();
+               
+                if (isAttack || isSkill)
+                {
+                    EnemysSelectPrint(i+1); //나중에 공격 상태일떄 true변경되어 사용하게해야됨
+                }
+                _enemyStatusStr = $"Lv.{_enemyTestList[i].Level} {_enemyTestList[i].Name}";
+                _strbuilder.Append(_enemyStatusStr);
+
+                switch (_enemyTestList[i].CurrentHP <= 0)
+                {
+                    case true: //적의 HP가 0이하 -> 죽음상태를 표시
+                        _strbuilder.Append(" Dead");
+                        break;
+
+                    case false:
+                        _strbuilder.Append($" HP {_enemyTestList[i].CurrentHP}");
+                        break;
+                }
+
+                _strbuilder.Append("\n");
+                Console.Write(_strbuilder.ToString());
+            }
+        }
+
         //전투 상황 프린트
         private void BattleStatusPrint()
         {
@@ -86,29 +135,7 @@ namespace SpartaDungeon
             _strbuilder.Append("Battle!!\n\n");
             Console.Write( _strbuilder.ToString() );
 
-            //Enemy List를 불러와서 출력함
-            string _enemyStatusStr = "";
-            for(int i = 1; i < 4; i++) // Enemy 몹 소환, 나중에 List를 받아와서 형식화 해야됨
-            {
-                _strbuilder.Clear();
-                _enemyStatusStr = $"{i} {_enemyTest.Level} {_enemyTest.Name}";
-                _strbuilder.Append(_enemyStatusStr);
-
-                switch (_enemyTest.CurrentHP <=0 )
-                {
-                    case true: //적의 HP가 0이하 -> 죽음상태를 표시
-                        _strbuilder.Append(" Dead");
-                        break;
-
-                    case false:
-                        _strbuilder.Append($" HP { _enemyTest.CurrentHP}");
-                        break;
-                }
-
-                _strbuilder.Append("\n");
-                Console.Write(_strbuilder.ToString());
-            }
-
+            EnemysPrint();
 
             //Player 정보 출력
             _strbuilder.Clear();
@@ -119,20 +146,42 @@ namespace SpartaDungeon
             Console.Write(_strbuilder.ToString());
         }
 
+        private void PlayerTurnStatusPrint()
+        {
+            //Player 선택지 출력
+            _strbuilder.Clear();
+            _strbuilder.AppendLine();
+            if(!(isAttack || isSkill))
+            {
+                _strbuilder.AppendLine($"1. 공격");
+                _strbuilder.AppendLine($"2. 스킬");
+            }  
+            _strbuilder.AppendLine($"0. 취소");
+
+            _strbuilder.AppendLine("원하시는 행동을 입력해주세요.");
+            _strbuilder.Append(">>");
+            Console.Write(_strbuilder.ToString());
+        }
+
         private void Update()
         {
-            string input;
-
             while (true)
             {
-                Console.Clear();
-                BattleStatusPrint();
+                //Console.Clear();
+                //BattleStatusPrint();
 
                 switch (_curTurn)
                 {
                     case Turn.Player :
 
-                        input = Console.ReadLine(); //Player 선택지 입력 대기
+                        while (true) //Test
+                        {
+                            Console.Clear();
+                            BattleStatusPrint();
+                            PlayerTurnStatusPrint();
+                            PlayerSelect();
+
+                        }
 
                         _curTurn = Turn.Enemy; //턴 교체 (Player -> Enemy)
                         break;
@@ -146,6 +195,42 @@ namespace SpartaDungeon
             }
         }
 
+        private void PlayerSelect()
+        {
+            string input = Console.ReadLine(); //Player 선택지 입력 대기
+
+            switch(input)
+            {
+                case "1":
+                    if(!isAttack) //공격을 선택하지 않은 경우
+                    {
+                        isAttack = true;
+                      
+                    }
+                    else //공격을 선택한 경우
+                    {
+                        //공격대상 고를수있게 선택해야됨
+                    }
+                    break;
+
+                case "2":
+
+                    break;
+
+                case "0":
+                    if (isAttack)
+                    {
+                        isAttack = false;
+                    }
+                    else if(isSkill)
+                    {
+                        isSkill = false;
+                    }
+                    break;
+
+            }
+
+        }
 
     }
 }
