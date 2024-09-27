@@ -2,38 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace SpartaDungeon.Quest
 {
     internal class QuestManager
     {
-        Quest[] _quests;
+        List<Quest> _quests;
+        public List<Quest> Quests { get { return _quests; } }
        
 
         public QuestManager()
         {
-            _quests = new Quest[3];
+            string csvFilePath = "TextRPG_Quest.csv";
 
-            string fileName = "QuestList.json";
-            string jsonString = "";
-            var options = new JsonSerializerOptions { WriteIndented = true };
-
-            for (int i = 0; i < _quests.Length; i++)
+            // 1. CSV 파일을 UTF-8 인코딩으로 읽기
+            List<Dictionary<int, Quest>> csvData = new List<Dictionary<int, Quest>>();
+            using (var reader = new StreamReader(csvFilePath, Encoding.UTF8))
             {
-                _quests[i] = new Quest();
+                string headerLine = reader.ReadLine(); //카테고리
+                string[] headers = headerLine.Split(','); //문자열 카테고리 분류
 
-                //파일 json 파일 생성
-                jsonString += JsonSerializer.Serialize(_quests[i], options);
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] values = line.Split(',');
+
+                    Dictionary<int, Quest> row = new Dictionary<int, Quest>();
+
+                    Quest quest = new Quest(values[1], values[2], bool.Parse(values[3]));
+                    quest.RewardType = values[4];
+                    quest.RewardValue = values[5];
+                    quest.RewardGold = values[6];
+
+                    row[int.Parse(values[0])] = quest;
+            
+
+                    csvData.Add(row);
+                }
             }
-            File.WriteAllText(fileName, jsonString);
-
-        
-            //파일 json 저장 
-            //jsonString += JsonSerializer.Serialize(_quests[i]);
-
         }
+
 
 
 
