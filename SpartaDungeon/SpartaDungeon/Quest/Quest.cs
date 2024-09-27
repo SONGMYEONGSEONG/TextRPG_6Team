@@ -11,26 +11,18 @@ namespace SpartaDungeon.Quest
 {
     internal class Quest
     {
-        string _questLabel; //퀘스트 제목
-        string _questDetail; //퀘스트 내용
-        bool _isFinish; //퀘스트 성공 여부
+        public string Label { get; set; }
+        public string Detail { get; set; }
+        public bool IsFinish { get; set; }
+        public string RewardType { get; set; }
+        public string RewardValue { get; set; }
+        public string RewardGold { get; set; }
 
-        public string QuestLabel { get { return _questLabel; } }
-        public string QuestDetail { get { return _questDetail; }}
-        public bool IsFinish { get { return _isFinish; } }
-
-        public Quest()
+        public Quest(string _Label, string _Detail, bool _IsFinished = false)
         {
-            _questLabel = "Test Quest";
-            _questDetail = "Test 123 \n Test 456";
-            _isFinish = false;
-        }
-
-        public Quest(string _Label)
-        {
-            _questLabel = _Label;
-            _questDetail = "Test 123 \n Test 456";
-            _isFinish = false;
+            Label = _Label;
+            Detail = _Detail;
+            IsFinish = _IsFinished;
         }
     }
 }
