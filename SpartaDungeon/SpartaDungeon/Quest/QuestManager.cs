@@ -10,7 +10,6 @@ namespace SpartaDungeon.Quest
     {
         List<Quest> _quests;
         public List<Quest> Quests { get { return _quests; } }
-       
 
         public QuestManager()
         {
