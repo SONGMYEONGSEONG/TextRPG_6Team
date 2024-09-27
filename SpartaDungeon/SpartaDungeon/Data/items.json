@@ -1,0 +1,134 @@
+﻿[
+  {
+    "itemNum": "001",
+    "itemType": "SubWeapon",
+    "name": "낡은 단검",
+    "price": 200,
+    "atk": 2,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "부러질 듯한 단검",
+    "isPurchased": "true"
+  },
+  {
+    "itemNum": "002",
+    "itemType": "Armor",
+    "name": "낡은 갑옷",
+    "price": 300,
+    "atk": 0,
+    "def": 3,
+    "additionalHP": 10,
+    "description": "녹이 슨 철제갑옷",
+    "isPurchased": "true"
+  },
+  {
+    "itemNum": "003",
+    "itemType": "SubWeapon",
+    "name": "전설 단검",
+    "price": 2500,
+    "atk": 20,
+    "def": 3,
+    "additionalHP": 5,
+    "description": "모든 것을 꿰뚫는 전설적인 단검",
+    "isPurchased": "false"
+  },
+  {
+    "itemNum": "004",
+    "itemType": "Armor",
+    "name": "전설 아머",
+    "price": 3000,
+    "atk": 5,
+    "def": 15,
+    "additionalHP": 50,
+    "description": "사용자를 지키는 전설적인 아머",
+    "isPurchased": "false"
+  },
+  {
+    "itemNum": "005",
+    "itemType": "SubWeapon",
+    "name": "희귀 단검",
+    "price": 700,
+    "atk": 5,
+    "def": 1,
+    "additionalHP": 0,
+    "description": "근접한 적을 찌르는 숨겨진 비수",
+    "isPurchased": "false"
+  },
+  {
+    "itemNum": "006",
+    "itemType": "Armor",
+    "name": "희귀 갑옷",
+    "price": 1000,
+    "atk": 0,
+    "def": 8,
+    "additionalHP": 20,
+    "description": "쉽게 부서지지 않는 단단한 갑옷",
+    "isPurchased": "false"
+  },
+  {
+    "itemNum": 101,
+    "itemType": "MainWeapon",
+    "name": "낡은 철검",
+    "price": 300,
+    "atk": 3,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "녹슬고 무딘 철검",
+    "isPurchased": "true"
+  },
+  {
+    "itemNum": 102,
+    "itemType": "MainWeapon",
+    "name": "전설 소드",
+    "price": 3000,
+    "atk": 30,
+    "def": 5,
+    "additionalHP": 15,
+    "description": "사용자를 전설로 만들어주는 검",
+    "isPurchased": "false"
+  },
+  {
+    "itemNum": 103,
+    "itemType": "MainWeapon",
+    "name": "희귀 소드",
+    "price": 1000,
+    "atk": 8,
+    "def": 1,
+    "additionalHP": 5,
+    "description": "전설에 가까워지게 하는 검",
+    "isPurchased": "false"
+  },
+  {
+    "itemNum": 401,
+    "itemType": "MainWeapon",
+    "name": "낡은 완드",
+    "price": 300,
+    "atk": 3,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "균열이 있는 완드",
+    "isPurchased": "true"
+  },
+  {
+    "itemNum": 402,
+    "itemType": "MainWeapon",
+    "name": "전설 완드",
+    "price": 3000,
+    "atk": 30,
+    "def": 5,
+    "additionalHP": 15,
+    "description": "사용자를 전설로 만들어주는 완",
+    "isPurchased": "false"
+  },
+  {
+    "itemNum": 403,
+    "itemType": "MainWeapon",
+    "name": "희귀 완드",
+    "price": 1000,
+    "atk": 8,
+    "def": 1,
+    "additionalHP": 5,
+    "description": "전설에 가까워지게 하는 완드",
+    "isPurchased": "false"
+  }
+]
