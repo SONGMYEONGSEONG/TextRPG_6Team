@@ -22,7 +22,7 @@ namespace SpartaDungeon
 {
     //누구의 턴인지 표시하는 열거형 변수
     enum Turn { Player = 1, Enemy = 2 }
-
+    
     /*Debug*/
     //Debug용 EnemyTest
     public class EnemyTest /*Enemy Class 만들때 iStatus 인터페이스 가져오게 선언해야됨*/
@@ -32,7 +32,7 @@ namespace SpartaDungeon
         public int CharacterAttack { get; set; }
         public int CharacterDefense { get; set; }
         public int CharacterMaxHP { get; set; }
-        public int? CurrentHP { get; set; }
+        public int CurrentHP { get; set; }
 
     }
     /*!Debug*/
@@ -52,15 +52,21 @@ namespace SpartaDungeon
         bool isAttack;//[1.공격]을 선택 체크 변수
         bool isSkill;//[2.스킬]을 선택 체크 변수
 
+        bool isPlayerWin; //Player가 승리했는지 패배했는지 체크하는 변수
+        public bool IsPlayerWin { get { return IsPlayerWin; } private set { } } //전투 결과 Scene에서 사용하시면 됩니다. -이지혜님
+
         /*Debug*/
         List<EnemyTest> _enemyTestList = new List<EnemyTest>();
+        int _allEnemySumHP; //이전 전투에 참여한 모든 적의 HP 총합
         /*!Debug*/
 
-        public BattleScene()
+        public BattleScene(/*StageData _stage*/)//stageData를 받아와서 해당 스테이지에 존재하는 Enemy을 호출
         {
             _curTurn = Turn.Player; //Scene 생성되면 , 선턴은 바로 플레이어로 지정
             isAttack = false;
             isSkill = false;
+            isPlayerWin = false;
+            _allEnemySumHP = 0;
 
 
             /*Debug - 테스트용 Enemy */
@@ -74,6 +80,7 @@ namespace SpartaDungeon
                 _enemyTest.CharacterMaxHP = 100;
                 _enemyTest.CurrentHP = 100;
 
+                _allEnemySumHP += _enemyTest.CurrentHP;
                 _enemyTestList.Add(_enemyTest);
             }
             //
@@ -174,16 +181,26 @@ namespace SpartaDungeon
 
         private void Update()
         {
-            while (_curPlayer.CurrentHP > 0 /* && 모든 적의 체력의 합이 0보다 높을때 */)
+            while (_curPlayer.CurrentHP > 0 && _allEnemySumHP > 0)
             {
-                //Console.Clear();
-                //BattleStatusPrint();
+                if (_allEnemySumHP <= 0)
+                {
+                    //플레이어 승리
+                    isPlayerWin = true;
+                    break;
+                }
+                else if(_curPlayer.CurrentHP <= 0)
+                {
+                    //플레이어 패배
+                    isPlayerWin = false;
+                    break;
+                }
 
                 switch (_curTurn)
                 {
                     case Turn.Player:
 
-                        while (_curTurn == Turn.Player) //Test
+                        while (_curTurn == Turn.Player)
                         {
                             Console.Clear();
                             BattleStatusPrint();
@@ -204,11 +221,9 @@ namespace SpartaDungeon
                             }
                             else
                             {
-                                PlayerSelect();
+                                PlayerSelect(); 
                             }
                         }
-
-                      
                         break;
 
                     case Turn.Enemy:
@@ -237,8 +252,8 @@ namespace SpartaDungeon
                         
                         _curTurn = Turn.Player; //턴 교체 (Player -> Enemy)
                         break;
-
                 }
+
             }
         }
 
@@ -254,9 +269,9 @@ namespace SpartaDungeon
             Random rand = new Random();
             int _damage = 0;
 
-            //회피 확률 계산 Class 합병해야됨
+            //회피 확률 계산 Class 합병해야됨 - 안성찬님 
 
-            //크리티컬 확률 계산 Class 합병해야됨
+            //크리티컬 확률 계산 Class 합병해야됨 - 안성찬님
 
             float marginRange; //오차 범위
             //Player - > Enemy 공격
