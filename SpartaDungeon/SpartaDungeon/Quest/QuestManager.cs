@@ -14,7 +14,7 @@ namespace SpartaDungeon.Quest
 
         public QuestManager()
         {
-            string csvFilePath = "TextRPG_Quest.csv";
+            string csvFilePath = @"..\..\..\TextRPG_Quest.csv";
 
             // 1. CSV 파일을 UTF-8 인코딩으로 읽기
             Dictionary<int, Quest> csvData = new Dictionary<int, Quest>();
@@ -42,8 +42,8 @@ namespace SpartaDungeon.Quest
 
                     csvData.Add(int.Parse(values[0]), quest);
                 }
-            
-                if(csvData != null)
+
+                if (csvData != null)
                 {
                     _quests = csvData;
                 }
@@ -62,11 +62,21 @@ namespace SpartaDungeon.Quest
         }
 
         public void Print(int _questID)
-        { 
+        {
             _strbuilder.Clear();
-            _strbuilder.AppendLine($"퀘스트 제목 : {_quests[_questID].Label}");
-            _strbuilder.AppendLine("퀘스트 내용 : \n ");
+            _strbuilder.AppendLine($"{_quests[_questID].Label}");
+            _strbuilder.AppendLine();
             _strbuilder.AppendLine($"{_quests[_questID].Detail}");
+            _strbuilder.AppendLine();
+            _strbuilder.AppendLine("- 퀘스트 목표 (0/1)");
+            _strbuilder.AppendLine();
+            _strbuilder.AppendLine("-보상-");
+            //아이템 보상 받는거 형식화 생각해볼것 
+            _strbuilder.AppendLine($"쓸만한 방패 x 1");
+            _strbuilder.AppendLine($"5G");
+            _strbuilder.AppendLine();
+            //-퀘스트 목표 선언
+
 
             Console.Write(_strbuilder.ToString());
         }

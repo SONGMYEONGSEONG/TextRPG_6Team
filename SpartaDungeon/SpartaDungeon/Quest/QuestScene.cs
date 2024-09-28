@@ -32,13 +32,50 @@ namespace SpartaDungeon.Quest
         private void Print()
         {
             _strbuilder.Clear();
-            _strbuilder.AppendLine($"퀘스트");
+            _strbuilder.AppendLine($"Quest!!");
 
             for (int i = 0; i < _questManager.Quests.Count; i++)
             {
                 _strbuilder.AppendLine($"{i + 1} . {_questManager.Quests[i + 1].Label}");
             }
 
+            _strbuilder.AppendLine("\n원하시는 퀘스트를 선택해주세요. \n >>");
+            Console.Write(_strbuilder.ToString());
+        }
+
+        private void QuestAcceptCheck(int _select)
+        {
+            while (true)
+            {
+                Console.Clear();
+                _questManager.Print(_select);
+                QuestAcceptCheckPrint();
+
+                string _input = Console.ReadLine();
+
+                switch(_input)
+                {
+                    case "1": //수락
+
+                        break;
+
+                    case "2": //거절
+                        return;
+
+                    default:
+                        ErrorInput();
+                        continue;
+                        break;
+                }
+            }
+        }
+
+        private void QuestAcceptCheckPrint()
+        {
+            _strbuilder.Clear();
+            _strbuilder.AppendLine("1. 수락");
+            _strbuilder.AppendLine("2. 거절");
+            _strbuilder.AppendLine("\n원하시는 행동을 입력해주세요.\n >>");
             Console.Write(_strbuilder.ToString());
         }
 
@@ -75,13 +112,18 @@ namespace SpartaDungeon.Quest
                         return;
 
                     default:
-                        _questManager.Print(_select);
-                        Console.ReadLine();
+                        _strbuilder.Clear();
+                        _strbuilder.AppendLine($"Quest!!");
+                        Console.Write(_strbuilder.ToString());
+
+                        QuestAcceptCheck(_select);
                         break;
                 }
 
             }
         }
+
+
 
         public void SceneExit(ref Player player)
         {
