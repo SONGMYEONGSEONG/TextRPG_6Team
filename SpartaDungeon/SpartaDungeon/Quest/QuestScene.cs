@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Formats.Asn1.AsnWriter;
 
-namespace SpartaDungeon.Quest
+namespace SpartaDungeon
 {
     internal class QuestScene
     {
@@ -65,7 +65,6 @@ namespace SpartaDungeon.Quest
                     default:
                         ErrorInput();
                         continue;
-                        break;
                 }
             }
         }
