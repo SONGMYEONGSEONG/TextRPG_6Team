@@ -1,5 +1,4 @@
-﻿using SpartaDungeon.Quest;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -94,6 +93,8 @@ namespace SpartaDungeon
             /*Debug*/
             BattleScene _battleScene = new BattleScene();
             QuestScene _questScene = new QuestScene();
+            EnemyManager _enemyManager = new EnemyManager();
+            _enemyManager.Initialize();
             /*!Debug*/
 
 
@@ -143,7 +144,7 @@ namespace SpartaDungeon
                     /*debug*/
                     case "6":
                         Console.Clear();
-                        _battleScene.Initialize(player);
+                        _battleScene.Initialize(player, _enemyManager.GetEnemies(SummonArea.Forest));
                         _battleScene.SceneStart();
                         _battleScene.SceneExit(ref player);
                         break;
