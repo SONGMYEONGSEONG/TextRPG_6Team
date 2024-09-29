@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Reflection.Emit;
 
-namespace SpartaDungeon.Quest
+namespace SpartaDungeon
 {
     internal class Quest
     {
