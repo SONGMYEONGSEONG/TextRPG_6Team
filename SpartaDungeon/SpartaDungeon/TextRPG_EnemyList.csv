@@ -1,0 +1,4 @@
+﻿SummonArea,EnemyType,Name,Level,MaxHp,MaxMp,Atk,Def,Agl,Acc,Luc,Gold
+Forest,Skeleton,스켈레톤,5,50,10,5,5,5,5,0,30
+Forest,Goblin,고블린,2,30,0,5,3,10,5,0,15
+Forest,Orc,오크,8,100,0,10,10,2,2,0,100
