@@ -55,6 +55,11 @@ namespace SpartaDungeon
         public Item basicSubWeapon         = new Item(ITEMTYPE.SubWeapon,  "낡은 단검", 200, 2, 0, 0, "부러질 듯한 단검", true);
         public Item basicArmor             = new Item(ITEMTYPE.Armor,      "낡은 갑옷", 300, 0, 3, 10, "녹이 슨 철제갑옷", true);
 
+        /*Debug*/
+        //Merge 하면 Character 이어받기
+        Dictionary<int, Quest> _playerQuest = new Dictionary<int, Quest>();
+        public Dictionary<int, Quest> PlayerQuest { get { return _playerQuest; } set { _playerQuest = value; } }
+        /*!Debug*/
 
         // 플레이터 클래스에 따른 기본 장비 인벤토리 추가
         public void SupplyBasicItem()
@@ -151,7 +156,8 @@ namespace SpartaDungeon
             if (ClassType == CLASSTYPE.Warrior)
             {
                 CharacterClass = "전사";
-                CharacterAttack = 6 + Level;
+                //CharacterAttack = 6 + Level;
+                CharacterAttack = 60 + Level;
                 CharacterDefense = 3 + Level;
                 CharacterMaxHP = 100 + Level * 10;
             }
