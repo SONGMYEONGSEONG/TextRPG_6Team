@@ -12,6 +12,9 @@ namespace SpartaDungeon
         Dictionary<int, Quest> _quests;
         public Dictionary<int, Quest> Quests { get { return _quests; } }
 
+        Dictionary<int, Quest> _acceptedQuest; //플레이어가 수락한 퀘스트 
+        public Dictionary<int, Quest> AcceptedQuest {  get { return _acceptedQuest; } }
+
         public QuestManager()
         {
             string csvFilePath = @"..\..\..\TextRPG_Quest.csv";
@@ -28,17 +31,32 @@ namespace SpartaDungeon
                 {
                     string[] values = line.Split(',');
 
-                    //Dictionary<int, Quest> row = new Dictionary<int, Quest>();
+                    //0 퀘스트 ID
+                    //1 퀘스트 이름
+                    //2 퀘스트 내용
+                    //3 퀘스트 목적
+                    //4 퀘스트 현재 진행도 (최초 0)
+                    //5 퀘스트 목표 진행도
+                    //6 퀘스트 클리어 유무
+                    //7 퀘스트 보상 이름
+                    //8 퀘스트 보상 갯수
+                    //9 퀘스트 보상 골드
+                    //10 퀘스트 타입
 
                     _strbuilder.Clear();
+                    
+                    Quest quest = new Quest();
+                    quest.Label = values[1];
                     _strbuilder.Append(ApplyEscapeCharacters(values[2]));
-
-                    Quest quest = new Quest(values[1], _strbuilder.ToString(), bool.Parse(values[3]));
-                    quest.RewardType = values[4];
-                    quest.RewardValue = values[5];
-                    quest.RewardGold = values[6];
-
-                    //row[int.Parse(values[0])] = quest;
+                    quest.Detail = _strbuilder.ToString();
+                    quest.Purpose = values[3];
+                    quest.CurProgressRequired = int.Parse(values[4]);
+                    quest.EndProgressRequired = int.Parse(values[5]);
+                    quest.IsFinish = bool.Parse(values[6]);
+                    quest.RewardType = values[7];
+                    quest.RewardValue = values[8];
+                    quest.RewardGold = int.Parse(values[9]);
+                    quest.Type = values[10];
 
                     csvData.Add(int.Parse(values[0]), quest);
                 }
@@ -46,6 +64,12 @@ namespace SpartaDungeon
                 if (csvData != null)
                 {
                     _quests = csvData;
+                }
+
+                //플레이어가 수락한 퀘스트 리스트 생성 
+                if(_acceptedQuest == null)
+                {
+                    _acceptedQuest = new Dictionary<int, Quest>();
                 }
             }
 
@@ -68,19 +92,39 @@ namespace SpartaDungeon
             _strbuilder.AppendLine();
             _strbuilder.AppendLine($"{_quests[_questID].Detail}");
             _strbuilder.AppendLine();
-            _strbuilder.AppendLine("- 퀘스트 목표 (0/1)");
+            _strbuilder.AppendLine($"- {_quests[_questID].Purpose} ({_quests[_questID].CurProgressRequired}/{_quests[_questID].EndProgressRequired})");
             _strbuilder.AppendLine();
             _strbuilder.AppendLine("-보상-");
-            //아이템 보상 받는거 형식화 생각해볼것 
-            _strbuilder.AppendLine($"쓸만한 방패 x 1");
-            _strbuilder.AppendLine($"5G");
-            _strbuilder.AppendLine();
-            //-퀘스트 목표 선언
 
+            if (_quests[_questID].RewardType != "")
+            {
+                _strbuilder.AppendLine($"{_quests[_questID].RewardType} x {_quests[_questID].RewardValue}");
+            }
+            if (_quests[_questID].RewardGold != 0)
+            {
+                _strbuilder.AppendLine($"{_quests[_questID].RewardGold}G");
+            }
+                _strbuilder.AppendLine();
 
             Console.Write(_strbuilder.ToString());
         }
 
+        public void QuestAccept(int _questID)
+        {
+            if (!_acceptedQuest.ContainsKey(_questID))
+            {
+                _acceptedQuest.Add(_questID, _quests[_questID]);
+                _strbuilder.Clear();
+                _strbuilder.AppendLine("해당 퀘스트를 수락 하였습니다.");
+                Console.Write(_strbuilder.ToString());
+            }
+            else
+            {
+                _strbuilder.Clear();
+                _strbuilder.AppendLine("해당 퀘스트는 이미 수락 하였습니다.");
+                Console.Write(_strbuilder.ToString());
+            }
+        }
 
     }
 }
