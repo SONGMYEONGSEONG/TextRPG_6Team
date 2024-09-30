@@ -9,6 +9,7 @@ namespace SpartaDungeon.Scene
 {
     internal class IntroScene
     {
+        MainScene mainScene = new MainScene();
         public Character player;
 
         bool _isContinue;
@@ -117,7 +118,8 @@ namespace SpartaDungeon.Scene
                     Console.WriteLine("잘못된 입력입니다.");
                 }
             }
-            // MainScene.VillageScene(player);
+
+            mainScene.VillageScene(player);
         }
 
         public void RunGame()
