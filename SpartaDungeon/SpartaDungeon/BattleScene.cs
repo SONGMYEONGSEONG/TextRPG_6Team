@@ -22,20 +22,6 @@ namespace SpartaDungeon
 {
     //누구의 턴인지 표시하는 열거형 변수
     enum Turn { Player = 1, Enemy = 2 }
-    
-    /*Debug*/
-    //Debug용 EnemyTest
-    //public class EnemyTest /*Enemy Class 만들때 iStatus 인터페이스 가져오게 선언해야됨*/
-    //{
-    //    public string? Name { get; set; }
-    //    public int Level { get; set; }
-    //    public int CharacterAttack { get; set; }
-    //    public int CharacterDefense { get; set; }
-    //    public int CharacterMaxHP { get; set; }
-    //    public int CurrentHP { get; set; }
-
-    //}
-    /*!Debug*/
 
     //전투 할때 사용되는 전투 Scene ( 턴제 전투)
     /*
@@ -46,25 +32,22 @@ namespace SpartaDungeon
     {
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
         Turn _curTurn; //현재 진행중인 유저의 턴
-        Player _curPlayer; //현재 전투에 참여한 플레이어 오브젝트
-        //Enemy[] _enemys;  //현재 전투에 참여한 적 오브젝트들 
+        Player _curPlayer; //현재 전투에 참여한 플레이어 오브젝트 
 
         bool isAttack;//[1.공격]을 선택 체크 변수
         bool isSkill;//[2.스킬]을 선택 체크 변수
 
         bool isPlayerWin; //Player가 승리했는지 패배했는지 체크하는 변수
         public bool IsPlayerWin { get { return isPlayerWin; } private set { } } //전투 결과 Scene에서 사용하시면 됩니다. -이지혜님
-        
+
         List<Enemy> _enemyList; //이번 전투에 참여하는 적
         int _allEnemySumHP; //이번 전투에 참여한 모든 적의 HP 총합
 
-        /*Debug*/
-        //List<EnemyTest> _enemyTestList;
-        /*!Debug*/
+        Dictionary<int, Quest> _playerQuest; //몬스터 처치 관련 퀘스트를 보관하는 컨테이너
 
-        public void StateInit() //State를 세팅하는 함수
+        public void Initialize(Player _player)
         {
-            //스테이지 세팅 코드 작성
+
         }
 
         public void Initialize(Player _player, List<Enemy> enemies)//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
@@ -77,29 +60,12 @@ namespace SpartaDungeon
             isPlayerWin = false;
             _allEnemySumHP = 0;
 
-            /*Debug - 테스트용 Enemy */
-            //for (int i = 0; i < 4; i++)
-            //{
-            //    EnemyTest _enemyTest = new EnemyTest();
-            //    _enemyTest.Name = $"Test{i + 1}";
-            //    _enemyTest.Level = 10;
-            //    _enemyTest.CharacterAttack = 10;
-            //    _enemyTest.CharacterDefense = 10;
-            //    _enemyTest.CharacterMaxHP = 100;
-            //    _enemyTest.CurrentHP = 100;
-
-            //    _allEnemySumHP += _enemyTest.CurrentHP;
-            //    _enemyTestList.Add(_enemyTest);
-            //}
-            //
-
             _enemyList = new List<Enemy>();
             Random random = new Random();
             int _battleEnemyCount = random.Next(1, 5); //전투에 참여되는 적 숫자
             for (int i = 0; i < _battleEnemyCount; i++)
             {
                 int enemyIndex = random.Next(0, enemies.Count()); //해당 지역(SummonArea)에서 랜덤으로 적을 선택
-                //int enemyIndex = 1;
 
                 Enemy _battleEnemy = new Enemy(enemies[enemyIndex]);//리스트에서 랜덤으로 적 객체를 생성
 
@@ -108,6 +74,17 @@ namespace SpartaDungeon
 
                 _enemyList.Add(_battleEnemy);
             }
+
+            //Battle에서만 사용되는 퀘스트 목록 정리
+            _playerQuest = new Dictionary<int, Quest>();
+            foreach (KeyValuePair<int, Quest> questData in _curPlayer.PlayerQuest)
+            {
+                if (questData.Value.Type == "MonsterKillCount")
+                {
+                    _playerQuest.Add(questData.Key, questData.Value);
+                }
+            }
+
         }
 
         public void SceneStart()
@@ -132,11 +109,9 @@ namespace SpartaDungeon
                 {
                     EnemysSelectPrint(i + 1); //나중에 공격 상태일떄 true변경되어 사용하게해야됨
                 }
-                //_enemyStatusStr = $"Lv.{_enemyTestList[i].Level} {_enemyTestList[i].Name}";
                 _enemyStatusStr = $"Lv.{_enemyList[i].Level} {_enemyList[i].Name}";
                 _strbuilder.Append(_enemyStatusStr);
 
-                //switch (_enemyTestList[i].CurrentHP <= 0)
                 switch (_enemyList[i].CurrentHp <= 0)
                 {
                     case true: //적의 HP가 0이하 -> 죽음상태를 표시
@@ -144,7 +119,6 @@ namespace SpartaDungeon
                         break;
 
                     case false:
-                        //_strbuilder.Append($" HP {_enemyTestList[i].CurrentHP}");
                         _strbuilder.Append($" HP {_enemyList[i].CurrentHp}");
                         break;
                 }
@@ -209,7 +183,7 @@ namespace SpartaDungeon
                     isPlayerWin = true;
                     break;
                 }
-                else if(_curPlayer.CurrentHP <= 0)
+                else if (_curPlayer.CurrentHP <= 0)
                 {
                     //플레이어 패배
                     isPlayerWin = false;
@@ -228,7 +202,7 @@ namespace SpartaDungeon
 
                             if (isAttack)
                             {
-                                if(PlayerAttackSelect())
+                                if (PlayerAttackSelect())
                                 {
                                     isAttack = false;
                                     _curTurn = Turn.Enemy; //턴 교체 (Player -> Enemy)
@@ -241,38 +215,38 @@ namespace SpartaDungeon
                             }
                             else
                             {
-                                PlayerSelect(); 
+                                PlayerSelect();
                             }
                         }
                         break;
 
                     case Turn.Enemy:
                         int _damage = 0;
-         
-                        //for (int i = 0; i < _enemyTestList.Count; i++)
+
                         for (int i = 0; i < _enemyList.Count; i++)
                         {
                             Console.Clear();
 
-                            //_damage = DamageCaculate(_curPlayer, _enemyTestList[i]);
-                            _damage = DamageCaculate(_curPlayer, _enemyList[i]);
+                            if (!_enemyList[i].IsDead) //Enemy가 죽어있으면 동작하지 않게하기
+                            {
+                                _damage = DamageCaculate(_curPlayer, _enemyList[i]);
 
-                            //Enemy Attack Print
-                            _strbuilder.Clear();
-                            //_strbuilder.AppendLine($"Lv.{_enemyTestList[i].Level} {_enemyTestList[i].Name} 의 공격!");
-                            _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
-                            _strbuilder.AppendLine($"{_curPlayer.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
-                            _strbuilder.AppendLine();
+                                //Enemy Attack Print
+                                _strbuilder.Clear();
+                                _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
+                                _strbuilder.AppendLine($"{_curPlayer.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
+                                _strbuilder.AppendLine();
 
-                            _strbuilder.AppendLine($"LV.{_curPlayer.Level} {_curPlayer.Name}");
-                            _strbuilder.AppendLine($"HP {_curPlayer.CurrentHP} -> {_curPlayer.CurrentHP - _damage}");
-                            Console.Write(_strbuilder.ToString());
+                                _strbuilder.AppendLine($"LV.{_curPlayer.Level} {_curPlayer.Name}");
+                                _strbuilder.AppendLine($"HP {_curPlayer.CurrentHP} -> {_curPlayer.CurrentHP - _damage}");
+                                Console.Write(_strbuilder.ToString());
 
-                            _curPlayer.CurrentHP -= _damage;
+                                _curPlayer.CurrentHP -= _damage;
 
-                            Console.ReadLine();
+                                Console.ReadLine();
+                            }
                         }
-                        
+
                         _curTurn = Turn.Player; //턴 교체 (Player -> Enemy)
                         break;
                 }
@@ -282,6 +256,11 @@ namespace SpartaDungeon
 
         public void SceneExit(ref Player player)
         {
+            foreach (KeyValuePair<int, Quest> questData in _playerQuest)
+            {
+                _curPlayer.PlayerQuest[questData.Key] = questData.Value;
+            }
+
             player = _curPlayer;
         }
 
@@ -293,7 +272,6 @@ namespace SpartaDungeon
         }
 
         // 회피 확인
-        //private bool CheckDodge(Player _curPlayer, EnemyTest _enemy)
         private bool CheckDodge(Player _curPlayer, Enemy _enemy)
         {
             Random rand = new Random();
@@ -313,7 +291,6 @@ namespace SpartaDungeon
             return numPossibility <= 10;
         }
 
-        //private bool CheakCritical(Player _curPlayer, EnemyTest _enemy)
         private bool CheakCritical(Player _curPlayer, Enemy _enemy)
         {
             Random rand = new Random();
@@ -333,8 +310,7 @@ namespace SpartaDungeon
             return numPossibility <= 15;
         }
 
-        //private int DamageCaculate(Player _curPlayer , EnemyTest _enemy)
-        private int DamageCaculate(Player _curPlayer , Enemy _enemy)
+        private int DamageCaculate(Player _curPlayer, Enemy _enemy)
         {
             Random rand = new Random();
             int _damage = 0;
@@ -353,9 +329,7 @@ namespace SpartaDungeon
                     _allEnemySumHP -= _damage;
                     break;
                 case Turn.Enemy:
-                    //marginRange = MathF.Ceiling(_enemy.CharacterAttack * 0.1f);
                     marginRange = MathF.Ceiling(_enemy.Attack * 0.1f);
-                    //_damage = rand.Next(_enemy.CharacterAttack - (int)marginRange, _enemy.CharacterAttack + (int)marginRange + 1);
                     _damage = rand.Next((int)(_enemy.Attack - marginRange), (int)(_enemy.Attack + (marginRange + 1.0f)));
                     break;
             }
@@ -371,7 +345,6 @@ namespace SpartaDungeon
                 ErrorInput();
                 return false;
             }
-            //else if (_select < 0 || _select > _enemyTestList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
             else if (_select < 0 || _select > _enemyList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
             {
                 ErrorInput();
@@ -384,13 +357,20 @@ namespace SpartaDungeon
             }
 
             //피격 몬스터 초기화 , 배열/리스트는 참조형식이기에 자동으로 얕은복사 된 상태
-            //EnemyTest _hitEnemy = _enemyTestList[_select - 1];
             Enemy _hitEnemy = _enemyList[_select - 1];
 
+            if (_hitEnemy.IsDead) //몬스터가 죽어있으면 체크 안되게 하기
+            {
+                _strbuilder.Clear();
+                _strbuilder.Append("해당 몬스터는 죽어 있습니다.");
+                Console.WriteLine(_strbuilder.ToString());
+                Console.ReadLine();
+                return false;
+            }
+
+
             //데미지 적용
-            //int _damage = DamageCaculate(_curPlayer, _hitEnemy);
             int _damage = DamageCaculate(_curPlayer, _hitEnemy);
-            //_hitEnemy.CurrentHP -= _damage;
             _hitEnemy.CurrentHp -= _damage;
 
             //Player Attack Print
@@ -403,11 +383,29 @@ namespace SpartaDungeon
             _strbuilder.AppendLine($"{_curPlayer.Name}의 공격!");
             //방어력 적용해서 데미지 경감 시킬건지 결정해야됨 ( 회의 필요)
             _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
-            
+
+            if (_hitEnemy.CurrentHp <= 0)
+            {
+                _hitEnemy.IsDead = true;
+                _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
+
+                foreach (KeyValuePair<int, Quest> questData in _playerQuest)
+                {
+                    if (questData.Value.CurProgressRequired < questData.Value.EndProgressRequired)
+                    {
+                        questData.Value.CurProgressRequired++;
+                    }
+
+                }
+
+            }
+
             Console.WriteLine(_strbuilder.ToString());
 
             Console.ReadLine();
+
             return true;
+
         }
 
         private void PlayerSelect()
