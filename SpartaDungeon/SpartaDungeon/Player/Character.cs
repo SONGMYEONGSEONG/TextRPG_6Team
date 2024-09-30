@@ -174,6 +174,7 @@ namespace SpartaDungeon
             {
                 CurrentMp = 0;
             }
+
         }
 
         // 플레이어 상태 보기

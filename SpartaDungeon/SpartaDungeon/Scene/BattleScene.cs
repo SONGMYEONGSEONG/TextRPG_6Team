@@ -48,9 +48,9 @@ namespace SpartaDungeon
             for (int i = 0; i < _battleEnemyCount; i++)
             {
                 int enemyIndex = random.Next(0, enemies.Count()); //해당 지역(SummonArea)에서 랜덤으로 적을 선택
-                //int enemyIndex = 1;
 
                 Enemy _battleEnemy = new Enemy(enemies[enemyIndex]);//리스트에서 랜덤으로 적 객체를 생성
+                //Enemy _battleEnemy = new Enemy(enemies[1]);//리스트에서 랜덤으로 적 객체를 생성
 
                 _battleEnemy.SetStatRandom(); //리스트에서 불러온 적 객체를 랜덤 스텟 조정
                 _allEnemySumHP += (int)_battleEnemy.MaxHp; //이번 전투에 참여한 모든 적의 HP 총합
