@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpartaDungeon.Scene
+namespace SpartaDungeon
 {
     internal class IntroScene
     {
@@ -103,7 +103,7 @@ namespace SpartaDungeon.Scene
                     {
                         player = new Character(_name, jobTypeNum);
                         Console.Clear();
-                        Console.WriteLine($"{player.Job}을/를 선택하셨습니다.");
+                        Console.WriteLine($"[{player.Job}] 선택!\n");
                         break;
                     }
                     else
