@@ -23,9 +23,6 @@ namespace SpartaDungeon
         //9 퀘스트 보상 골드
         //10 퀘스트 타입
 
-        public delegate void QuestProgress();
-        public event QuestProgress QuestProgressHandler;
-
         public string Label { get; set; }
         public string Detail { get; set; }
         public string Purpose { get; set; }
