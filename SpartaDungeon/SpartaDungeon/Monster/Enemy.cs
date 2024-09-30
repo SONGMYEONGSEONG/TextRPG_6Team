@@ -6,17 +6,19 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using SpartaDungeon;
 
 namespace SpartaDungeon
 {
-    enum EnemyType
+    internal enum EnemyType
     {
         None = 0,
         Skeleton = 1,
         Goblin,
         Orc,
+        Crab,
+        Turtle,
         End,
-
     }
 
     internal class Enemy : Character
@@ -32,16 +34,16 @@ namespace SpartaDungeon
             _enemyType = _enemyData._enemyType;
             Name = _enemyData.Name;
             Level = _enemyData.Level;
-            Attack    = _enemyData.Attack;
+            Attack = _enemyData.Attack;
             Defense = _enemyData.Defense;
-            Agility   = _enemyData.Agility;
-            Accuracy  = _enemyData.Accuracy;
-            Luck      = _enemyData.Luck;
-            MaxHp     = _enemyData.MaxHp;
-            MaxMp     = _enemyData.MaxMp;
+            Agility = _enemyData.Agility;
+            Accuracy = _enemyData.Accuracy;
+            Luck = _enemyData.Luck;
+            MaxHp = _enemyData.MaxHp;
+            MaxMp = _enemyData.MaxMp;
             CurrentHp = MaxHp;
             CurrentMp = MaxMp;
-            Gold      = _enemyData.Gold;
+            Gold = _enemyData.Gold;
 
         }
 
