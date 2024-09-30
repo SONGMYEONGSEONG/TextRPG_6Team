@@ -164,6 +164,16 @@ namespace SpartaDungeon
             {
                 CurrentMp = TotalMaxMp;
             }
+
+            //HP ,MP 음수로 내려가는거 방지 코드
+            if (CurrentHp <= 0)
+            {
+                CurrentHp = 1;
+            }
+            if (CurrentMp < 0)
+            {
+                CurrentMp = 0;
+            }
         }
 
         // 플레이어 상태 보기
