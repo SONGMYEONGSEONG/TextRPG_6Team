@@ -25,6 +25,9 @@ namespace SpartaDungeon
         BattleScene _battleScene = new BattleScene();
         QuestScene _questScene = new QuestScene();
         EnemyManager _enemyManager = new EnemyManager();
+        StageSelectScene _stageSelectScene = new StageSelectScene();
+        SummonArea _curSelectArea = SummonArea.Forest;
+
         Store _store = new Store();
 
         public void VillageScene(Character character)
@@ -78,10 +81,11 @@ namespace SpartaDungeon
                             break;
                         case ((int)MainSceneChoice.DungeonStage):
                             Console.Clear();
-                            // 스테이지 선택 호출
+                            _stageSelectScene.Initialize(_curSelectArea);
+                            _stageSelectScene.SceneStart();
+                            _stageSelectScene.SceneExit(ref _curSelectArea);
                             break;
                         case ((int)MainSceneChoice.Quest):
-                            Console.Clear();
                             Console.Clear();
                             _questScene.Initialize(character);
                             _questScene.SceneStart();

@@ -36,7 +36,7 @@ namespace SpartaDungeon
 
         public Quest() { }
 
-        public bool QuestCheck(Player _curPlayer)
+        public bool QuestCheck(Character _curPlayer)
         {
             switch(Type)
             {
@@ -48,7 +48,7 @@ namespace SpartaDungeon
                     break;
 
                 case "EquipCheck":
-                    if(_curPlayer.wearMainWeapon.Name != "" || _curPlayer.wearArmor.Name != "")
+                    if(_curPlayer.EquipWeapon.Name != "" || _curPlayer.EquipArmor.Name != "")
                     {
                         return true;
                     }
