@@ -15,8 +15,8 @@ namespace SpartaDungeon
         public List<Item> WarriorItemList;
         public List<Item> MageItemList;
         public List<Item> StoreItemList = new List<Item>();
+        public List<Item> SelectTypeItemList = new List<Item>();
 
-        // 직업클래스마다 다른 리스트 생성
         public Store()
         {
 
@@ -31,29 +31,33 @@ namespace SpartaDungeon
                 string jsonContent = File.ReadAllText(jsonFilePath);
                 StoreItemList = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
             }
-            
+
         }
 
-        void ShowStoreItemList()
+        void ShowStoreItemList(ITEMTYPE itemType)
         {
-            Console.WriteLine();
-            Console.WriteLine("[상점 아이템 목록]");
 
-            for (int i = 0; i < StoreItemList.Count; i++)
+            Console.WriteLine();
+            Console.WriteLine($"{itemType}[상점 아이템 목록]");
+
+
+            SelectTypeItemList = StoreItemList.Where(item => item.ItemType == itemType).ToList();
+
+            for (int i = 0; i < SelectTypeItemList.Count; i++)
             {
                 string completedPurchase = "";
-                if (StoreItemList[i].isPurchased == true)
+                if (SelectTypeItemList[i].isPurchased == true)
                 {
                     completedPurchase = "(구매완료)";
                 }
 
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-                Console.WriteLine($" {completedPurchase}[{i + 1}] {StoreItemList[i].Name}({StoreItemList[i].ItemTypeKorean})" +
-                                  $" | {StoreItemList[i].Description}" +
-                                  $" | 공격력 +{StoreItemList[i].Atk}" +
-                                  $" 방어력 +{StoreItemList[i].Def}" +
-                                  $" 추가체력 +{StoreItemList[i].AdditionalHP}" +
-                                  $" | {StoreItemList[i].Price}G |");
+                Console.WriteLine($" {completedPurchase}[{i + 1}] {SelectTypeItemList[i].Name}({SelectTypeItemList[i].ItemTypeKorean})" +
+                                  $" | {SelectTypeItemList[i].Description}" +
+                                  $" | 공격력 +{SelectTypeItemList[i].Atk}" +
+                                  $" 방어력 +{SelectTypeItemList[i].Def}" +
+                                  $" 추가체력 +{SelectTypeItemList[i].AdditionalHP}" +
+                                  $" | {SelectTypeItemList[i].Price}G |");
             }
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine();
@@ -77,9 +81,6 @@ namespace SpartaDungeon
 
             while (true)
             {
-
-                ShowStoreItemList();
-
                 Console.WriteLine("상점 아이템 리스트에서 구매하거나, 소유한 아이템을 판매할 수 있습니다.");
                 Console.WriteLine();
                 Console.WriteLine("[1] 구매\n");
@@ -96,7 +97,7 @@ namespace SpartaDungeon
                 else if (input == "1")
                 {
                     Console.Clear();
-                    PurchaseItem(player);
+                    ChoosePurchaseType(player);
                 }
                 else if (input == "2")
                 {
@@ -111,14 +112,63 @@ namespace SpartaDungeon
             }
         }
 
-        public void PurchaseItem(Player player)
+        //구매선택
+        public void ChoosePurchaseType(Player player)
+        {
+            while (true)
+            {
+
+                Console.WriteLine("상점 아이템 리스트에서 구매하거나, 소유한 아이템을 판매할 수 있습니다.");
+                Console.WriteLine();
+                Console.WriteLine("[1] 메인무기 구매\n");
+                Console.WriteLine("[2] 서브무기 구매\n");
+                Console.WriteLine("[3] 갑옷 구매\n");
+                Console.WriteLine("[4] 회복아이템 구매\n");
+                Console.Write(">> ");
+                string input = Console.ReadLine();
+
+                if (input == "0")
+                {
+                    Console.Clear();
+                    break;
+                }
+                else if (input == "1")
+                {
+                    Console.Clear();
+                    PurchaseItem(player, ITEMTYPE.MainWeapon);
+                }
+                else if (input == "2")
+                {
+                    Console.Clear();
+                    PurchaseItem(player, ITEMTYPE.SubWeapon);
+                }
+                else if (input == "3")
+                {
+                    Console.Clear();
+                    PurchaseItem(player, ITEMTYPE.Armor);
+                }
+                else if (input == "4")
+                {
+                    Console.Clear();
+                    PurchaseItem(player, ITEMTYPE.HealingItem);
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.");
+                }
+            }
+        }
+
+        //장비아이템구매
+        public void PurchaseItem(Player player, ITEMTYPE itemType)
         {
             while (true)
             {
                 Console.WriteLine("아이템 리스트에서 아이템을 확인하고 구매하고자 하는 아이템의 번호를 입력해주세요.");
                 Console.WriteLine($"현재 소지금: {player.Gold}G");
 
-                ShowStoreItemList();
+                ShowStoreItemList(itemType);
 
                 Console.WriteLine("[0] 나가기\n");
                 Console.Write(">> ");
@@ -133,27 +183,51 @@ namespace SpartaDungeon
                         Console.Clear();
                         break;
                     }
-                    else if (select > 0 && select <= StoreItemList.Count)
+                    else if (select > 0 && select <= SelectTypeItemList.Count)
                     {
-                        if (player.Gold >= StoreItemList[select - 1].Price && StoreItemList[select - 1].isPurchased == false)
+
+                        Item selectedItem = SelectTypeItemList[select - 1];
+
+                        Console.Write("구매할 수량을 입력하세요: ");
+                        string quantityInput = Console.ReadLine();
+                        int quantity;
+                        bool isQuantityNum = int.TryParse(quantityInput, out quantity);
+
+                        if (isQuantityNum && quantity > 0)
                         {
-                            StoreItemList[select - 1].isPurchased = true;
-                            player.Gold -= StoreItemList[select - 1].Price;
-                            player.inventory.Add(StoreItemList[select - 1]);
-                            Console.Clear();
-                            Console.WriteLine($"\"{StoreItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
-                            Console.WriteLine();
-                        }
-                        else if (StoreItemList[select - 1].isPurchased == true)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("이미 구매된 아이템입니다.");
-                            Console.WriteLine();
+                            int totalPrice = selectedItem.Price * quantity;
+
+                            if (player.Gold >= totalPrice && !selectedItem.isPurchased)
+                            {
+                                player.Gold -= totalPrice;
+
+                                // 인벤토리에 수량만큼 추가
+                                for (int i = 0; i < quantity; i++)
+                                {
+                                    player.inventory.Add(selectedItem);
+                                }
+                                selectedItem.isPurchased = true;
+                                Console.Clear();
+                                Console.WriteLine($"\"{SelectTypeItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
+                                Console.WriteLine();
+                            }
+                            else if (SelectTypeItemList[select - 1].isPurchased == true)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("이미 구매된 아이템입니다.");
+                                Console.WriteLine();
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                Console.WriteLine("소지금이 부족합니다.");
+                                Console.WriteLine();
+                            }
                         }
                         else
                         {
                             Console.Clear();
-                            Console.WriteLine("소지금이 부족합니다.");
+                            Console.WriteLine("잘못된 수량입니다. 1 이상의 숫자를 입력하세요.");
                             Console.WriteLine();
                         }
                     }
@@ -196,7 +270,7 @@ namespace SpartaDungeon
                                       $" | 판매 금액: {(int)(player.inventory[i].Price * 0.85f)}G |");
                 }
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-                
+
                 Console.WriteLine("[0] 나가기");
                 Console.WriteLine();
                 Console.WriteLine("아이템 번호을 입력하면 판매됩니다.");
@@ -224,7 +298,7 @@ namespace SpartaDungeon
                         Console.WriteLine($"\"{player.inventory[select - 1].Name}\" 을" +
                                           $"{(int)(player.inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
                         Console.WriteLine();
-                        player.inventory.RemoveAt(select - 1);                        
+                        player.inventory.RemoveAt(select - 1);
                     }
                     else
                     {
