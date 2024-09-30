@@ -1,5 +1,4 @@
-﻿using SpartaDungeon.Quest;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -24,10 +23,14 @@ namespace SpartaDungeon
     internal class MainScene
     {
         BattleScene _battleScene = new BattleScene();
-        QuestManager _questManager = new QuestManager();
+        QuestScene _questScene = new QuestScene();
+        EnemyManager _enemyManager = new EnemyManager();
+        Store _store = new Store();
 
         public void VillageScene(Character character)
         {
+            _enemyManager.Initialize();
+
             while (true)
             {
                 // 메인 화면 올때마다 플레이어 스텟 최신화
@@ -69,9 +72,9 @@ namespace SpartaDungeon
                             break;
                         case ((int)MainSceneChoice.EnterDungeon):
                             Console.Clear();
-                            // 던전 호출
-                            //_battleScene.Initialize(character);
-                            //_battleScene.SceneStart();
+                            _battleScene.Initialize(character, _enemyManager.GetEnemies(SummonArea.Forest));
+                            _battleScene.SceneStart();
+                            _battleScene.SceneExit(ref character);
                             break;
                         case ((int)MainSceneChoice.DungeonStage):
                             Console.Clear();
@@ -79,11 +82,14 @@ namespace SpartaDungeon
                             break;
                         case ((int)MainSceneChoice.Quest):
                             Console.Clear();
-                            // 퀘스트 보기 호출
+                            Console.Clear();
+                            _questScene.Initialize(character);
+                            _questScene.SceneStart();
+                            _questScene.SceneExit(ref character);
                             break;
                         case ((int)MainSceneChoice.Store):
                             Console.Clear();
-                            // 상점 호출
+                            _store.EnterStore(character);
                             break;
                         case ((int)MainSceneChoice.Exit):
                             // 종료 호출
