@@ -141,6 +141,17 @@ namespace SpartaDungeon
         public void UpdateStat()
         {
             // 레벨업 능력치 반영
+            ExtraHp = EquipWeapon.AdditionalHP + EquipArmor.AdditionalHP; //
+            TotalMaxHp = MaxHp + ExtraHp;
+
+            // ExtraMp = EquipWeapon.AdditionalMP + EquipArmor.AdditionalMP;
+            TotalMaxMp = MaxMp + ExtraMp;
+
+            ExtraAttack = EquipWeapon.Atk + EquipArmor.Atk; // + EquipSubWeapon.Atk
+            TotalAttack = Attack + ExtraAttack;
+
+            ExtraDefense = EquipWeapon.Def + EquipArmor.Def; // + wearSubWeapon.Def
+            TotalDefense = Defense + ExtraDefense;
 
             if (CurrentHp == null)
             {
@@ -150,14 +161,6 @@ namespace SpartaDungeon
             {
                 CurrentMp = TotalMaxMp;
             }
-            ExtraHp = EquipWeapon.AdditionalHP + EquipArmor.AdditionalHP; //
-            // ExtraMp = EquipWeapon.AdditionalMP + EquipArmor.AdditionalMP;
-            ExtraAttack = EquipWeapon.Atk + EquipArmor.Atk; // + EquipSubWeapon.Atk
-            ExtraDefense = EquipWeapon.Def + EquipArmor.Def; // + wearSubWeapon.Def
-            TotalMaxHp = MaxHp + ExtraHp;
-            TotalMaxMp = MaxMp + ExtraMp;
-            TotalAttack = Attack + ExtraAttack;
-            TotalDefense = Defense + ExtraDefense;
         }
 
         // 플레이어 상태 보기
