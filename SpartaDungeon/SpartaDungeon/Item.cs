@@ -24,8 +24,8 @@ namespace SpartaDungeon
         public int Def { get; set; }
         public int AdditionalHP { get; set; }
         public string Description { get; set; }
-        public bool isPurchased { get; set; }
-
+        public bool IsPurchased { get; set; }
+        
 
         public Item()
         {
@@ -53,7 +53,7 @@ namespace SpartaDungeon
             Def = def;
             AdditionalHP = additionalHP;
             Description = description;
-            this.isPurchased = isPurchased;
+            IsPurchased = isPurchased;
         }
     }
 }

@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SpartaDungeon.Scene
+﻿namespace SpartaDungeon
 {
     internal class IntroScene
     {
-        Character player = new Character();
+        MainScene mainScene = new MainScene();
+        public Character player;
 
-        public bool isContinue;
-        string name;
+        bool _isContinue;
+        string _name;
 
         void GameStart()
         {
@@ -39,13 +33,13 @@ namespace SpartaDungeon.Scene
             {
                 Console.WriteLine("원하는 이름을 설정해주세요.");
                 Console.Write(">> ");
-                name = Console.ReadLine();
+                _name = Console.ReadLine();
 
                 Console.WriteLine();
 
                 CheckPlayerName();
 
-                if (isContinue) break;
+                if (_isContinue) break;
             }
             Console.Clear();
             ChooseJob();
@@ -55,17 +49,17 @@ namespace SpartaDungeon.Scene
         {
             while (true)
             {
-                Console.WriteLine(name + " 으로 하시겠습니까?");
+                Console.WriteLine($"[{_name}]으로 하시겠습니까?");
                 Console.Write("[1] 네\t[2] 아니요\n>> ");
                 string input = Console.ReadLine();
                 if (input == "1")
                 {
-                    isContinue = true;
+                    _isContinue = true;
                     break;
                 }
                 else if (input == "2")
                 {
-                    isContinue = false;
+                    _isContinue = false;
                     Console.Clear();
                     Console.WriteLine("이름 설정을 취소했습니다. 이름을 다시 설정합니다.\n");
                     break;
@@ -81,7 +75,7 @@ namespace SpartaDungeon.Scene
 
         void ChooseJob()
         {
-            Console.WriteLine($"{name}님 환영합니다. 직업을 선택해주세요.");
+            Console.WriteLine($"{_name}님 환영합니다. 직업을 선택해주세요.");
 
             while (true)
             {
@@ -100,9 +94,9 @@ namespace SpartaDungeon.Scene
                 {
                     if (jobTypeNum >= 1 || jobTypeNum <= 4)
                     {
-                        player = new Character(name, jobTypeNum);
+                        player = new Character(_name, jobTypeNum);
                         Console.Clear();
-                        Console.WriteLine($"{player.Job}을/를 선택하셨습니다.");
+                        Console.WriteLine($"[{player.Job}] 선택!\n");
                         break;
                     }
                     else
@@ -117,7 +111,13 @@ namespace SpartaDungeon.Scene
                     Console.WriteLine("잘못된 입력입니다.");
                 }
             }
-            // MainScene.VillageScene(player);
+
+            mainScene.VillageScene(player);
+        }
+
+        public void RunGame()
+        {
+            GameStart();
         }
     }
 }

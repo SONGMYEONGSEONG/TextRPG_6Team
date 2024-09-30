@@ -46,7 +46,7 @@ namespace SpartaDungeon
     {
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
         Turn _curTurn; //현재 진행중인 유저의 턴
-        Player _curPlayer; //현재 전투에 참여한 플레이어 오브젝트
+        Character _curPlayer; //현재 전투에 참여한 플레이어 오브젝트
         //Enemy[] _enemys;  //현재 전투에 참여한 적 오브젝트들 
 
         bool isAttack;//[1.공격]을 선택 체크 변수
@@ -67,7 +67,7 @@ namespace SpartaDungeon
             //스테이지 세팅 코드 작성
         }
 
-        public void Initialize(Player _player, List<Enemy> enemies)//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
+        public void Initialize(Character _player, List<Enemy> enemies)//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
         {
             _curPlayer = _player;
 
@@ -168,8 +168,8 @@ namespace SpartaDungeon
             _strbuilder.Clear();
             _strbuilder.Append("\n\n");
             _strbuilder.AppendLine("[내 정보]");
-            _strbuilder.AppendLine($"Lv.{_curPlayer.Level}  {_curPlayer.Name}  ({_curPlayer.ClassType})");
-            _strbuilder.AppendLine($"HP {_curPlayer.CurrentHP} / {_curPlayer.CharacterMaxHP}");
+            _strbuilder.AppendLine($"Lv.{_curPlayer.Level}  {_curPlayer.Name}  ({_curPlayer.CharacterJobType})");
+            _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} / {_curPlayer.TotalMaxHp}");
             Console.Write(_strbuilder.ToString());
         }
 
@@ -201,7 +201,7 @@ namespace SpartaDungeon
 
         private void Update()
         {
-            while (_curPlayer.CurrentHP > 0 && _allEnemySumHP > 0)
+            while (_curPlayer.CurrentHp > 0 && _allEnemySumHP > 0)
             {
                 if (_allEnemySumHP <= 0)
                 {
@@ -209,7 +209,7 @@ namespace SpartaDungeon
                     isPlayerWin = true;
                     break;
                 }
-                else if(_curPlayer.CurrentHP <= 0)
+                else if(_curPlayer.CurrentHp <= 0)
                 {
                     //플레이어 패배
                     isPlayerWin = false;
@@ -265,10 +265,10 @@ namespace SpartaDungeon
                             _strbuilder.AppendLine();
 
                             _strbuilder.AppendLine($"LV.{_curPlayer.Level} {_curPlayer.Name}");
-                            _strbuilder.AppendLine($"HP {_curPlayer.CurrentHP} -> {_curPlayer.CurrentHP - _damage}");
+                            _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {_curPlayer.CurrentHp - _damage}");
                             Console.Write(_strbuilder.ToString());
 
-                            _curPlayer.CurrentHP -= _damage;
+                            _curPlayer.CurrentHp -= _damage;
 
                             Console.ReadLine();
                         }
@@ -280,7 +280,7 @@ namespace SpartaDungeon
             }
         }
 
-        public void SceneExit(ref Player player)
+        public void SceneExit(ref Character player)
         {
             player = _curPlayer;
         }
@@ -294,7 +294,7 @@ namespace SpartaDungeon
 
         // 회피 확인
         //private bool CheckDodge(Player _curPlayer, EnemyTest _enemy)
-        private bool CheckDodge(Player _curPlayer, Enemy _enemy)
+        private bool CheckDodge(Character _curPlayer, Enemy _enemy)
         {
             Random rand = new Random();
             float numPossibility = rand.Next(1, 101);
@@ -314,7 +314,7 @@ namespace SpartaDungeon
         }
 
         //private bool CheakCritical(Player _curPlayer, EnemyTest _enemy)
-        private bool CheakCritical(Player _curPlayer, Enemy _enemy)
+        private bool CheakCritical(Character _curPlayer, Enemy _enemy)
         {
             Random rand = new Random();
             float numPossibility = rand.Next(1, 101);
@@ -334,7 +334,7 @@ namespace SpartaDungeon
         }
 
         //private int DamageCaculate(Player _curPlayer , EnemyTest _enemy)
-        private int DamageCaculate(Player _curPlayer , Enemy _enemy)
+        private int DamageCaculate(Character _curPlayer , Enemy _enemy)
         {
             Random rand = new Random();
             int _damage = 0;
@@ -349,14 +349,14 @@ namespace SpartaDungeon
             {
                 case Turn.Player:
                     marginRange = MathF.Ceiling(_curPlayer.TotalAttack * 0.1f);
-                    _damage = rand.Next(_curPlayer.TotalAttack - (int)marginRange, _curPlayer.TotalAttack + (int)marginRange + 1);
+                    _damage = rand.Next((int)(_curPlayer.TotalAttack - marginRange), (int)(_curPlayer.TotalAttack + marginRange + 1));
                     _allEnemySumHP -= _damage;
                     break;
                 case Turn.Enemy:
                     //marginRange = MathF.Ceiling(_enemy.CharacterAttack * 0.1f);
                     marginRange = MathF.Ceiling(_enemy.Attack * 0.1f);
                     //_damage = rand.Next(_enemy.CharacterAttack - (int)marginRange, _enemy.CharacterAttack + (int)marginRange + 1);
-                    _damage = rand.Next((int)(_enemy.Attack - marginRange), (int)(_enemy.Attack + (marginRange + 1.0f)));
+                    _damage = rand.Next((int)(_enemy.Attack - marginRange), (int)(_enemy.Attack + marginRange + 1.0f));
                     break;
             }
 

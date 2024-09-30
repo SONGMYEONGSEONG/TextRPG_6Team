@@ -46,7 +46,7 @@ namespace SpartaDungeon
             for (int i = 0; i < SelectTypeItemList.Count; i++)
             {
                 string completedPurchase = "";
-                if (SelectTypeItemList[i].isPurchased == true)
+                if (StoreItemList[i].IsPurchased == true)
                 {
                     completedPurchase = "(구매완료)";
                 }
@@ -63,16 +63,16 @@ namespace SpartaDungeon
             Console.WriteLine();
         }
 
-        public void EnterStore(Player player)
+        public void EnterStore(Character player)
         {
-            if (player.ClassType == CLASSTYPE.Warrior)
+            if (player.CharacterJobType == JobType.Warrior)
             {
                 StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("1")
                     || item.ItemNum.StartsWith("0")).ToList();
                 //StoreItemList = WarriorItemList;
 
             }
-            else if (player.ClassType == CLASSTYPE.Mage)
+            else if (player.CharacterJobType == JobType.Mage)
             {
                 StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("4")
                     || item.ItemNum.StartsWith("0")).ToList();
@@ -161,7 +161,7 @@ namespace SpartaDungeon
         }
 
         //장비아이템구매
-        public void PurchaseItem(Player player, ITEMTYPE itemType)
+        public void PurchaseItem(Character player, ITEMTYPE itemType)
         {
             while (true)
             {
@@ -185,44 +185,20 @@ namespace SpartaDungeon
                     }
                     else if (select > 0 && select <= SelectTypeItemList.Count)
                     {
-
-                        Item selectedItem = SelectTypeItemList[select - 1];
-
-                        Console.Write("구매할 수량을 입력하세요: ");
-                        string quantityInput = Console.ReadLine();
-                        int quantity;
-                        bool isQuantityNum = int.TryParse(quantityInput, out quantity);
-
-                        if (isQuantityNum && quantity > 0)
+                        if (player.Gold >= StoreItemList[select - 1].Price && StoreItemList[select - 1].IsPurchased == false)
                         {
-                            int totalPrice = selectedItem.Price * quantity;
-
-                            if (player.Gold >= totalPrice && !selectedItem.isPurchased)
-                            {
-                                player.Gold -= totalPrice;
-
-                                // 인벤토리에 수량만큼 추가
-                                for (int i = 0; i < quantity; i++)
-                                {
-                                    player.inventory.Add(selectedItem);
-                                }
-                                selectedItem.isPurchased = true;
-                                Console.Clear();
-                                Console.WriteLine($"\"{SelectTypeItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
-                                Console.WriteLine();
-                            }
-                            else if (SelectTypeItemList[select - 1].isPurchased == true)
-                            {
-                                Console.Clear();
-                                Console.WriteLine("이미 구매된 아이템입니다.");
-                                Console.WriteLine();
-                            }
-                            else
-                            {
-                                Console.Clear();
-                                Console.WriteLine("소지금이 부족합니다.");
-                                Console.WriteLine();
-                            }
+                            StoreItemList[select - 1].IsPurchased = true;
+                            player.Gold -= StoreItemList[select - 1].Price;
+                            player.Inventory.Add(StoreItemList[select - 1]);
+                            Console.Clear();
+                            Console.WriteLine($"\"{StoreItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
+                            Console.WriteLine();
+                        }
+                        else if (StoreItemList[select - 1].IsPurchased == true)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("이미 구매된 아이템입니다.");
+                            Console.WriteLine();
                         }
                         else
                         {
@@ -249,7 +225,7 @@ namespace SpartaDungeon
             }
         }
 
-        public void SellItem(Player player)
+        public void SellItem(Character player)
         {
             while (true)
             {
@@ -259,15 +235,15 @@ namespace SpartaDungeon
                 Console.WriteLine("내 인벤토리");
                 Console.WriteLine("[아이템 목록]");
 
-                for (int i = 0; i < player.inventory.Count; i++)
+                for (int i = 0; i < player.Inventory.Count; i++)
                 {
                     Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-                    Console.WriteLine($" [{i + 1}] {player.inventory[i].Name}({player.inventory[i].ItemTypeKorean})" +
-                                      $" | {player.inventory[i].Description}" +
-                                      $" | 공격력 +{player.inventory[i].Atk}" +
-                                      $" 방어력 +{player.inventory[i].Def}" +
-                                      $" 추가체력 +{player.inventory[i].AdditionalHP}" +
-                                      $" | 판매 금액: {(int)(player.inventory[i].Price * 0.85f)}G |");
+                    Console.WriteLine($" [{i + 1}] {player.Inventory[i].Name}({player.Inventory[i].ItemTypeKorean})" +
+                                      $" | {player.Inventory[i].Description}" +
+                                      $" | 공격력 +{player.Inventory[i].Atk}" +
+                                      $" 방어력 +{player.Inventory[i].Def}" +
+                                      $" 추가체력 +{player.Inventory[i].AdditionalHP}" +
+                                      $" | 판매 금액: {(int)(player.Inventory[i].Price * 0.85f)}G |");
                 }
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
 
@@ -288,17 +264,17 @@ namespace SpartaDungeon
                         Console.Clear();
                         break;
                     }
-                    else if (select > 0 && select <= player.inventory.Count)
+                    else if (select > 0 && select <= player.Inventory.Count)
                     {
-                        player.inventory[select - 1].isPurchased = false;
-                        player.Gold += (int)(player.inventory[select - 1].Price * 0.85f);
-                        AddSellItemToStoreItemList(player.inventory[select - 1]);
-                        UnWearItemSell(player, player.inventory[select - 1]);
+                        player.Inventory[select - 1].IsPurchased = false;
+                        player.Gold += (int)(player.Inventory[select - 1].Price * 0.85f);
+                        AddSellItemToStoreItemList(player.Inventory[select - 1]);
+                        UnWearItemSell(player, player.Inventory[select - 1]);
                         Console.Clear();
-                        Console.WriteLine($"\"{player.inventory[select - 1].Name}\" 을" +
-                                          $"{(int)(player.inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
+                        Console.WriteLine($"\"{player.Inventory[select - 1].Name}\" 을" +
+                                          $"{(int)(player.Inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
                         Console.WriteLine();
-                        player.inventory.RemoveAt(select - 1);
+                        player.Inventory.RemoveAt(select - 1);                        
                     }
                     else
                     {
@@ -335,22 +311,17 @@ namespace SpartaDungeon
             }
         }
 
-        void UnWearItemSell(Player player, Item sellItem)
+        void UnWearItemSell(Character player, Item sellItem)
         {
-            if (sellItem == player.wearMainWeapon)
+            if (sellItem == player.EquipWeapon)
             {
-                player.CurrentHP -= sellItem.AdditionalHP;
-                player.wearMainWeapon = new Item();
+                player.CurrentHp -= sellItem.AdditionalHP;
+                player.EquipWeapon = new Item();
             }
-            else if (sellItem == player.wearSubWeapon)
+            else if (sellItem == player.EquipArmor)
             {
-                player.CurrentHP -= sellItem.AdditionalHP;
-                player.wearSubWeapon = new Item();
-            }
-            else if (sellItem == player.wearArmor)
-            {
-                player.CurrentHP -= sellItem.AdditionalHP;
-                player.wearArmor = new Item();
+                player.CurrentHp -= sellItem.AdditionalHP;
+                player.EquipArmor = new Item();
             }
         }
     }

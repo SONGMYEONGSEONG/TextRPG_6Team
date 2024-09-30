@@ -6,17 +6,10 @@ using System.Threading.Tasks;
 
 namespace SpartaDungeon
 {
-    //Stage 임시 설정
-    enum SummonArea
-    {
-        Forest = 0,
-        Temple = 1,
-        Beach = 2,
-        End
-    }
 
     internal class EnemyManager
     {
+
         List<List<Enemy>> _enemies;
 
         public EnemyManager()

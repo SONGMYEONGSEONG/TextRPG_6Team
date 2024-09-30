@@ -12,14 +12,14 @@ namespace SpartaDungeon
     {
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
         QuestManager _questManager;
-        Player _curPlayer; //현재 
+        Character _curPlayer; //현재 
 
         public QuestScene()
         {
             _questManager = new QuestManager();
         }
 
-        public void Initialize(Player _player)
+        public void Initialize(Character _player)
         {
             _curPlayer = _player;
         }
@@ -124,7 +124,7 @@ namespace SpartaDungeon
 
 
 
-        public void SceneExit(ref Player player)
+        public void SceneExit(ref Character player)
         {
             player = _curPlayer;
         }
