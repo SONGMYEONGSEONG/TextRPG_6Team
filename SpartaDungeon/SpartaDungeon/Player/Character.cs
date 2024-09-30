@@ -170,5 +170,45 @@ namespace SpartaDungeon
             TotalAttack = Attack + ExtraAttack;
             TotalDefense = Defense + ExtraDefense;
         }
+
+        // 플레이어 상태 보기
+        public void DisplayStatus()
+        {
+            while (true)
+            {
+                Console.WriteLine($"\n[플레이어의 현재 상태]\n");
+                Console.WriteLine($"이름: {Name}");
+                Console.WriteLine($"레벨: {Level}");
+                Console.WriteLine($"직업: {Job}");
+                Console.WriteLine($"체력: {CurrentHp} / {TotalMaxHp} ({MaxHp} +{ExtraHp})");
+                Console.WriteLine($"마력: {CurrentMp} / {TotalMaxMp} ({MaxMp} +{ExtraMp})");
+                Console.WriteLine($"공격력: {TotalAttack}");
+                Console.WriteLine($"방어력: {TotalDefense}");
+                if (Intelligence != null)
+                {
+                    Console.WriteLine($"지능: {Intelligence}");
+                }
+                Console.WriteLine($"민첩: {Agility}");
+                Console.WriteLine($"명중: {Accuracy}");
+                Console.WriteLine($"행운: {Luck}");
+                Console.WriteLine($"소지금: {Gold}G");
+
+                Console.WriteLine("\n[0] 나가기\n");
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">> ");
+                string input = Console.ReadLine();
+
+                if (input == "0")
+                {
+                    Console.Clear();
+                    break;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.");
+                }
+            }
+        }
     }
 }
