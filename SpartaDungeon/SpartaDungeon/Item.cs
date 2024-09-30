@@ -14,6 +14,7 @@ namespace SpartaDungeon
     }
     internal class Item
     {
+        public string ItemNum { get; set; }
         public ITEMTYPE ItemType { get; set; }
         public string ItemTypeKorean { get; set; }
         public string Name { get; set; }
@@ -22,10 +23,12 @@ namespace SpartaDungeon
         public int Def { get; set; }
         public int AdditionalHP { get; set; }
         public string Description { get; set; }
-        public bool isPurchased { get; set; }
+        public bool IsPurchased { get; set; }
+        
 
         public Item()
         {
+            ItemNum = "";
             ItemTypeKorean = "";
             Name = "";
             Price = 0;
@@ -35,8 +38,9 @@ namespace SpartaDungeon
             Description = "";
         }
 
-        public Item(ITEMTYPE itemType, string name, int price, int atk, int def, int additionalHP, string description, bool isPurchased)
+        public Item(string itemNum, ITEMTYPE itemType, string name, int price, int atk, int def, int additionalHP, string description, bool isPurchased)
         {
+            ItemNum = itemNum;
             ItemType = itemType;
             if (itemType == ITEMTYPE.MainWeapon) ItemTypeKorean = "주무기";
             else if (itemType == ITEMTYPE.SubWeapon) ItemTypeKorean = "보조무기";
@@ -47,7 +51,7 @@ namespace SpartaDungeon
             Def = def;
             AdditionalHP = additionalHP;
             Description = description;
-            this.isPurchased = isPurchased;
+            IsPurchased = isPurchased;
         }
     }
 }

@@ -1,46 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SpartaDungeon
 {
+
     internal class Store
     {
         public List<Item> WarriorItemList;
         public List<Item> MageItemList;
         public List<Item> StoreItemList = new List<Item>();
 
-        Item warriorLegendMainWeapon = new Item(ITEMTYPE.MainWeapon, "전설 소드", 3000, 30, 5, 15, "사용자를 전설로 만들어주는 검",   false);
-        Item mageLegendMainWeapon    = new Item(ITEMTYPE.MainWeapon, "전설 완드", 3000, 30, 5, 15, "사용자를 전설로 만들어주는 완드", false);
-        Item legendSubWeapon         = new Item(ITEMTYPE.SubWeapon,  "전설 단검", 2500, 20, 3, 5,  "모든 것을 꿰뚫는 전설적인 단검",  false);
-        Item legendArmor             = new Item(ITEMTYPE.Armor,      "전설 아머", 3000, 5, 15, 50, "사용자를 지키는 전설적인 아머",   false);
-        Item warriorRareMainWeapon   = new Item(ITEMTYPE.MainWeapon, "희귀 소드", 1000, 8, 1, 5,   "전설에 가까워지게 하는 검",      false);
-        Item mageRareMainWeapon      = new Item(ITEMTYPE.MainWeapon, "희귀 완드", 1000, 8, 1, 5,   "전설에 가까워지게 하는 완드",     false);
-        Item rareSubWeapon           = new Item(ITEMTYPE.SubWeapon,  "희귀 단검", 700,  5, 1, 0,   "근접한 적을 찌르는 숨겨진 비수",  false);
-        Item rareArmor               = new Item(ITEMTYPE.Armor,      "희귀 갑옷", 1000, 0, 8, 20,  "쉽게 부서지지 않는 단단한 갑옷",  false);
-
-
         // 직업클래스마다 다른 리스트 생성
         public Store()
         {
-            WarriorItemList = new List<Item>();
-            MageItemList = new List<Item>();
 
-            WarriorItemList.Add(warriorLegendMainWeapon);
-            WarriorItemList.Add(legendSubWeapon);
-            WarriorItemList.Add(legendArmor);
-            WarriorItemList.Add(warriorRareMainWeapon);
-            WarriorItemList.Add(rareSubWeapon);
-            WarriorItemList.Add(rareArmor);
+            //WarriorItemList = new List<Item>();
+            //MageItemList = new List<Item>();
 
-            MageItemList.Add(mageLegendMainWeapon);
-            MageItemList.Add(legendSubWeapon);
-            MageItemList.Add(legendArmor);
-            MageItemList.Add(mageRareMainWeapon);
-            MageItemList.Add(rareSubWeapon);
-            MageItemList.Add(rareArmor);
+            //json데이터 넣어주기
+            string relativePath = "../../../Data/items.json";
+            string jsonFilePath = Path.GetFullPath(relativePath);
+            if (File.Exists(jsonFilePath))
+            {
+                string jsonContent = File.ReadAllText(jsonFilePath);
+                StoreItemList = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
+            }
+            
         }
 
         void ShowStoreItemList()
@@ -51,7 +42,7 @@ namespace SpartaDungeon
             for (int i = 0; i < StoreItemList.Count; i++)
             {
                 string completedPurchase = "";
-                if (StoreItemList[i].isPurchased == true)
+                if (StoreItemList[i].IsPurchased == true)
                 {
                     completedPurchase = "(구매완료)";
                 }
@@ -68,15 +59,20 @@ namespace SpartaDungeon
             Console.WriteLine();
         }
 
-        public void EnterStore(Player player)
+        public void EnterStore(Character player)
         {
-            if (player.ClassType == CLASSTYPE.Warrior)
+            if (player.CharacterJobType == JobType.Warrior)
             {
-                StoreItemList = WarriorItemList;
+                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("1")
+                    || item.ItemNum.StartsWith("0")).ToList();
+                //StoreItemList = WarriorItemList;
+
             }
-            else if (player.ClassType == CLASSTYPE.Mage)
+            else if (player.CharacterJobType == JobType.Mage)
             {
-                StoreItemList = MageItemList;
+                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("4")
+                    || item.ItemNum.StartsWith("0")).ToList();
+                //StoreItemList = MageItemList;
             }
 
             while (true)
@@ -115,7 +111,7 @@ namespace SpartaDungeon
             }
         }
 
-        public void PurchaseItem(Player player)
+        public void PurchaseItem(Character player)
         {
             while (true)
             {
@@ -139,16 +135,16 @@ namespace SpartaDungeon
                     }
                     else if (select > 0 && select <= StoreItemList.Count)
                     {
-                        if (player.Gold >= StoreItemList[select - 1].Price && StoreItemList[select - 1].isPurchased == false)
+                        if (player.Gold >= StoreItemList[select - 1].Price && StoreItemList[select - 1].IsPurchased == false)
                         {
-                            StoreItemList[select - 1].isPurchased = true;
+                            StoreItemList[select - 1].IsPurchased = true;
                             player.Gold -= StoreItemList[select - 1].Price;
-                            player.inventory.Add(StoreItemList[select - 1]);
+                            player.Inventory.Add(StoreItemList[select - 1]);
                             Console.Clear();
                             Console.WriteLine($"\"{StoreItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
                             Console.WriteLine();
                         }
-                        else if (StoreItemList[select - 1].isPurchased == true)
+                        else if (StoreItemList[select - 1].IsPurchased == true)
                         {
                             Console.Clear();
                             Console.WriteLine("이미 구매된 아이템입니다.");
@@ -179,7 +175,7 @@ namespace SpartaDungeon
             }
         }
 
-        public void SellItem(Player player)
+        public void SellItem(Character player)
         {
             while (true)
             {
@@ -189,15 +185,15 @@ namespace SpartaDungeon
                 Console.WriteLine("내 인벤토리");
                 Console.WriteLine("[아이템 목록]");
 
-                for (int i = 0; i < player.inventory.Count; i++)
+                for (int i = 0; i < player.Inventory.Count; i++)
                 {
                     Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-                    Console.WriteLine($" [{i + 1}] {player.inventory[i].Name}({player.inventory[i].ItemTypeKorean})" +
-                                      $" | {player.inventory[i].Description}" +
-                                      $" | 공격력 +{player.inventory[i].Atk}" +
-                                      $" 방어력 +{player.inventory[i].Def}" +
-                                      $" 추가체력 +{player.inventory[i].AdditionalHP}" +
-                                      $" | 판매 금액: {(int)(player.inventory[i].Price * 0.85f)}G |");
+                    Console.WriteLine($" [{i + 1}] {player.Inventory[i].Name}({player.Inventory[i].ItemTypeKorean})" +
+                                      $" | {player.Inventory[i].Description}" +
+                                      $" | 공격력 +{player.Inventory[i].Atk}" +
+                                      $" 방어력 +{player.Inventory[i].Def}" +
+                                      $" 추가체력 +{player.Inventory[i].AdditionalHP}" +
+                                      $" | 판매 금액: {(int)(player.Inventory[i].Price * 0.85f)}G |");
                 }
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
                 
@@ -218,17 +214,17 @@ namespace SpartaDungeon
                         Console.Clear();
                         break;
                     }
-                    else if (select > 0 && select <= player.inventory.Count)
+                    else if (select > 0 && select <= player.Inventory.Count)
                     {
-                        player.inventory[select - 1].isPurchased = false;
-                        player.Gold += (int)(player.inventory[select - 1].Price * 0.85f);
-                        AddSellItemToStoreItemList(player.inventory[select - 1]);
-                        UnWearItemSell(player, player.inventory[select - 1]);
+                        player.Inventory[select - 1].IsPurchased = false;
+                        player.Gold += (int)(player.Inventory[select - 1].Price * 0.85f);
+                        AddSellItemToStoreItemList(player.Inventory[select - 1]);
+                        UnWearItemSell(player, player.Inventory[select - 1]);
                         Console.Clear();
-                        Console.WriteLine($"\"{player.inventory[select - 1].Name}\" 을" +
-                                          $"{(int)(player.inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
+                        Console.WriteLine($"\"{player.Inventory[select - 1].Name}\" 을" +
+                                          $"{(int)(player.Inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
                         Console.WriteLine();
-                        player.inventory.RemoveAt(select - 1);                        
+                        player.Inventory.RemoveAt(select - 1);                        
                     }
                     else
                     {
@@ -265,22 +261,17 @@ namespace SpartaDungeon
             }
         }
 
-        void UnWearItemSell(Player player, Item sellItem)
+        void UnWearItemSell(Character player, Item sellItem)
         {
-            if (sellItem == player.wearMainWeapon)
+            if (sellItem == player.EquipWeapon)
             {
-                player.CurrentHP -= sellItem.AdditionalHP;
-                player.wearMainWeapon = new Item();
+                player.CurrentHp -= sellItem.AdditionalHP;
+                player.EquipWeapon = new Item();
             }
-            else if (sellItem == player.wearSubWeapon)
+            else if (sellItem == player.EquipArmor)
             {
-                player.CurrentHP -= sellItem.AdditionalHP;
-                player.wearSubWeapon = new Item();
-            }
-            else if (sellItem == player.wearArmor)
-            {
-                player.CurrentHP -= sellItem.AdditionalHP;
-                player.wearArmor = new Item();
+                player.CurrentHp -= sellItem.AdditionalHP;
+                player.EquipArmor = new Item();
             }
         }
     }
