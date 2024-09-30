@@ -15,48 +15,33 @@ namespace SpartaDungeon
         Mage
     }
 
-    internal class Character
+    internal class Character : Creature
     {
-        public string Name { get; set; }
-        public int Level { get; set; }
         public JobType CharacterJobType { get; set; }
         public string Job { get; set; }
 
-        public float MaxHp { get; set; }
         public float ExtraHp { get; set; }
         public float TotalMaxHp { get; set; }
-        public float? CurrentHp { get; set; }
 
-        public float MaxMp { get; set; }
         public float ExtraMp { get; set; }
         public float TotalMaxMp { get; set; }
-        public float? CurrentMp { get; set; }
 
-        public float Attack { get; set; }       // Atk          : 기본 공격 능력치
         public float ExtraAttack { get; set; }  // ExtraAtk     : 장착된 장비 아이템 추가 수치
         public float TotalAttack { get; set; }
 
-
-        public float Defense { get; set; }      // Def
         public float ExtraDefense { get; set; } // ExtraDef
         public float TotalDefense { get; set; }
 
-
-        public float Agility { get; set; }      // Agl          : 민첩. 내 회피 확률에 영향
         // public float ExtraAgility { get; set; }
         // public float TotalAgility { get; set; }
 
-        public float Accuracy { get; set; }     // Acc          : 명중. 상대의 회피 확률과 내 공격 크리티컬 확률에 영향
         // public float ExtraAccuracy { get; set; }
         // public float TotalAccuracy { get; set; }
-
-        public float Luck { get; set; }         // Luc of Luk   : 행운. 공격 크리티컬 확률, 보상에 영향
 
         public float? Intelligence { get; set; }
         // public float ExtraIntelligence { get; set; }
         // public float TotalIntelligence { get; set; }
 
-        public int Gold { get; set; }
 
         //public List<Skill> SkillList = new List<Skill>();
         public List<Item> Inventory = new List<Item>();
