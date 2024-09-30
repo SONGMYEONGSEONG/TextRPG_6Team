@@ -36,6 +36,7 @@ namespace SpartaDungeon
 
             while (true)
             {
+                Console.Clear();
                 // 메인 화면 올때마다 플레이어 스텟 최신화
                 character.UpdateStat();
 

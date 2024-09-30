@@ -48,6 +48,9 @@ namespace SpartaDungeon
         public Item EquipWeapon = new Item();
         public Item EquipArmor = new Item();
 
+        /*Test - 20240930.송명성 추가*/
+        public Dictionary<int, Quest> PlayerQuest = new Dictionary<int, Quest>();
+        /**/
 
         //public Character()
         //{

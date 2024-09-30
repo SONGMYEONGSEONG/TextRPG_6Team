@@ -1,0 +1,11 @@
+﻿SummonArea,EnemyType,Name,Level,MaxHp,MaxMp,Atk,Def,Agl,Acc,Luc,Gold
+Forest,Skeleton,스켈레톤,5,50,0,5,5,5,5,0,30
+Forest,Goblin,고블린,2,30,0,5,3,10,5,0,15
+Forest,Orc,오크,8,100,0,10,10,2,2,0,100
+Beach,Crab,로랑,10,58,12,12,8,5,5,5,50
+Beach,Crab,클랑,12,65,12,13,8,5,5,5,60
+Beach,Turtle,엄티,15,72,12,15,5,5,5,5,70
+Temple,Skeleton,사원 스켈레톤,13,60,0,10,8,5,5,0,80
+Temple,Skeleton,사원 스켈레톤 경비병,15,70,0,12,9,6,7,0,100
+Temple,Skeleton,사원 스켈레톤 주술사,17,50,50,15,10,3,3,10,120
+Temple,Skeleton,사원 스켈레톤 왕,19,120,50,18,15,8,8,20,200

@@ -43,7 +43,7 @@ namespace SpartaDungeon
         public void Initialize()
         {
             StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
-            string csvFilePath = @"..\..\..\TextRPG_EnemyList.csv";
+            string csvFilePath = @"..\..\..\Data\TextRPG_EnemyList.csv";
 
             // 1. CSV 파일을 UTF-8 인코딩으로 읽기
             List<List<Enemy>> csvData = new List<List<Enemy>>();
