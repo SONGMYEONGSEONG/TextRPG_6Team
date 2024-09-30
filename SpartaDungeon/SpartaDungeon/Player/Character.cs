@@ -58,25 +58,27 @@ namespace SpartaDungeon
 
         public int Gold { get; set; }
 
+        //public List<Skill> SkillList = new List<Skill>();
         public List<Item> Inventory = new List<Item>();
         public Item EquipWeapon = new Item();
         public Item EquipArmor = new Item();
 
-        public Character()
-        {
-            Name = "NoName";
-            Level = 1;
-            Job = "None";
-            MaxHp = 100f;
-            MaxMp = 100f;
-            Attack = 10f;
-            Defense = 10f;
-            Agility = 10f;
-            Accuracy = 10f;
-            Luck = 10f;
-            Intelligence = null;
-            Gold = 500;
-        }
+
+        //public Character()
+        //{
+        //    Name = "NoName";
+        //    Level = 1;
+        //    Job = "None";
+        //    MaxHp = 100f;
+        //    MaxMp = 100f;
+        //    Attack = 10f;
+        //    Defense = 10f;
+        //    Agility = 10f;
+        //    Accuracy = 10f;
+        //    Luck = 10f;
+        //    Intelligence = null;
+        //    Gold = 500;
+        //}
 
         public Character(string _name, int _jobTypeNum)
         {
@@ -132,27 +134,29 @@ namespace SpartaDungeon
             }
         }
 
-        public Character(string _name, JobType _jobType, string _job, float _hp, float _mp,
-                         float _atk, float _def, float _agl, float _acc, float _luc, int _gold, float? _int)
-        {
-            Name = _name;
-            Level = 1;
-            CharacterJobType = _jobType;
-            Job = _job;
-            MaxHp = _hp;
-            MaxMp = _mp;
-            Attack = _atk;
-            Intelligence = _int;
-            Defense = _def;
-            Agility = _agl;
-            Accuracy = _acc;
-            Luck = _luc;
-            Gold = _gold;
-        }
+        //public Character(string _name, JobType _jobType, string _job, float _hp, float _mp,
+        //                 float _atk, float _def, float _agl, float _acc, float _luc, int _gold, float? _intel)
+        //{
+        //    Name = _name;
+        //    Level = 1;
+        //    CharacterJobType = _jobType;
+        //    Job = _job;
+        //    MaxHp = _hp;
+        //    MaxMp = _mp;
+        //    Attack = _atk;
+        //    Intelligence = _intel;
+        //    Defense = _def;
+        //    Agility = _agl;
+        //    Accuracy = _acc;
+        //    Luck = _luc;
+        //    Gold = _gold;
+        //}
 
         // 플레이어 스탯 갱신
         public void UpdateStat()
         {
+            // 레벨업 능력치 반영
+
             if (CurrentHp == null)
             {
                 CurrentHp = TotalMaxHp;
@@ -208,6 +212,91 @@ namespace SpartaDungeon
                     Console.Clear();
                     Console.WriteLine("잘못된 입력입니다.");
                 }
+            }
+        }
+        public void DisplayInventory()
+        {
+            while (true)
+            {
+                Console.WriteLine($"[{Name}]의 인벤토리");
+                Console.WriteLine();
+                Console.WriteLine("[아이템 목록]");
+
+                for (int i = 0; i < Inventory.Count; i++)
+                {
+                    string itemEquipState = (Inventory[i] == EquipWeapon || Inventory[i] == EquipArmor) ? "[E]" : "";
+
+                    Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+                    Console.WriteLine($" [{i + 1}] {itemEquipState}{Inventory[i].Name}({Inventory[i].ItemTypeKorean})" +
+                                      $" | {Inventory[i].Description}" +
+                                      $" | 공격력 +{Inventory[i].Atk}" +
+                                      $" 방어력 +{Inventory[i].Def}" +
+                                      $" 추가체력 +{Inventory[i].AdditionalHP}" +
+                                      $" | {Inventory[i].Price}G |");
+                }
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine();
+                Console.WriteLine("아이템 번호를 입력하면 해당 아이템을 장착하거나 해제할 수 있습니다.");
+                Console.WriteLine("주무기, 보조무기, 갑옷을 한 개씩 장착할 수 있습니다.");
+
+                Console.WriteLine("\n[0] 나가기\n");
+                Console.Write(">> ");
+
+                string input = Console.ReadLine();
+
+                int select;
+                bool isNum = int.TryParse(input, out select);
+
+                if (isNum)
+                {
+                    if (select == 0) break;
+                    else if (select > 0 && select <= Inventory.Count)
+                    {
+                        ManageItemEquip(Inventory[select - 1]);
+                        Console.Clear();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("목록에 없는 숫자를 입력했습니다.");
+                        Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
+                        Console.WriteLine();
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.");
+                    Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
+                    Console.WriteLine();
+                }
+            }
+            Console.Clear();
+        }
+
+        void ManageItemEquip(Item _selectItem)
+        {
+            if (_selectItem.ItemType == ITEMTYPE.MainWeapon && _selectItem != EquipWeapon)
+            {
+                CurrentHp -= EquipWeapon.AdditionalHP;
+                EquipWeapon = _selectItem;
+                CurrentHp += _selectItem.AdditionalHP;
+            }
+            else if (_selectItem.ItemType == ITEMTYPE.Armor && _selectItem != EquipArmor)
+            {
+                CurrentHp -= EquipArmor.AdditionalHP;
+                EquipArmor = _selectItem;
+                CurrentHp += _selectItem.AdditionalHP;
+            }
+            else if (_selectItem == EquipWeapon)
+            {
+                EquipWeapon = new Item();
+                CurrentHp -= _selectItem.AdditionalHP;
+            }
+            else if (_selectItem == EquipArmor)
+            {
+                EquipArmor = new Item();
+                CurrentHp -= _selectItem.AdditionalHP;
             }
         }
     }

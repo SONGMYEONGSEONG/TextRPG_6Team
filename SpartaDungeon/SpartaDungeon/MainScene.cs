@@ -65,7 +65,7 @@ namespace SpartaDungeon
                             break;
                         case ((int)MainSceneChoice.Inventory):
                             Console.Clear();
-                            // 인벤토리 보기 호출
+                            character.DisplayInventory();
                             break;
                         case ((int)MainSceneChoice.EnterDungeon):
                             Console.Clear();
