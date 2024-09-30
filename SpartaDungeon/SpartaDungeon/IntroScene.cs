@@ -9,7 +9,7 @@ namespace SpartaDungeon.Scene
 {
     internal class IntroScene
     {
-        Character player = new Character();
+        public Character player;
 
         public bool isContinue;
         string name;
