@@ -25,16 +25,16 @@ namespace SpartaDungeon
     
     /*Debug*/
     //Debug용 EnemyTest
-    public class EnemyTest /*Enemy Class 만들때 iStatus 인터페이스 가져오게 선언해야됨*/
-    {
-        public string? Name { get; set; }
-        public int Level { get; set; }
-        public int CharacterAttack { get; set; }
-        public int CharacterDefense { get; set; }
-        public int CharacterMaxHP { get; set; }
-        public int CurrentHP { get; set; }
+    //public class EnemyTest /*Enemy Class 만들때 iStatus 인터페이스 가져오게 선언해야됨*/
+    //{
+    //    public string? Name { get; set; }
+    //    public int Level { get; set; }
+    //    public int CharacterAttack { get; set; }
+    //    public int CharacterDefense { get; set; }
+    //    public int CharacterMaxHP { get; set; }
+    //    public int CurrentHP { get; set; }
 
-    }
+    //}
     /*!Debug*/
 
     //전투 할때 사용되는 전투 Scene ( 턴제 전투)
@@ -53,44 +53,61 @@ namespace SpartaDungeon
         bool isSkill;//[2.스킬]을 선택 체크 변수
 
         bool isPlayerWin; //Player가 승리했는지 패배했는지 체크하는 변수
-        public bool IsPlayerWin { get { return IsPlayerWin; } private set { } } //전투 결과 Scene에서 사용하시면 됩니다. -이지혜님
+        public bool IsPlayerWin { get { return isPlayerWin; } private set { } } //전투 결과 Scene에서 사용하시면 됩니다. -이지혜님
+        
+        List<Enemy> _enemyList; //이번 전투에 참여하는 적
+        int _allEnemySumHP; //이번 전투에 참여한 모든 적의 HP 총합
 
         /*Debug*/
-        List<EnemyTest> _enemyTestList = new List<EnemyTest>();
-        int _allEnemySumHP; //이전 전투에 참여한 모든 적의 HP 총합
+        //List<EnemyTest> _enemyTestList;
         /*!Debug*/
 
-        public BattleScene(/*StageData _stage*/)//stageData를 받아와서 해당 스테이지에 존재하는 Enemy을 호출
+        public void StateInit() //State를 세팅하는 함수
         {
-            _curTurn = Turn.Player; //Scene 생성되면 , 선턴은 바로 플레이어로 지정
+            //스테이지 세팅 코드 작성
+        }
+
+        public void Initialize(Player _player, List<Enemy> enemies)//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
+        {
+            _curPlayer = _player;
+
+            _curTurn = Turn.Player; //선턴은 바로 플레이어로 지정
             isAttack = false;
             isSkill = false;
             isPlayerWin = false;
             _allEnemySumHP = 0;
 
-
             /*Debug - 테스트용 Enemy */
-            for (int i = 0; i < 4; i++)
-            {
-                EnemyTest _enemyTest = new EnemyTest();
-                _enemyTest.Name = $"Test{i + 1}";
-                _enemyTest.Level = 10;
-                _enemyTest.CharacterAttack = 10;
-                _enemyTest.CharacterDefense = 10;
-                _enemyTest.CharacterMaxHP = 100;
-                _enemyTest.CurrentHP = 100;
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    EnemyTest _enemyTest = new EnemyTest();
+            //    _enemyTest.Name = $"Test{i + 1}";
+            //    _enemyTest.Level = 10;
+            //    _enemyTest.CharacterAttack = 10;
+            //    _enemyTest.CharacterDefense = 10;
+            //    _enemyTest.CharacterMaxHP = 100;
+            //    _enemyTest.CurrentHP = 100;
 
-                _allEnemySumHP += _enemyTest.CurrentHP;
-                _enemyTestList.Add(_enemyTest);
-            }
+            //    _allEnemySumHP += _enemyTest.CurrentHP;
+            //    _enemyTestList.Add(_enemyTest);
+            //}
             //
 
-        }
+            _enemyList = new List<Enemy>();
+            Random random = new Random();
+            int _battleEnemyCount = random.Next(1, 5); //전투에 참여되는 적 숫자
+            for (int i = 0; i < _battleEnemyCount; i++)
+            {
+                int enemyIndex = random.Next(0, enemies.Count()); //해당 지역(SummonArea)에서 랜덤으로 적을 선택
+                //int enemyIndex = 1;
 
+                Enemy _battleEnemy = new Enemy(enemies[enemyIndex]);//리스트에서 랜덤으로 적 객체를 생성
 
-        public void Initialize(Player _player /*,Enemy[] _enemys*/ )//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
-        {
-            _curPlayer = _player;
+                _battleEnemy.SetStatRandom(); //리스트에서 불러온 적 객체를 랜덤 스텟 조정
+                _allEnemySumHP += (int)_battleEnemy.MaxHp; //이번 전투에 참여한 모든 적의 HP 총합
+
+                _enemyList.Add(_battleEnemy);
+            }
         }
 
         public void SceneStart()
@@ -107,7 +124,7 @@ namespace SpartaDungeon
         private void EnemysPrint() //함수 안에 내용 변수들 테스트 목적이기에 병합할때 수정해야됨
         {
             string _enemyStatusStr = "";
-            for (int i = 0; i < 4; i++) // Enemy 몹 소환, 나중에 List를 받아와서 형식화 해야됨
+            for (int i = 0; i < _enemyList.Count(); i++) // Enemy 몹 소환, 나중에 List를 받아와서 형식화 해야됨
             {
                 _strbuilder.Clear();
 
@@ -115,17 +132,20 @@ namespace SpartaDungeon
                 {
                     EnemysSelectPrint(i + 1); //나중에 공격 상태일떄 true변경되어 사용하게해야됨
                 }
-                _enemyStatusStr = $"Lv.{_enemyTestList[i].Level} {_enemyTestList[i].Name}";
+                //_enemyStatusStr = $"Lv.{_enemyTestList[i].Level} {_enemyTestList[i].Name}";
+                _enemyStatusStr = $"Lv.{_enemyList[i].Level} {_enemyList[i].Name}";
                 _strbuilder.Append(_enemyStatusStr);
 
-                switch (_enemyTestList[i].CurrentHP <= 0)
+                //switch (_enemyTestList[i].CurrentHP <= 0)
+                switch (_enemyList[i].CurrentHp <= 0)
                 {
                     case true: //적의 HP가 0이하 -> 죽음상태를 표시
                         _strbuilder.Append(" Dead");
                         break;
 
                     case false:
-                        _strbuilder.Append($" HP {_enemyTestList[i].CurrentHP}");
+                        //_strbuilder.Append($" HP {_enemyTestList[i].CurrentHP}");
+                        _strbuilder.Append($" HP {_enemyList[i].CurrentHp}");
                         break;
                 }
 
@@ -229,15 +249,18 @@ namespace SpartaDungeon
                     case Turn.Enemy:
                         int _damage = 0;
          
-                        for (int i = 0; i < _enemyTestList.Count; i++)
+                        //for (int i = 0; i < _enemyTestList.Count; i++)
+                        for (int i = 0; i < _enemyList.Count; i++)
                         {
                             Console.Clear();
 
-                            _damage = DamageCaculate(_curPlayer, _enemyTestList[i]);
+                            //_damage = DamageCaculate(_curPlayer, _enemyTestList[i]);
+                            _damage = DamageCaculate(_curPlayer, _enemyList[i]);
 
                             //Enemy Attack Print
                             _strbuilder.Clear();
-                            _strbuilder.AppendLine($"Lv.{_enemyTestList[i].Level} {_enemyTestList[i].Name} 의 공격!");
+                            //_strbuilder.AppendLine($"Lv.{_enemyTestList[i].Level} {_enemyTestList[i].Name} 의 공격!");
+                            _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
                             _strbuilder.AppendLine($"{_curPlayer.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
                             _strbuilder.AppendLine();
 
@@ -257,6 +280,11 @@ namespace SpartaDungeon
             }
         }
 
+        public void SceneExit(ref Player player)
+        {
+            player = _curPlayer;
+        }
+
         private void ErrorInput()
         {
             Console.WriteLine("잘못된 입력입니다.");
@@ -265,7 +293,8 @@ namespace SpartaDungeon
         }
 
         // 회피 확인
-        private bool CheckDodge(Player _curPlayer, EnemyTest _enemy)
+        //private bool CheckDodge(Player _curPlayer, EnemyTest _enemy)
+        private bool CheckDodge(Player _curPlayer, Enemy _enemy)
         {
             Random rand = new Random();
             float numPossibility = rand.Next(1, 101);
@@ -284,7 +313,8 @@ namespace SpartaDungeon
             return numPossibility <= 10;
         }
 
-        private bool CheakCritical(Player _curPlayer, EnemyTest _enemy)
+        //private bool CheakCritical(Player _curPlayer, EnemyTest _enemy)
+        private bool CheakCritical(Player _curPlayer, Enemy _enemy)
         {
             Random rand = new Random();
             float numPossibility = rand.Next(1, 101);
@@ -303,7 +333,8 @@ namespace SpartaDungeon
             return numPossibility <= 15;
         }
 
-        private int DamageCaculate(Player _curPlayer , EnemyTest _enemy)
+        //private int DamageCaculate(Player _curPlayer , EnemyTest _enemy)
+        private int DamageCaculate(Player _curPlayer , Enemy _enemy)
         {
             Random rand = new Random();
             int _damage = 0;
@@ -319,10 +350,13 @@ namespace SpartaDungeon
                 case Turn.Player:
                     marginRange = MathF.Ceiling(_curPlayer.TotalAttack * 0.1f);
                     _damage = rand.Next(_curPlayer.TotalAttack - (int)marginRange, _curPlayer.TotalAttack + (int)marginRange + 1);
+                    _allEnemySumHP -= _damage;
                     break;
                 case Turn.Enemy:
-                    marginRange = MathF.Ceiling(_enemy.CharacterAttack * 0.1f);
-                    _damage = rand.Next(_enemy.CharacterAttack - (int)marginRange, _enemy.CharacterAttack + (int)marginRange + 1);
+                    //marginRange = MathF.Ceiling(_enemy.CharacterAttack * 0.1f);
+                    marginRange = MathF.Ceiling(_enemy.Attack * 0.1f);
+                    //_damage = rand.Next(_enemy.CharacterAttack - (int)marginRange, _enemy.CharacterAttack + (int)marginRange + 1);
+                    _damage = rand.Next((int)(_enemy.Attack - marginRange), (int)(_enemy.Attack + (marginRange + 1.0f)));
                     break;
             }
 
@@ -337,7 +371,8 @@ namespace SpartaDungeon
                 ErrorInput();
                 return false;
             }
-            else if (_select < 0 || _select > _enemyTestList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
+            //else if (_select < 0 || _select > _enemyTestList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
+            else if (_select < 0 || _select > _enemyList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
             {
                 ErrorInput();
                 return false;
@@ -349,11 +384,14 @@ namespace SpartaDungeon
             }
 
             //피격 몬스터 초기화 , 배열/리스트는 참조형식이기에 자동으로 얕은복사 된 상태
-            EnemyTest _hitEnemy = _enemyTestList[_select - 1];
+            //EnemyTest _hitEnemy = _enemyTestList[_select - 1];
+            Enemy _hitEnemy = _enemyList[_select - 1];
 
             //데미지 적용
+            //int _damage = DamageCaculate(_curPlayer, _hitEnemy);
             int _damage = DamageCaculate(_curPlayer, _hitEnemy);
-            _hitEnemy.CurrentHP -= _damage;
+            //_hitEnemy.CurrentHP -= _damage;
+            _hitEnemy.CurrentHp -= _damage;
 
             //Player Attack Print
             //전투에 들어왔다는 출력 문구

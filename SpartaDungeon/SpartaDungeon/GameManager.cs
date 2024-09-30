@@ -1,5 +1,4 @@
-﻿using SpartaDungeon.Quest;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -93,7 +92,9 @@ namespace SpartaDungeon
         {
             /*Debug*/
             BattleScene _battleScene = new BattleScene();
-            QuestManager _questManager = new QuestManager();
+            QuestScene _questScene = new QuestScene();
+            EnemyManager _enemyManager = new EnemyManager();
+            _enemyManager.Initialize();
             /*!Debug*/
 
 
@@ -111,6 +112,7 @@ namespace SpartaDungeon
                 Console.WriteLine("[5] 던전 입장");
                 /*debug*/
                 Console.WriteLine("[6]Test : 배틀 Scne 입장");
+                Console.WriteLine("[7]Test : 퀘스트 Scne 입장");
                 /*!debug*/
                 Console.WriteLine();
                 Console.WriteLine("원하는 활동을 입력해주세요.");
@@ -142,8 +144,15 @@ namespace SpartaDungeon
                     /*debug*/
                     case "6":
                         Console.Clear();
-                        _battleScene.Initialize(player);
+                        _battleScene.Initialize(player, _enemyManager.GetEnemies(SummonArea.Forest));
                         _battleScene.SceneStart();
+                        _battleScene.SceneExit(ref player);
+                        break;
+                    case "7":
+                        Console.Clear();
+                        _questScene.Initialize(player);
+                        _questScene.SceneStart();
+                        _questScene.SceneExit(ref player);
                         break;
                     /*!debug*/
                     default:
