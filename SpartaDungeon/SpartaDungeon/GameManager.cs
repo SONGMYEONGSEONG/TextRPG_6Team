@@ -14,6 +14,10 @@ namespace SpartaDungeon
         Store store = new Store();
         Dungeon dungeon = new Dungeon();
 
+        /*Debug*/
+        SummonArea _curSelectArea;
+        /*!Debug*/
+
         public bool isContinue;
 
         void GameStart()
@@ -95,11 +99,14 @@ namespace SpartaDungeon
             QuestScene _questScene = new QuestScene();
             EnemyManager _enemyManager = new EnemyManager();
             _enemyManager.Initialize();
+            StageSelectScene _stageSelectScene = new StageSelectScene();
+            _curSelectArea = SummonArea.Forest;
             /*!Debug*/
 
 
             while (true)
             {
+                Console.Clear();
                 // 메인 화면 올때마다 플레이어 스텟 최신화
                 player.SetStat();
 
@@ -111,8 +118,10 @@ namespace SpartaDungeon
                 Console.WriteLine("[4] 휴식하기");
                 Console.WriteLine("[5] 던전 입장");
                 /*debug*/
-                Console.WriteLine("[6]Test : 배틀 Scne 입장");
+                Console.Write("[6]Test : 배틀 Scne 입장");
+                Console.WriteLine($"( 현재 스테이지 : {_curSelectArea} )");
                 Console.WriteLine("[7]Test : 퀘스트 Scne 입장");
+                Console.WriteLine("[8]Test : 스테이지선택 Scne 입장");
                 /*!debug*/
                 Console.WriteLine();
                 Console.WriteLine("원하는 활동을 입력해주세요.");
@@ -142,9 +151,9 @@ namespace SpartaDungeon
                         dungeon.SelectDungeon(player);
                         break;
                     /*debug*/
-                    case "6":
+                    case "6": 
                         Console.Clear();
-                        _battleScene.Initialize(player, _enemyManager.GetEnemies(SummonArea.Forest));
+                        _battleScene.Initialize(player, _enemyManager.GetEnemies(_curSelectArea));
                         _battleScene.SceneStart();
                         _battleScene.SceneExit(ref player);
                         break;
@@ -154,6 +163,13 @@ namespace SpartaDungeon
                         _questScene.SceneStart();
                         _questScene.SceneExit(ref player);
                         break;
+                    case "8": //스테이지 선택
+                        Console.Clear();
+                        _stageSelectScene.Initialize(_curSelectArea);
+                        _stageSelectScene.SceneStart();
+                        _stageSelectScene.SceneExit(ref _curSelectArea);
+                        break;
+
                     /*!debug*/
                     default:
                         Console.Clear();
