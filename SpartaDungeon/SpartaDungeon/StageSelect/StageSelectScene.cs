@@ -24,14 +24,14 @@ namespace SpartaDungeon
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
         SummonArea _curArea; //현재 선택 되있는 스테이지
         SummonArea _selectedArea; //선택 한 스테이지
-        Player _curPlayer; //현재 
+        Character _curPlayer; //현재 
 
         public StageSelectScene()
         {
             _selectedArea = SummonArea.None;
         }
 
-        public void Initialize(Player _player)
+        public void Initialize(Character _player)
         {
             _curPlayer = _player;
         }
@@ -104,7 +104,7 @@ namespace SpartaDungeon
 
         }
 
-        public void SceneExit(ref Player player)
+        public void SceneExit(ref Character player)
         {
             player = _curPlayer;
         }

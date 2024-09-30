@@ -21,7 +21,7 @@ namespace SpartaDungeon
         End,
     }
 
-    internal class Enemy : Character
+    internal class Enemy : Creature
     {
         EnemyType _enemyType;
         SummonArea _summonArea;
@@ -85,18 +85,5 @@ namespace SpartaDungeon
             CurrentMp = MaxMp;
             Gold += randomvalue * 5;
         }
-
-        // 몬스터 스탯 갱신
-        public override void SetStat()
-        {
-
-        }
-
-        // 몬스터 스탯 갱신
-        public override void DisplayStatus()
-        {
-
-        }
-
     }
 }
