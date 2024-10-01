@@ -41,7 +41,8 @@ namespace SpartaDungeon
 
         List<Enemy> _enemyList; //이번 전투에 참여하는 적
         int _curBattleEnemyCount; //이번 전투에 참여한 적의 갯수
-        int _allEnemySumHP; //이번 전투에 참여한 모든 적의 HP 총합
+        //int _allEnemySumHP; //이번 전투에 참여한 모든 적의 HP 총합
+        int _allDeadCount; //이번 전투에 참여한 적의 죽음 카운트 변수
 
         Dictionary<int, Quest> _playerQuest; //몬스터 처치 관련 퀘스트를 보관하는 컨테이너
 
@@ -63,7 +64,8 @@ namespace SpartaDungeon
             isAttack = false;
             isSkill = false;
             isPlayerWin = false;
-            _allEnemySumHP = 0;
+            //_allEnemySumHP = 0;
+            _allDeadCount = 0;
 
             _enemyList = new List<Enemy>();
             Random random = new Random();
@@ -77,7 +79,7 @@ namespace SpartaDungeon
                 //Enemy _battleEnemy = new Enemy(enemies[1]);//리스트에서 랜덤으로 적 객체를 생성
 
                 _battleEnemy.SetStatRandom(); //리스트에서 불러온 적 객체를 랜덤 스텟 조정
-                _allEnemySumHP += (int)_battleEnemy.MaxHp; //이번 전투에 참여한 모든 적의 HP 총합
+                //_allEnemySumHP += (int)_battleEnemy.MaxHp; //이번 전투에 참여한 모든 적의 HP 총합
 
                 _enemyList.Add(_battleEnemy);
             }
@@ -156,22 +158,22 @@ namespace SpartaDungeon
             Console.Write(_strbuilder.ToString());
         }
 
-        private void PlayerTurnStatusPrint()
+        private void PlayerTurnPrint()
         {
             //Player 선택지 출력
             _strbuilder.Clear();
             _strbuilder.AppendLine();
             if (!(isAttack || isSkill))
             {
-                _strbuilder.AppendLine($"1. 공격");
-                _strbuilder.AppendLine($"2. 스킬");
+                _strbuilder.AppendLine("1. 공격");
+                _strbuilder.AppendLine("2. 스킬");
             }
 
-            _strbuilder.AppendLine($"0. 취소");
+            _strbuilder.AppendLine("\n0. 취소");
 
             if (isAttack && !isSkill)
             {
-                _strbuilder.AppendLine("원하시는 행동을 입력해주세요.");
+                _strbuilder.AppendLine("원하시는 대상을 입력해주세요.");
             }
             else if (!isAttack && isSkill)
             {
@@ -181,7 +183,7 @@ namespace SpartaDungeon
             }
             else
             {
-                _strbuilder.AppendLine("원하시는 대상을 입력해주세요.");
+                _strbuilder.AppendLine("원하시는 행동을 입력해주세요.");
             }
 
             _strbuilder.Append(">>");
@@ -190,7 +192,7 @@ namespace SpartaDungeon
 
         private void Update()
         {
-            while (_curPlayer.CurrentHp > 0 && _allEnemySumHP > 0 && !isRun)
+            while (_curPlayer.CurrentHp > 0 && /*_allEnemySumHP > 0*/ _allDeadCount < _enemyList.Count() && !isRun)
             {
 
                 switch (_curTurn)
@@ -201,7 +203,7 @@ namespace SpartaDungeon
                         {
                             Console.Clear();
                             BattleStatusPrint();
-                            PlayerTurnStatusPrint();
+                            PlayerTurnPrint();
 
                             if (isAttack)
                             {
@@ -249,6 +251,8 @@ namespace SpartaDungeon
 
                                 //Enemy Attack Print
                                 _strbuilder.Clear();
+                                _strbuilder.AppendLine("===================================================");
+                                _strbuilder.AppendLine($"Battle!! - Enemy(Lv.{_enemyList[i].Level} {_enemyList[i].Name})의 턴 \n");
                                 _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
                                 _strbuilder.AppendLine($"{_curPlayer.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
                                 _strbuilder.AppendLine();
@@ -264,6 +268,8 @@ namespace SpartaDungeon
                                 {
                                     _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {_curPlayer.CurrentHp - _damage}");
                                 }
+                                _strbuilder.AppendLine("===================================================");
+                                _strbuilder.AppendLine(">> 엔터를 누르면 다음 화면으로 넘어갑니다.");
                                 Console.Write(_strbuilder.ToString());
 
                                 _curPlayer.CurrentHp -= _damage;
@@ -278,16 +284,14 @@ namespace SpartaDungeon
 
             }
 
-            if (_allEnemySumHP <= 0)
+            if (/*_allEnemySumHP <= 0*/ _allDeadCount >= _enemyList.Count())
             {
                 //플레이어 승리
-                //isPlayerWin = true;
                 BattleResult(true);
             }
             else if (_curPlayer.CurrentHp <= 0 || isRun)
             {
                 //플레이어 패배
-                //isPlayerWin = false;
                 BattleResult(false);
             }
         }
@@ -399,11 +403,12 @@ namespace SpartaDungeon
             int _damage = (int)MathF.Ceiling((DamageCaculate(_curPlayer, _hitEnemy) * _skillValue));
 
             _hitEnemy.CurrentHp -= _damage;
-            _allEnemySumHP -= _damage;
+            //_allEnemySumHP -= _damage;
 
             //Player Attack Print
             //전투에 들어왔다는 출력 문구
             _strbuilder.Clear();
+            _strbuilder.AppendLine("\n===================================================");
             _strbuilder.Append("Battle!! - Player의 턴 \n\n");
             Console.Write(_strbuilder.ToString());
 
@@ -418,18 +423,27 @@ namespace SpartaDungeon
             }
             //방어력 적용해서 데미지 경감 시킬건지 결정해야됨 ( 회의 필요)
             _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
+            if(_hitEnemy.CurrentHp <= 0)
+            {
+                _strbuilder.AppendLine($"{_hitEnemy.Name} HP : {_hitEnemy.CurrentHp + _damage} -> 0");
+            }
+            else
+            {
+                _strbuilder.AppendLine($"{_hitEnemy.Name} HP : {_hitEnemy.CurrentHp + _damage} ->  {_hitEnemy.CurrentHp}");
+            }
 
             //피격당하는 상대방의 체력이 0이 된 경우
             if (_hitEnemy.CurrentHp <= 0)
             {
                 _hitEnemy.IsDead = true;
-                _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
+                _allDeadCount++;
+                _strbuilder.AppendLine($"\nLv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
 
                 //쓰러트린 몬스터의 경험치 획득
                 int _enemyExp = _hitEnemy.Exp + (int)(_hitEnemy.Level * 0.5f);
 
                 _gainExp += _enemyExp;
-                _strbuilder.AppendLine($"경험치 {_enemyExp}을 획득하였습니다. ");
+                _strbuilder.AppendLine($"경험치 {_enemyExp}을 획득하였습니다. \n");
 
                 //쓰러트린 몬스터의 골드 획득
                 _gainGold += _hitEnemy.Gold;
@@ -449,7 +463,7 @@ namespace SpartaDungeon
                     }
                 }
             }
-
+            _strbuilder.AppendLine("===================================================");
             Console.WriteLine(_strbuilder.ToString());
             return true;
         }
@@ -528,6 +542,13 @@ namespace SpartaDungeon
             {
                 case Skill.SkillTargetType.OneTarget:
                     {
+                        _strbuilder.Clear();
+                        _strbuilder.AppendLine("\n===================================================");
+                        _strbuilder.AppendLine($"사용 하는 스킬 : {_useSkill.Name}\n");
+                        _strbuilder.AppendLine("0. 취소\n");
+                        _strbuilder.AppendLine("원하는 대상을 입력해주십시오.\n >>");
+                        Console.WriteLine(_strbuilder.ToString());
+
                         string _input = Console.ReadLine(); //Player 선택지 입력 대기
                         if (!int.TryParse(_input, out int _select)) //숫자가 아닌 문자,문자열 입력시 예외처리
                         {
@@ -563,7 +584,7 @@ namespace SpartaDungeon
                             {
                                 //살아있는 몬스터가 1마리인 상태에서 공격 기회가 남았는데 죽어버렸을경우 무한루프가 발생
                                 //해당 현상 탈출을 위한 예외처리
-                                if (_allEnemySumHP <= 0)
+                                if (/*_allEnemySumHP <= 0*/ _allDeadCount >= _enemyList.Count())
                                 {
                                     break;
                                 }
