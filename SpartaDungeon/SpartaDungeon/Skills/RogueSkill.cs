@@ -3,12 +3,8 @@ using System.Xml.Linq;
 
 namespace SpartaDungeon
 {
-    internal class RogueSkill
+    internal class RogueSkill : SkillDeck
     {
-        StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
-        List<Skill> _skillList;
-        public List<Skill> SkillList { get { return _skillList; } }
-
         public RogueSkill()
         {
             _skillList = new List<Skill>();
@@ -22,17 +18,5 @@ namespace SpartaDungeon
             _skillList.Add(_skill3);
         }
 
-        
-        public void Print()
-        {
-            _strbuilder.Clear();
-            _strbuilder.AppendLine();
-            
-            foreach (Skill skill in SkillList)
-            {
-                _strbuilder.AppendLine($"{skill.ID + 1}. {skill.Name}({skill.MpCost}) : {skill.Description} ");
-            }
-            Console.Write(_strbuilder.ToString());
-        }
     }
 }
