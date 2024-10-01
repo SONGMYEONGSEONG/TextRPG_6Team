@@ -74,7 +74,7 @@
     "def": 0,
     "additionalHP": 0,
     "description": "녹슬고 무딘 철검",
-    "isPurchased": "true"
+    "isPurchased": "false"
   },
   {
     "itemNum": 102,
@@ -107,7 +107,7 @@
     "def": 0,
     "additionalHP": 0,
     "description": "균열이 있는 완드",
-    "isPurchased": "true"
+    "isPurchased": "false"
   },
   {
     "itemNum": 402,

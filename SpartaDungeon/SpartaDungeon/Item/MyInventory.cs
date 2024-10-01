@@ -16,13 +16,16 @@ namespace SpartaDungeon
         public MyInventory() 
         {
             //json데이터 넣어주기
-            string relativePath = "../../../Data/inventory.json";
+            string relativePath = "../../../Data/items.json";
             string jsonFilePath = Path.GetFullPath(relativePath);
             if (File.Exists(jsonFilePath))
             {
                 string jsonContent = File.ReadAllText(jsonFilePath);
-                Inventory = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
+                List<Item> items = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
+                Inventory = items.FindAll(item => item.IsPurchased == true);
             }
+            
+
         }
 
         public void AddInventory()
