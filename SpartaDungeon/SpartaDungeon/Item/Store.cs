@@ -46,7 +46,7 @@ namespace SpartaDungeon
             for (int i = 0; i < SelectTypeItemList.Count; i++)
             {
                 string completedPurchase = "";
-                if (StoreItemList[i].IsPurchased == true)
+                if (SelectTypeItemList[i].IsPurchased == true)
                 {
                     completedPurchase = "(구매완료)";
                 }

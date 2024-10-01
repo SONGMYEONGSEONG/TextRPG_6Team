@@ -11,7 +11,9 @@ namespace SpartaDungeon
         MainWeapon,
         SubWeapon,
         Armor,
-        HealingItem
+        HealingItem,
+        ExtraItem
+
     }
     internal class Item
     {
@@ -25,7 +27,8 @@ namespace SpartaDungeon
         public int AdditionalHP { get; set; }
         public string Description { get; set; }
         public bool IsPurchased { get; set; }
-        
+        public bool IsNotForSale { get; set; }
+
 
         public Item()
         {
@@ -39,7 +42,7 @@ namespace SpartaDungeon
             Description = "";
         }
 
-        public Item(string itemNum, ITEMTYPE itemType, string name, int price, int atk, int def, int additionalHP, string description, bool isPurchased)
+        public Item(string itemNum, ITEMTYPE itemType, string name, int price, int atk, int def, int additionalHP, string description, bool isPurchased, bool isNotForSale)
         {
             ItemNum = itemNum;
             ItemType = itemType;
@@ -47,6 +50,7 @@ namespace SpartaDungeon
             else if (itemType == ITEMTYPE.SubWeapon) ItemTypeKorean = "보조무기";
             else if (itemType == ITEMTYPE.Armor) ItemTypeKorean = "갑옷";
             else if (itemType == ITEMTYPE.HealingItem) ItemTypeKorean = "회복아이템";
+            else if (itemType == ITEMTYPE.HealingItem) ItemTypeKorean = "기타";
             Name = name;
             Price = price;
             Atk = atk;
@@ -54,6 +58,7 @@ namespace SpartaDungeon
             AdditionalHP = additionalHP;
             Description = description;
             IsPurchased = isPurchased;
+            IsNotForSale = isNotForSale;
         }
     }
 }

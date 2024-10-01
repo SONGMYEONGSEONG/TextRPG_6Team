@@ -8,7 +8,8 @@
     "def": 0,
     "additionalHP": 0,
     "description": "부러질 듯한 단검",
-    "isPurchased": "true"
+    "isPurchased": "true",
+    "isNotForSale": "false"
   },
   {
     "itemNum": "002",
@@ -19,7 +20,8 @@
     "def": 3,
     "additionalHP": 10,
     "description": "녹이 슨 철제갑옷",
-    "isPurchased": "true"
+    "isPurchased": "true",
+    "isNotForSale": "false"
   },
   {
     "itemNum": "003",
@@ -30,7 +32,8 @@
     "def": 3,
     "additionalHP": 5,
     "description": "모든 것을 꿰뚫는 전설적인 단검",
-    "isPurchased": "false"
+    "isPurchased": "false",
+    "isNotForSale": "false"
   },
   {
     "itemNum": "004",
@@ -41,7 +44,8 @@
     "def": 15,
     "additionalHP": 50,
     "description": "사용자를 지키는 전설적인 아머",
-    "isPurchased": "false"
+    "isPurchased": "false",
+    "isNotForSale": "false"
   },
   {
     "itemNum": "005",
@@ -52,7 +56,8 @@
     "def": 1,
     "additionalHP": 0,
     "description": "근접한 적을 찌르는 숨겨진 비수",
-    "isPurchased": "false"
+    "isPurchased": "false",
+    "isNotForSale": "false"
   },
   {
     "itemNum": "006",
@@ -63,84 +68,8 @@
     "def": 8,
     "additionalHP": 20,
     "description": "쉽게 부서지지 않는 단단한 갑옷",
-    "isPurchased": "false"
-  },
-  {
-    "itemNum": 101,
-    "itemType": "MainWeapon",
-    "name": "낡은 철검",
-    "price": 300,
-    "atk": 3,
-    "def": 0,
-    "additionalHP": 0,
-    "description": "녹슬고 무딘 철검",
-    "isPurchased": "false"
-  },
-  {
-    "itemNum": 102,
-    "itemType": "MainWeapon",
-    "name": "전설 소드",
-    "price": 3000,
-    "atk": 30,
-    "def": 5,
-    "additionalHP": 15,
-    "description": "사용자를 전설로 만들어주는 검",
-    "isPurchased": "false"
-  },
-  {
-    "itemNum": 103,
-    "itemType": "MainWeapon",
-    "name": "희귀 소드",
-    "price": 1000,
-    "atk": 8,
-    "def": 1,
-    "additionalHP": 5,
-    "description": "전설에 가까워지게 하는 검",
-    "isPurchased": "false"
-  },
-  {
-    "itemNum": 401,
-    "itemType": "MainWeapon",
-    "name": "낡은 완드",
-    "price": 300,
-    "atk": 3,
-    "def": 0,
-    "additionalHP": 0,
-    "description": "균열이 있는 완드",
-    "isPurchased": "false"
-  },
-  {
-    "itemNum": 402,
-    "itemType": "MainWeapon",
-    "name": "전설 완드",
-    "price": 3000,
-    "atk": 30,
-    "def": 5,
-    "additionalHP": 15,
-    "description": "사용자를 전설로 만들어주는 완",
-    "isPurchased": "false"
-  },
-  {
-    "itemNum": 403,
-    "itemType": "MainWeapon",
-    "name": "희귀 완드",
-    "price": 1000,
-    "atk": 8,
-    "def": 1,
-    "additionalHP": 5,
-    "description": "전설에 가까워지게 하는 완드",
-    "isPurchased": "false"
-  },
-  {
-    "itemNum": 403,
-    "itemType": "MainWeapon",
-    "name": "희귀 완드",
-    "price": 1000,
-    "atk": 8,
-    "def": 1,
-    "additionalHP": 5,
-    "description": "전설에 가까워지게 하는 완드",
-    "isPurchased": "false"
+    "isPurchased": "false",
+    "isNotForSale": "false"
   },
   {
     "itemNum": "007",
@@ -151,6 +80,295 @@
     "def": 0,
     "additionalHP": 0,
     "description": "체력을 회복해주는 포션",
-    "isPurchased": "false"
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": "008",
+    "itemType": "ExtraItem",
+    "name": "쓰레기",
+    "price": 0,
+    "atk": 0,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "쓸모 없어보이는 쓰레기",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "009",
+    "itemType": "ExtraItem",
+    "name": "보석",
+    "price": 500,
+    "atk": 0,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "판매하면 괜찮은 가격을 받을 것 같은 보석",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "010",
+    "itemType": "ExtraItem",
+    "name": "스켈레톤의 머리",
+    "price": 15,
+    "atk": 5,
+    "def": 5,
+    "additionalHP": 0,
+    "description": "스켈레톤의 머리",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "011",
+    "itemType": "Armor",
+    "name": "고블린의 가죽 옷",
+    "price": 15,
+    "atk": 5,
+    "def": 3,
+    "additionalHP": 5,
+    "description": "고블린의 가죽 옷",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "012",
+    "itemType": "SubWeapon",
+    "name": "오크의 뭉둥이",
+    "price": 50,
+    "atk": 10,
+    "def": 10,
+    "additionalHP": 0,
+    "description": "오크의 뭉둥이",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "013",
+    "itemType": "ExtraItem",
+    "name": "로랑의 집게발",
+    "price": 50,
+    "atk": 12,
+    "def": 8,
+    "additionalHP": 0,
+    "description": "로랑의 집게발",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "014",
+    "itemType": "ExtraItem",
+    "name": "클랑의 집게발",
+    "price": 60,
+    "atk": 13,
+    "def": 8,
+    "additionalHP": 0,
+    "description": "클랑의 집게발",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "015",
+    "itemType": "ExtraItem",
+    "name": "엄티의 등껍질",
+    "price": 70,
+    "atk": 15,
+    "def": 5,
+    "additionalHP": 0,
+    "description": "엄티의 등껍질",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "016",
+    "itemType": "ExtraItem",
+    "name": "사원 스켈레톤의 손",
+    "price": 80,
+    "atk": 10,
+    "def": 8,
+    "additionalHP": 0,
+    "description": "사원 스켈레톤의 손",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "017",
+    "itemType": "ExtraItem",
+    "name": "경비병의 손",
+    "price": 100,
+    "atk": 12,
+    "def": 9,
+    "additionalHP": 0,
+    "description": "경비병의 손",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "018",
+    "itemType": "ExtraItem",
+    "name": "왕의 왕관",
+    "price": 200,
+    "atk": 18,
+    "def": 15,
+    "additionalHP": 0,
+    "description": "왕의 왕관",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": 101,
+    "itemType": "MainWeapon",
+    "name": "낡은 철검",
+    "price": 300,
+    "atk": 3,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "녹슬고 무딘 철검",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 102,
+    "itemType": "MainWeapon",
+    "name": "전설 소드",
+    "price": 3000,
+    "atk": 30,
+    "def": 5,
+    "additionalHP": 15,
+    "description": "사용자를 전설로 만들어주는 검",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 103,
+    "itemType": "MainWeapon",
+    "name": "희귀 소드",
+    "price": 1000,
+    "atk": 8,
+    "def": 1,
+    "additionalHP": 5,
+    "description": "전설에 가까워지게 하는 검",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 201,
+    "itemType": "MainWeapon",
+    "name": "낡은 보우",
+    "price": 300,
+    "atk": 3,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "줄이 끊어질 것 같은 보우",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 202,
+    "itemType": "MainWeapon",
+    "name": "전설 보우",
+    "price": 3000,
+    "atk": 30,
+    "def": 5,
+    "additionalHP": 15,
+    "description": "사용자를 전설로 만들어주는 보우",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 203,
+    "itemType": "MainWeapon",
+    "name": "희귀 보우",
+    "price": 1000,
+    "atk": 8,
+    "def": 1,
+    "additionalHP": 5,
+    "description": "전설에 가까워지게 하는 보우",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 301,
+    "itemType": "MainWeapon",
+    "name": "낡은 도검",
+    "price": 300,
+    "atk": 3,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "녹슬고 무딘 도검",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 302,
+    "itemType": "MainWeapon",
+    "name": "전설 도검",
+    "price": 3000,
+    "atk": 30,
+    "def": 5,
+    "additionalHP": 15,
+    "description": "사용자를 전설로 만들어주는 도검",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 303,
+    "itemType": "MainWeapon",
+    "name": "희귀 도검",
+    "price": 1000,
+    "atk": 8,
+    "def": 1,
+    "additionalHP": 5,
+    "description": "전설에 가까워지게 하는 도검",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 401,
+    "itemType": "MainWeapon",
+    "name": "낡은 완드",
+    "price": 300,
+    "atk": 3,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "균열이 있는 완드",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 402,
+    "itemType": "MainWeapon",
+    "name": "전설 완드",
+    "price": 3000,
+    "atk": 30,
+    "def": 5,
+    "additionalHP": 15,
+    "description": "사용자를 전설로 만들어주는 완",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 403,
+    "itemType": "MainWeapon",
+    "name": "희귀 완드",
+    "price": 1000,
+    "atk": 8,
+    "def": 1,
+    "additionalHP": 5,
+    "description": "전설에 가까워지게 하는 완드",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 404,
+    "itemType": "MainWeapon",
+    "name": "주술사의 지팡이",
+    "price": 120,
+    "atk": 3,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "주술사의 지팡이",
+    "isPurchased": "false",
+    "isNotForSale": "true"
   }
 ]
