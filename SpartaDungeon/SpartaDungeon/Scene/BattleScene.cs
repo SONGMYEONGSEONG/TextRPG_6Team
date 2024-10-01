@@ -17,6 +17,10 @@ namespace SpartaDungeon
      */
     internal class BattleScene
     {
+        /*Debug*/
+        bool isRun;
+        /*Debug*/
+
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
         Turn _curTurn; //현재 진행중인 유저의 턴
         Character _curPlayer; //현재 전투에 참여한 플레이어 오브젝트
@@ -40,6 +44,10 @@ namespace SpartaDungeon
 
         public void Initialize(Character _player, List<Enemy> enemies)//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
         {
+            /*Debug*/
+            isRun = false;
+            /*Debug*/
+
             _curPlayer = _player;
             _curPlayerBattleHP = (float)_curPlayer.CurrentHp;
             _gainGold = 0;
@@ -72,7 +80,7 @@ namespace SpartaDungeon
             _playerQuest = new Dictionary<int, Quest>();
             foreach (KeyValuePair<int, Quest> questData in _curPlayer.PlayerQuest)
             {
-                if (questData.Value.Type == "MonsterKillCount")
+                if (questData.Value.Type == QuestType.MonsterKillCount)
                 {
                     _playerQuest.Add(questData.Key, questData.Value);
                 }
@@ -168,14 +176,14 @@ namespace SpartaDungeon
 
         private void Update()
         {
-            while (_curPlayer.CurrentHp > 0 && _allEnemySumHP > 0)
+            while (_curPlayer.CurrentHp > 0 && _allEnemySumHP > 0 && !isRun)
             {
-    
+
                 switch (_curTurn)
                 {
                     case Turn.Player:
 
-                        while (_curTurn == Turn.Player)
+                        while ((_curTurn == Turn.Player) && !isRun)
                         {
                             Console.Clear();
                             BattleStatusPrint();
@@ -207,7 +215,7 @@ namespace SpartaDungeon
                         for (int i = 0; i < _enemyList.Count; i++)
                         {
                             //플레이어 체력 0 되면 반복문 탈출
-                            if(_curPlayer.CurrentHp <= 0)
+                            if (_curPlayer.CurrentHp <= 0)
                             {
                                 break;
                             }
@@ -255,7 +263,7 @@ namespace SpartaDungeon
                 //isPlayerWin = true;
                 BattleResult(true);
             }
-            else if (_curPlayer.CurrentHp <= 0)
+            else if (_curPlayer.CurrentHp <= 0 || isRun)
             {
                 //플레이어 패배
                 //isPlayerWin = false;
@@ -265,7 +273,7 @@ namespace SpartaDungeon
 
         public void SceneExit(ref Character player)
         {
-            foreach(KeyValuePair<int, Quest> questData in _playerQuest)
+            foreach (KeyValuePair<int, Quest> questData in _playerQuest)
             {
                 _curPlayer.PlayerQuest[questData.Key] = questData.Value;
             }
@@ -411,9 +419,12 @@ namespace SpartaDungeon
                 //전투 관련 퀘스트 스택 증가
                 foreach (KeyValuePair<int, Quest> questData in _playerQuest)
                 {
-                    if (questData.Value.CurProgressRequired < questData.Value.EndProgressRequired)
+                    if (questData.Value.Purpose == _hitEnemy.Name)
                     {
-                        questData.Value.CurProgressRequired++;
+                        if (questData.Value.CurProgressRequired < questData.Value.EndProgressRequired)
+                        {
+                            questData.Value.CurProgressRequired++;
+                        }
                     }
                 }
 
@@ -441,6 +452,12 @@ namespace SpartaDungeon
                 case "2":
 
                     break;
+
+                /*debug - 도망가기 기능*/
+                case "3":
+                    isRun = true;
+                    break;
+                /*debug - 도망가기 기능*/
 
                 case "0":
                     if (isAttack)
@@ -497,17 +514,17 @@ namespace SpartaDungeon
                     _strbuilder.AppendLine($"{ItemName} - 1");
                     //_curPlayer.Inventory.Add(/*Item*/);
                 }
-                
+
                 _strbuilder.AppendLine("\n0. 다음\n");
                 _strbuilder.AppendLine(">>");
 
                 Console.Write(_strbuilder.ToString());
                 string _input = Console.ReadLine(); //Player 선택지 입력 대기
                 switch (_input)
-                { 
+                {
                     case "0":
                         return;
-                       
+
                     default:
                         ErrorInput();
                         break;
