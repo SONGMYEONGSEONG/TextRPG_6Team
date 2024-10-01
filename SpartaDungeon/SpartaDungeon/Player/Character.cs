@@ -33,11 +33,14 @@ namespace SpartaDungeon
         public float ExtraDefense { get; set; } // ExtraDef
         public float TotalDefense { get; set; }
 
-        // public float ExtraAgility { get; set; }
-        // public float TotalAgility { get; set; }
+        public float ExtraAgility { get; set; }
+        public float TotalAgility { get; set; }
 
-        // public float ExtraAccuracy { get; set; }
-        // public float TotalAccuracy { get; set; }
+        public float ExtraAccuracy { get; set; }
+        public float TotalAccuracy { get; set; }
+
+        public float ExtraLuck { get; set; }
+        public float TotalLuck { get; set; }
 
         public float? Intelligence { get; set; }
         // public float ExtraIntelligence { get; set; }
@@ -51,6 +54,7 @@ namespace SpartaDungeon
 
         /*Test - 20240930.송명성 추가*/
         public Dictionary<int, Quest> PlayerQuest = new Dictionary<int, Quest>();
+        public SkillDeck SkillDeck;
         /**/
 
         //public Character()
@@ -88,21 +92,26 @@ namespace SpartaDungeon
 
             if (_jobTypeNum == (int)JobType.Warrior)
             {
+                CharacterJobType = JobType.Warrior;
                 Job = "전사";
                 MaxHp = 150f;
                 MaxMp = 50f;
                 Attack = 15f;
                 Defense = 15f;
+                //SkillDeck = new WarrioSkill();
             }
             else if (_jobTypeNum == (int)JobType.Rogue)
             {
+                CharacterJobType = JobType.Rogue;
                 Job = "도적";
                 Attack = 13f;
                 Agility = 15f;
                 Luck = 20f;
+                //SkillDeck = new WarrioSkill();
             }
             else if (_jobTypeNum == (int)JobType.Archer)
             {
+                CharacterJobType = JobType.Archer;
                 Job = "궁수";
                 MaxHp = 80f;
                 MaxMp = 120f;
@@ -110,9 +119,11 @@ namespace SpartaDungeon
                 Defense = 8f;
                 Agility = 20f;
                 Accuracy = 15f;
+                SkillDeck = new ArcherSkill();
             }
             else if (_jobTypeNum == (int)JobType.Mage)
             {
+                CharacterJobType = JobType.Mage;
                 Job = "마법사";
                 MaxHp = 70f;
                 MaxMp = 200f;
@@ -122,6 +133,7 @@ namespace SpartaDungeon
                 Accuracy = 5f;
                 Luck = 15f;
                 Intelligence = 20f;
+                SkillDeck = new MageSkill();
             }
 
             //-----플레이어 생성 시 인벤토리 초기화------

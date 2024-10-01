@@ -14,7 +14,7 @@
         /*Debug*/
         public int ID { get; protected set; }
         public SkillTargetType TargetType { get; protected set; }
-        public int TargetCount { get; protected set; }
+        public int TargetCount { get; protected set; } //TargetCount : 스킬을 사용하는 횟수 , //Skill.SkillTargetType.RandomTarget 일때만 사용되는 변수 그 외는 0으로 설정하면됨
         public float SkillValue { get; protected set; } //스킬 계수
         /*Debug*/
         public string Name { get; protected set; }
