@@ -33,11 +33,14 @@ namespace SpartaDungeon
         public float ExtraDefense { get; set; } // ExtraDef
         public float TotalDefense { get; set; }
 
-        // public float ExtraAgility { get; set; }
-        // public float TotalAgility { get; set; }
+        public float ExtraAgility { get; set; }
+        public float TotalAgility { get; set; }
 
-        // public float ExtraAccuracy { get; set; }
-        // public float TotalAccuracy { get; set; }
+        public float ExtraAccuracy { get; set; }
+        public float TotalAccuracy { get; set; }
+
+        public float ExtraLuck { get; set; }
+        public float TotalLuck { get; set; }
 
         public float? Intelligence { get; set; }
         // public float ExtraIntelligence { get; set; }

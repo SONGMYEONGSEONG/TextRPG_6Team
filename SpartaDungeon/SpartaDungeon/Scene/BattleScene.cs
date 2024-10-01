@@ -213,7 +213,7 @@ namespace SpartaDungeon
                                     _curTurn = Turn.Enemy; //턴 교체 (Player -> Enemy)
                                     Console.ReadLine();
                                 }
-                                
+
                             }
                             else if (isSkill)
                             {
@@ -247,33 +247,45 @@ namespace SpartaDungeon
 
                             if (!_enemyList[i].IsDead) //Enemy가 죽어있으면 동작하지 않게하기
                             {
-                                _damage = DamageCaculate(_curPlayer, _enemyList[i]);
+                                _damage = DamageCaculate(_curPlayer, _enemyList[i], out bool _isCritical);
 
                                 //Enemy Attack Print
                                 _strbuilder.Clear();
                                 _strbuilder.AppendLine("===================================================");
                                 _strbuilder.AppendLine($"Battle!! - Enemy(Lv.{_enemyList[i].Level} {_enemyList[i].Name})의 턴 \n");
-                                _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
-                                _strbuilder.AppendLine($"{_curPlayer.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
-                                _strbuilder.AppendLine();
 
-                                _strbuilder.AppendLine($"LV.{_curPlayer.Level} {_curPlayer.Name}");
-
-                                //플레이어 체력을 초과한 데미지를 받을경우 0으로 표시
-                                if (_curPlayer.CurrentHp - _damage <= 0)
+                                if (_damage <= 0) //공격을 회피한경우 
                                 {
-                                    _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {0}");
+                                    _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
+                                    _strbuilder.AppendLine($"{_curPlayer.Name}는 회피 하였습니다. [데미지 : 0]");
+                                    _strbuilder.AppendLine();
                                 }
                                 else
                                 {
-                                    _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {_curPlayer.CurrentHp - _damage}");
+                                    if (_isCritical)
+                                    {
+                                        _strbuilder.AppendLine($"크리티컬!!! - 1.6배 데미지 증가\n");
+                                    }
+                                    _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
+                                    _strbuilder.AppendLine($"{_curPlayer.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
+                                    _strbuilder.AppendLine();
+
+                                    _strbuilder.AppendLine($"LV.{_curPlayer.Level} {_curPlayer.Name}");
+
+                                    //플레이어 체력을 초과한 데미지를 받을경우 0으로 표시
+                                    if (_curPlayer.CurrentHp - _damage <= 0)
+                                    {
+                                        _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {0}");
+                                    }
+                                    else
+                                    {
+                                        _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {_curPlayer.CurrentHp - _damage}");
+                                    }
+                                    _strbuilder.AppendLine("===================================================");
+                                    _strbuilder.AppendLine(">> 엔터를 누르면 다음 화면으로 넘어갑니다.");
+                                    _curPlayer.CurrentHp -= _damage;
                                 }
-                                _strbuilder.AppendLine("===================================================");
-                                _strbuilder.AppendLine(">> 엔터를 누르면 다음 화면으로 넘어갑니다.");
                                 Console.Write(_strbuilder.ToString());
-
-                                _curPlayer.CurrentHp -= _damage;
-
                                 Console.ReadLine();
                             }
                         }
@@ -319,19 +331,20 @@ namespace SpartaDungeon
         {
             Random rand = new Random();
             float numPossibility = rand.Next(1, 101);
+            //float numPossibility = 0;
+            float defaultDodgePercent = 5.0f;
 
-            // 회피확률 어떻게 계산할지 필요함
-            // bool isDodge;
-            //switch (_curTurn)
-            //{
-            //    case Turn.Player:
-            //        return isDodge = dodgeJudgement <= 기본확률 + player.명중 - enemy.민첩 ? true : false;
-            //
-            //    case Turn.Enemy:
-            //        return isDodge = dodgeJudgement <= 기본확률 + enemy.명중 - player.민첩 ? true : false;
-            //}
 
-            return numPossibility <= 10;
+            switch (_curTurn)
+            {
+                case Turn.Player:
+                    return numPossibility <= defaultDodgePercent + _curPlayer.TotalAccuracy - _enemy.Agility;
+
+                case Turn.Enemy:
+                    return numPossibility <= defaultDodgePercent + _enemy.Accuracy - _curPlayer.TotalAgility;
+            }
+
+            return false;
         }
 
         //크리티컬 확인
@@ -339,29 +352,34 @@ namespace SpartaDungeon
         {
             Random rand = new Random();
             float numPossibility = rand.Next(1, 101);
+            //float numPossibility = 0;
+            float defaultDodgePercent = 3f;
 
-            // 치명타 확률 어떻게 계산할지 필요함
-            // bool isCritical;
-            //switch (_curTurn)
-            //{
-            //    case Turn.Player:
-            //        return iscritical = iscriticalJudgement <= 기본확률 + player.명중 + 행운 - enemy.민첩 ? true : false;
-            //
-            //    case Turn.Enemy:
-            //        return iscritical = iscriticalJudgement <= 기본확률 + enemy.명중 + 행운 - player.민첩 ? true : false;
-            //}
 
-            return numPossibility <= 15;
+            switch (_curTurn)
+            {
+                case Turn.Player:
+                    return numPossibility <= defaultDodgePercent + _curPlayer.TotalAccuracy + _curPlayer.TotalLuck - _enemy.Agility;
+
+                case Turn.Enemy:
+                    return numPossibility <= defaultDodgePercent + _enemy.Accuracy + _enemy.Luck - _curPlayer.Agility;
+            }
+
+            return false;
         }
 
-        private float DamageCaculate(Character _curPlayer, Enemy _enemy)
+        private float DamageCaculate(Character _curPlayer, Enemy _enemy, out bool _isCritical)
         {
             Random rand = new Random();
-            int _damage = 0;
+            float _damage = 0;
+            float _criticalValue = 1.6f; //크리티컬 계수
+            _isCritical = false;
 
             //회피 확률 계산 Class 합병해야됨 - 안성찬님 
-
-            //크리티컬 확률 계산 Class 합병해야됨 - 안성찬님
+            if (CheckDodge(_curPlayer, _enemy))
+            {
+                return 0;
+            }
 
             float marginRange; //오차 범위
             //Player - > Enemy 공격
@@ -370,15 +388,36 @@ namespace SpartaDungeon
                 case Turn.Player:
                     marginRange = MathF.Ceiling(_curPlayer.TotalAttack * 0.1f);
                     _damage = rand.Next((int)(_curPlayer.TotalAttack - marginRange), (int)(_curPlayer.TotalAttack + marginRange + 1));
+
+                    //크리티컬 확률 계산
+                    if (CheakCritical(_curPlayer, _enemy))
+                    {
+                        _isCritical = true;
+                        _damage *= _criticalValue;
+                    }
+
+                    //방어력 적용 : 방어력 수치 * 0.1f 적용되어 데미지 경감 
+                    _damage -= (MathF.Ceiling(_enemy.Defense * 0.1f));
+
                     break;
 
                 case Turn.Enemy:
                     marginRange = MathF.Ceiling(_enemy.Attack * 0.1f);
                     _damage = rand.Next((int)(_enemy.Attack - marginRange), (int)(_enemy.Attack + marginRange + 1.0f));
+
+                    //크리티컬 확률 계산
+                    if (CheakCritical(_curPlayer, _enemy))
+                    {
+                        _isCritical = true;
+                        _damage *= _criticalValue;
+                    }
+
+                    //방어력 적용 : 방어력 수치 * 0.1f 적용되어 데미지 경감 
+                    _damage -= (MathF.Ceiling(_curPlayer.TotalDefense * 0.1f));
                     break;
             }
 
-            return _damage;
+            return (int)MathF.Ceiling(_damage);
         }
 
         private bool OnHitReaction(int _enemyIndex, float _skillValue = 1f, bool _isMultiTarget = false, string _skillName = "")
@@ -400,10 +439,10 @@ namespace SpartaDungeon
             }
 
             //데미지 적용 + Skill 계수 적용(스킬계수 적용후 올림 처리)
-            int _damage = (int)MathF.Ceiling((DamageCaculate(_curPlayer, _hitEnemy) * _skillValue));
+            int _damage = (int)MathF.Ceiling((DamageCaculate(_curPlayer, _hitEnemy, out bool _isCritical) * _skillValue));
+
 
             _hitEnemy.CurrentHp -= _damage;
-            //_allEnemySumHP -= _damage;
 
             //Player Attack Print
             //전투에 들어왔다는 출력 문구
@@ -421,50 +460,64 @@ namespace SpartaDungeon
             {
                 _strbuilder.AppendLine($"{_curPlayer.Name}의 공격!");
             }
-            //방어력 적용해서 데미지 경감 시킬건지 결정해야됨 ( 회의 필요)
-            _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
-            if(_hitEnemy.CurrentHp <= 0)
+
+            if (_damage <= 0)//적이 내 공격을 회피 했을 경우
             {
-                _strbuilder.AppendLine($"{_hitEnemy.Name} HP : {_hitEnemy.CurrentHp + _damage} -> 0");
+                _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 을(를) 회피했습니다. [데미지 : 0]");
+                _strbuilder.AppendLine();
             }
             else
             {
-                _strbuilder.AppendLine($"{_hitEnemy.Name} HP : {_hitEnemy.CurrentHp + _damage} ->  {_hitEnemy.CurrentHp}");
-            }
-
-            //피격당하는 상대방의 체력이 0이 된 경우
-            if (_hitEnemy.CurrentHp <= 0)
-            {
-                _hitEnemy.IsDead = true;
-                _allDeadCount++;
-                _strbuilder.AppendLine($"\nLv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
-
-                //쓰러트린 몬스터의 경험치 획득
-                int _enemyExp = _hitEnemy.Exp + (int)(_hitEnemy.Level * 0.5f);
-
-                _gainExp += _enemyExp;
-                _strbuilder.AppendLine($"경험치 {_enemyExp}을 획득하였습니다. \n");
-
-                //쓰러트린 몬스터의 골드 획득
-                _gainGold += _hitEnemy.Gold;
-
-                //쓰러트린 몬스터의 아이템 획득
-                _gainItem.Add(_hitEnemy.GainItem);
-
-                //전투 관련 퀘스트 스택 증가
-                foreach (KeyValuePair<int, Quest> questData in _playerQuest)
+                if (_isCritical)
                 {
-                    if (questData.Value.Purpose == _hitEnemy.Name)
+                    _strbuilder.AppendLine($"크리티컬!!! - 1.6배 데미지 증가\n");
+                }
+
+                _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
+                if (_hitEnemy.CurrentHp <= 0)
+                {
+                    _strbuilder.AppendLine($"{_hitEnemy.Name} HP : {_hitEnemy.CurrentHp + _damage} -> 0");
+                }
+                else
+                {
+                    _strbuilder.AppendLine($"{_hitEnemy.Name} HP : {_hitEnemy.CurrentHp + _damage} ->  {_hitEnemy.CurrentHp}");
+                }
+
+                //피격당하는 상대방의 체력이 0이 된 경우
+                if (_hitEnemy.CurrentHp <= 0)
+                {
+                    _hitEnemy.IsDead = true;
+                    _allDeadCount++;
+                    _strbuilder.AppendLine($"\nLv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
+
+                    //쓰러트린 몬스터의 경험치 획득
+                    int _enemyExp = _hitEnemy.Exp + (int)(_hitEnemy.Level * 0.5f);
+
+                    _gainExp += _enemyExp;
+                    _strbuilder.AppendLine($"경험치 {_enemyExp}을 획득하였습니다. \n");
+
+                    //쓰러트린 몬스터의 골드 획득
+                    _gainGold += _hitEnemy.Gold;
+
+                    //쓰러트린 몬스터의 아이템 획득
+                    _gainItem.Add(_hitEnemy.GainItem);
+
+                    //전투 관련 퀘스트 스택 증가
+                    foreach (KeyValuePair<int, Quest> questData in _playerQuest)
                     {
-                        if (questData.Value.CurProgressRequired < questData.Value.EndProgressRequired)
+                        if (questData.Value.Purpose == _hitEnemy.Name)
                         {
-                            questData.Value.CurProgressRequired++;
+                            if (questData.Value.CurProgressRequired < questData.Value.EndProgressRequired)
+                            {
+                                questData.Value.CurProgressRequired++;
+                            }
                         }
                     }
                 }
             }
             _strbuilder.AppendLine("===================================================");
             Console.WriteLine(_strbuilder.ToString());
+
             return true;
         }
 
@@ -578,7 +631,7 @@ namespace SpartaDungeon
                         for (int i = 0; i < _useSkill.TargetCount; i++)
                         {
                             int _ememyIndex = randTarget.Next(0, _enemyList.Count);
-                            
+
                             //false인경우 해당 몬스터는 이미 죽어있는 대상을 공격대상으로 하였음
                             if (!OnHitReaction(_ememyIndex, _useSkill.SkillValue, true, _useSkill.Name))
                             {
@@ -686,8 +739,8 @@ namespace SpartaDungeon
                 //잡은 몬스터에 대한 경험치 지급
                 _strbuilder.AppendLine("[획득 경험치]");
                 _strbuilder.AppendLine($"EXP {_curPlayer.Exp} -> {_curPlayer.Exp + _gainExp}");
-                _curPlayer.Exp += _gainExp + 100;
-                if(_curPlayer.LevelUpCheck())
+                _curPlayer.Exp += _gainExp;
+                if (_curPlayer.LevelUpCheck())
                 {
                     _strbuilder.AppendLine($"\n축하합니다!! \n{_curPlayer.Name}의 Lv이 {_curPlayer.Level}로 레벨업 하였습니다!!");
                 }
