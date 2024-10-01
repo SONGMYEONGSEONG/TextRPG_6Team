@@ -18,7 +18,9 @@ namespace SpartaDungeon
     internal class BattleScene
     {
         /*Debug*/
-        bool isRun;
+        bool isRun; //도주하기 기능
+
+        MageSkill _mageSkill; //스킬 테스트
         /*Debug*/
 
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
@@ -46,6 +48,8 @@ namespace SpartaDungeon
         {
             /*Debug*/
             isRun = false;
+
+            _mageSkill = new MageSkill(); //스킬 테스트
             /*Debug*/
 
             _curPlayer = _player;
@@ -145,6 +149,7 @@ namespace SpartaDungeon
             _strbuilder.AppendLine("[내 정보]");
             _strbuilder.AppendLine($"Lv.{_curPlayer.Level}  {_curPlayer.Name}  ({_curPlayer.CharacterJobType})");
             _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} / {_curPlayer.TotalMaxHp}");
+            _strbuilder.AppendLine($"MP {_curPlayer.CurrentMp} / {_curPlayer.TotalMaxMp}");
             Console.Write(_strbuilder.ToString());
         }
 
@@ -161,9 +166,15 @@ namespace SpartaDungeon
 
             _strbuilder.AppendLine($"0. 취소");
 
-            if (!(isAttack || isSkill))
+            if (isAttack && !isSkill)
             {
                 _strbuilder.AppendLine("원하시는 행동을 입력해주세요.");
+            }
+            else if (!isAttack && isSkill)
+            {
+                //플레이어 스킬 리스트 출력
+                _mageSkill.Print();
+                _strbuilder.AppendLine("원하시는 스킬을 입력해주세요.");
             }
             else
             {
@@ -200,7 +211,11 @@ namespace SpartaDungeon
                             else if (isSkill)
                             {
                                 //PlayerSkillSelect();
-                                _curTurn = Turn.Enemy; //턴 교체 (Player -> Enemy)
+                                if (PlayerSkillSelect())
+                                {
+                                    isSkill = false;
+                                    _curTurn = Turn.Enemy; //턴 교체 (Player -> Enemy)
+                                }
                             }
                             else
                             {
@@ -210,7 +225,7 @@ namespace SpartaDungeon
                         break;
 
                     case Turn.Enemy:
-                        int _damage = 0;
+                        float _damage = 0;
 
                         for (int i = 0; i < _enemyList.Count; i++)
                         {
@@ -329,7 +344,7 @@ namespace SpartaDungeon
             return numPossibility <= 15;
         }
 
-        private int DamageCaculate(Character _curPlayer, Enemy _enemy)
+        private float DamageCaculate(Character _curPlayer, Enemy _enemy)
         {
             Random rand = new Random();
             int _damage = 0;
@@ -345,8 +360,8 @@ namespace SpartaDungeon
                 case Turn.Player:
                     marginRange = MathF.Ceiling(_curPlayer.TotalAttack * 0.1f);
                     _damage = rand.Next((int)(_curPlayer.TotalAttack - marginRange), (int)(_curPlayer.TotalAttack + marginRange + 1));
-                    _allEnemySumHP -= _damage;
                     break;
+
                 case Turn.Enemy:
                     marginRange = MathF.Ceiling(_enemy.Attack * 0.1f);
                     _damage = rand.Next((int)(_enemy.Attack - marginRange), (int)(_enemy.Attack + marginRange + 1.0f));
@@ -356,51 +371,45 @@ namespace SpartaDungeon
             return _damage;
         }
 
-        private bool PlayerAttackSelect()
+        private bool HitEnemyRun(int _enemyIndex, float _skillValue = 1f , bool _isMultiTarget = false, string _skillName = "")
         {
-            string _input = Console.ReadLine(); //Player 선택지 입력 대기
-            if (!int.TryParse(_input, out int _select)) //숫자가 아닌 문자,문자열 입력시 예외처리
-            {
-                ErrorInput();
-                return false;
-            }
-            //else if (_select < 0 || _select > _enemyTestList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
-            else if (_select < 0 || _select > _enemyList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
-            {
-                ErrorInput();
-                return false;
-            }
-            else if (_select == 0) //공격 선택지에서 취소 선택
-            {
-                isAttack = false;
-                return false;
-            }
-
             //피격 몬스터 초기화 , 배열/리스트는 참조형식이기에 자동으로 얕은복사 된 상태
-            Enemy _hitEnemy = _enemyList[_select - 1];
+            Enemy _hitEnemy = _enemyList[_enemyIndex];
 
             //몬스터가 죽어있으면 체크 안되게 하기
             if (_hitEnemy.IsDead)
             {
-                _strbuilder.Clear();
-                _strbuilder.Append("해당 몬스터는 죽어 있습니다.");
-                Console.WriteLine(_strbuilder.ToString());
-                Console.ReadLine();
+                if (!_isMultiTarget)
+                {
+                    _strbuilder.Clear();
+                    _strbuilder.Append("해당 몬스터는 죽어 있습니다.");
+                    Console.WriteLine(_strbuilder.ToString());
+                    Console.ReadLine();
+                }
                 return false;
             }
 
-            //데미지 적용
-            int _damage = DamageCaculate(_curPlayer, _hitEnemy);
+            //데미지 적용 + Skill 계수 적용(스킬계수 적용후 올림 처리)
+            int _damage = (int)MathF.Ceiling((DamageCaculate(_curPlayer, _hitEnemy) * _skillValue));
+
             _hitEnemy.CurrentHp -= _damage;
+            _allEnemySumHP -= _damage;
 
             //Player Attack Print
             //전투에 들어왔다는 출력 문구
             _strbuilder.Clear();
-            _strbuilder.Append("Battle!!\n\n");
+            _strbuilder.Append("Battle!! - Player의 턴 \n\n");
             Console.Write(_strbuilder.ToString());
 
             _strbuilder.Clear();
-            _strbuilder.AppendLine($"{_curPlayer.Name}의 공격!");
+            if (isSkill)
+            {
+                _strbuilder.AppendLine($"{_curPlayer.Name}의 {_skillName}!");
+            }
+            else
+            {
+                _strbuilder.AppendLine($"{_curPlayer.Name}의 공격!");
+            }
             //방어력 적용해서 데미지 경감 시킬건지 결정해야됨 ( 회의 필요)
             _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
 
@@ -427,13 +436,141 @@ namespace SpartaDungeon
                         }
                     }
                 }
-
             }
 
             Console.WriteLine(_strbuilder.ToString());
-
-            Console.ReadLine();
             return true;
+        }
+
+        private bool PlayerAttackSelect()
+        {
+            string _input = Console.ReadLine(); //Player 선택지 입력 대기
+            if (!int.TryParse(_input, out int _select)) //숫자가 아닌 문자,문자열 입력시 예외처리
+            {
+                ErrorInput();
+                return false;
+            }
+            else if (_select < 0 || _select > _enemyList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
+            {
+                ErrorInput();
+                return false;
+            }
+            else if (_select == 0) //공격 선택지에서 취소 선택
+            {
+                isAttack = false;
+                return false;
+            }
+
+            return HitEnemyRun(_select - 1);  
+        }
+
+        private bool PlayerSkillSelect()
+        {
+            string _input = Console.ReadLine(); //Player 선택지 입력 대기
+            if (!int.TryParse(_input, out int _select)) //숫자가 아닌 문자,문자열 입력시 예외처리
+            {
+                ErrorInput();
+                return false;
+            }
+            else if (_select < 0 || _select > _mageSkill.SkillList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
+            {
+                ErrorInput();
+                return false;
+            }
+            else if (_select == 0) //스킬 선택지에서 취소 선택
+            {
+                isSkill = false;
+                return false;
+            }
+
+            //사용할 스킬 선택
+            Skill _useSkill = _mageSkill.SkillList[int.Parse(_input) - 1];
+
+            //사용할 스킬 MP와 현재 플레이어 MP 비교 체크
+            if (_useSkill.MpCost > _curPlayer.CurrentMp)
+            {
+                _strbuilder.Clear();
+                _strbuilder.AppendLine($"{_curPlayer.Name}의 MP가 모자랍니다.");
+                Console.WriteLine(_strbuilder.ToString());
+                Console.ReadLine();
+                return false;
+            }
+
+            //사용할 스킬의 대상 선택
+            if (PlayerSkillTargetSet(_useSkill))
+            {
+                Console.ReadLine();
+                return true;
+            }
+
+            return false;
+        }
+
+        //플레이어 스킬 대상 설정
+        private bool PlayerSkillTargetSet(Skill _useSkill)
+        {
+            Random randTarget;
+
+
+            //공격 타겟 대상에 의한 스킬 분류
+            switch (_useSkill.TargetType)
+            {
+                case Skill.SkillTargetType.OneTarget:
+                    {
+                        string _input = Console.ReadLine(); //Player 선택지 입력 대기
+                        if (!int.TryParse(_input, out int _select)) //숫자가 아닌 문자,문자열 입력시 예외처리
+                        {
+                            ErrorInput();
+                            return false;
+                        }
+                        //else if (_select < 0 || _select > _enemyTestList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
+                        else if (_select < 0 || _select > _enemyList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
+                        {
+                            ErrorInput();
+                            return false;
+                        }
+                        else if (_select == 0) //공격 선택지에서 취소 선택
+                        {
+                            isSkill = false;
+                            return false;
+                        }
+
+                        _curPlayer.CurrentMp -= _useSkill.MpCost;
+                        return HitEnemyRun(_select - 1, _useSkill.SkillValue,true, _useSkill.Name);
+                    }
+
+                case Skill.SkillTargetType.RandomTarget:
+                    {
+                        randTarget = new Random();
+                        _curPlayer.CurrentMp -= _useSkill.MpCost;
+
+                        for (int i = 0; i < _useSkill.TargetCount; i++)
+                        {
+                            int _ememyIndex = randTarget.Next(0, _enemyList.Count);
+
+                            if(!HitEnemyRun(_ememyIndex, _useSkill.SkillValue,true, _useSkill.Name))
+                            {
+                                i--;
+                                continue;
+                            }
+
+                        }
+
+                        return true;
+                    }
+                case Skill.SkillTargetType.AllTarget:
+                    {
+                        _curPlayer.CurrentMp -= _useSkill.MpCost;
+                        for (int i = 0; i < _enemyList.Count; i++)
+                        {
+                            HitEnemyRun(i ,_useSkill.SkillValue,true, _useSkill.Name);
+                        }
+
+                        return true;
+                    }
+            }
+
+            return false;
         }
 
         private void PlayerSelect()
@@ -442,15 +579,18 @@ namespace SpartaDungeon
 
             switch (_input)
             {
-                case "1":
+                case "1": //공격 선택지
                     if (!isAttack) //공격을 선택하면 공격 화면으로 변경
                     {
                         isAttack = true;
                     }
                     break;
 
-                case "2":
-
+                case "2": // 스킬 선택지
+                    if (!isSkill) //스킬을 선택하면 스킬 화면으로 변경
+                    {
+                        isSkill = true;
+                    }
                     break;
 
                 /*debug - 도망가기 기능*/
