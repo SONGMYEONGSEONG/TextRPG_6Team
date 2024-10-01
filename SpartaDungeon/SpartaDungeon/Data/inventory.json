@@ -1,0 +1,24 @@
+﻿[
+  {
+    "itemNum": "001",
+    "itemType": "MainWeapon",
+    "name": "낡은 단검",
+    "price": 200,
+    "atk": 2,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "부러질 듯한 단검",
+    "isPurchased": "true"
+  },
+  {
+    "itemNum": "002",
+    "itemType": "Armor",
+    "name": "낡은 갑옷",
+    "price": 300,
+    "atk": 0,
+    "def": 3,
+    "additionalHP": 10,
+    "description": "녹이 슨 철제갑옷",
+    "isPurchased": "true"
+  }
+]
