@@ -85,6 +85,7 @@ namespace SpartaDungeon
 
             if (_jobTypeNum == (int)JobType.Warrior)
             {
+                CharacterJobType = JobType.Warrior;
                 Job = "전사";
                 MaxHp = 150f;
                 MaxMp = 50f;
@@ -93,6 +94,7 @@ namespace SpartaDungeon
             }
             else if (_jobTypeNum == (int)JobType.Rogue)
             {
+                CharacterJobType = JobType.Rogue;
                 Job = "도적";
                 Attack = 13f;
                 Agility = 15f;
@@ -100,6 +102,7 @@ namespace SpartaDungeon
             }
             else if (_jobTypeNum == (int)JobType.Archer)
             {
+                CharacterJobType = JobType.Archer;
                 Job = "궁수";
                 MaxHp = 80f;
                 MaxMp = 120f;
@@ -110,6 +113,7 @@ namespace SpartaDungeon
             }
             else if (_jobTypeNum == (int)JobType.Mage)
             {
+                CharacterJobType = JobType.Mage;
                 Job = "마법사";
                 MaxHp = 70f;
                 MaxMp = 200f;
