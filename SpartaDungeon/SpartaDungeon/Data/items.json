@@ -1,21 +1,6 @@
 ﻿[
   {
     "itemNum": "001",
-    "itemType": "SubWeapon",
-    "name": "낡은 단검",
-    "price": 200,
-    "atk": 2,
-    "def": 0,
-    "agl": 0,
-    "acc": 0,
-    "luc": 0,
-    "additionalHP": 0,
-    "description": "부러질 듯한 단검",
-    "isPurchased": "true",
-    "isNotForSale": "false"
-  },
-  {
-    "itemNum": "002",
     "itemType": "Armor",
     "name": "낡은 갑옷",
     "price": 300,
@@ -30,22 +15,7 @@
     "isNotForSale": "false"
   },
   {
-    "itemNum": "003",
-    "itemType": "SubWeapon",
-    "name": "전설 단검",
-    "price": 2500,
-    "atk": 20,
-    "def": 3,
-    "agl": 0,
-    "acc": 0,
-    "luc": 0,
-    "additionalHP": 5,
-    "description": "모든 것을 꿰뚫는 전설적인 단검",
-    "isPurchased": "false",
-    "isNotForSale": "false"
-  },
-  {
-    "itemNum": "004",
+    "itemNum": "002",
     "itemType": "Armor",
     "name": "전설 아머",
     "price": 3000,
@@ -60,22 +30,7 @@
     "isNotForSale": "false"
   },
   {
-    "itemNum": "005",
-    "itemType": "SubWeapon",
-    "name": "희귀 단검",
-    "price": 700,
-    "atk": 5,
-    "def": 1,
-    "agl": 0,
-    "acc": 0,
-    "luc": 0,
-    "additionalHP": 0,
-    "description": "근접한 적을 찌르는 숨겨진 비수",
-    "isPurchased": "false",
-    "isNotForSale": "false"
-  },
-  {
-    "itemNum": "006",
+    "itemNum": "003",
     "itemType": "Armor",
     "name": "희귀 갑옷",
     "price": 1000,
@@ -90,7 +45,7 @@
     "isNotForSale": "false"
   },
   {
-    "itemNum": "007",
+    "itemNum": "004",
     "itemType": "HealingItem",
     "name": "HP포션",
     "price": 1000,
@@ -105,7 +60,7 @@
     "isNotForSale": "false"
   },
   {
-    "itemNum": "008",
+    "itemNum": "005",
     "itemType": "ExtraItem",
     "name": "쓰레기",
     "price": 0,
@@ -120,7 +75,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "009",
+    "itemNum": "006",
     "itemType": "ExtraItem",
     "name": "보석",
     "price": 500,
@@ -135,7 +90,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "010",
+    "itemNum": "007",
     "itemType": "ExtraItem",
     "name": "스켈레톤의 머리",
     "price": 15,
@@ -150,7 +105,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "011",
+    "itemNum": "008",
     "itemType": "Armor",
     "name": "고블린의 가죽 옷",
     "price": 15,
@@ -165,8 +120,8 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "012",
-    "itemType": "SubWeapon",
+    "itemNum": "009",
+    "itemType": "MainWeapon",
     "name": "오크의 뭉둥이",
     "price": 50,
     "atk": 10,
@@ -180,7 +135,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "013",
+    "itemNum": "010",
     "itemType": "ExtraItem",
     "name": "로랑의 집게발",
     "price": 50,
@@ -195,7 +150,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "014",
+    "itemNum": "011",
     "itemType": "ExtraItem",
     "name": "클랑의 집게발",
     "price": 60,
@@ -210,7 +165,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "015",
+    "itemNum": "012",
     "itemType": "ExtraItem",
     "name": "엄티의 등껍질",
     "price": 70,
@@ -225,7 +180,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "016",
+    "itemNum": "013",
     "itemType": "ExtraItem",
     "name": "사원 스켈레톤의 손",
     "price": 80,
@@ -240,7 +195,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "017",
+    "itemNum": "014",
     "itemType": "ExtraItem",
     "name": "경비병의 손",
     "price": 100,
@@ -255,7 +210,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "018",
+    "itemNum": "015",
     "itemType": "ExtraItem",
     "name": "왕의 왕관",
     "price": 200,
@@ -266,6 +221,36 @@
     "luc": 0,
     "additionalHP": 0,
     "description": "왕의 왕관",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "016",
+    "itemType": "ExtraItem",
+    "name": "쓸만한 모자",
+    "price": 100,
+    "atk": 0,
+    "def": 0,
+    "agl": 0,
+    "acc": 0,
+    "luc": 0,
+    "additionalHP": 0,
+    "description": "쓸만해 보이는 모자",
+    "isPurchased": "false",
+    "isNotForSale": "true"
+  },
+  {
+    "itemNum": "017",
+    "itemType": "ExtraItem",
+    "name": "쓸만한 방패",
+    "price": 100,
+    "atk": 0,
+    "def": 0,
+    "agl": 0,
+    "acc": 0,
+    "luc": 0,
+    "additionalHP": 0,
+    "description": "쓸만해 보이는 방패",
     "isPurchased": "false",
     "isNotForSale": "true"
   },
@@ -362,7 +347,7 @@
   {
     "itemNum": 301,
     "itemType": "MainWeapon",
-    "name": "낡은 도검",
+    "name": "낡은 단검",
     "price": 300,
     "atk": 3,
     "def": 0,
@@ -377,7 +362,7 @@
   {
     "itemNum": 302,
     "itemType": "MainWeapon",
-    "name": "전설 도검",
+    "name": "전설 단검",
     "price": 3000,
     "atk": 30,
     "def": 5,
@@ -392,7 +377,7 @@
   {
     "itemNum": 303,
     "itemType": "MainWeapon",
-    "name": "희귀 도검",
+    "name": "희귀 단검",
     "price": 1000,
     "atk": 8,
     "def": 1,
@@ -461,36 +446,6 @@
     "luc": 0,
     "additionalHP": 0,
     "description": "주술사의 지팡이",
-    "isPurchased": "false",
-    "isNotForSale": "true"
-  },
-  {
-    "itemNum": "019",
-    "itemType": "ExtraItem",
-    "name": "쓸만한 모자",
-    "price": 100,
-    "atk": 0,
-    "def": 0,
-    "agl": 0,
-    "acc": 0,
-    "luc": 0,
-    "additionalHP": 0,
-    "description": "쓸만해 보이는 모자",
-    "isPurchased": "false",
-    "isNotForSale": "true"
-  },
-  {
-    "itemNum": "020",
-    "itemType": "ExtraItem",
-    "name": "쓸만한 방패",
-    "price": 100,
-    "atk": 0,
-    "def": 0,
-    "agl": 0,
-    "acc": 0,
-    "luc": 0,
-    "additionalHP": 0,
-    "description": "쓸만해 보이는 방패",
     "isPurchased": "false",
     "isNotForSale": "true"
   }
