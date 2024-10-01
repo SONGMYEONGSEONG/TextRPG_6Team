@@ -156,22 +156,22 @@ namespace SpartaDungeon
             Console.Write(_strbuilder.ToString());
         }
 
-        private void PlayerTurnStatusPrint()
+        private void PlayerTurnPrint()
         {
             //Player 선택지 출력
             _strbuilder.Clear();
             _strbuilder.AppendLine();
             if (!(isAttack || isSkill))
             {
-                _strbuilder.AppendLine($"1. 공격");
-                _strbuilder.AppendLine($"2. 스킬");
+                _strbuilder.AppendLine("1. 공격");
+                _strbuilder.AppendLine("2. 스킬");
             }
 
-            _strbuilder.AppendLine($"0. 취소");
+            _strbuilder.AppendLine("\n0. 취소");
 
             if (isAttack && !isSkill)
             {
-                _strbuilder.AppendLine("원하시는 행동을 입력해주세요.");
+                _strbuilder.AppendLine("원하시는 대상을 입력해주세요.");
             }
             else if (!isAttack && isSkill)
             {
@@ -181,7 +181,7 @@ namespace SpartaDungeon
             }
             else
             {
-                _strbuilder.AppendLine("원하시는 대상을 입력해주세요.");
+                _strbuilder.AppendLine("원하시는 행동을 입력해주세요.");
             }
 
             _strbuilder.Append(">>");
@@ -201,7 +201,7 @@ namespace SpartaDungeon
                         {
                             Console.Clear();
                             BattleStatusPrint();
-                            PlayerTurnStatusPrint();
+                            PlayerTurnPrint();
 
                             if (isAttack)
                             {
@@ -249,6 +249,8 @@ namespace SpartaDungeon
 
                                 //Enemy Attack Print
                                 _strbuilder.Clear();
+                                _strbuilder.AppendLine("===================================================");
+                                _strbuilder.AppendLine($"Battle!! - Enemy(Lv.{_enemyList[i].Level} {_enemyList[i].Name})의 턴 \n");
                                 _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
                                 _strbuilder.AppendLine($"{_curPlayer.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
                                 _strbuilder.AppendLine();
@@ -264,6 +266,8 @@ namespace SpartaDungeon
                                 {
                                     _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {_curPlayer.CurrentHp - _damage}");
                                 }
+                                _strbuilder.AppendLine("===================================================");
+                                _strbuilder.AppendLine(">> 엔터를 누르면 다음 화면으로 넘어갑니다.");
                                 Console.Write(_strbuilder.ToString());
 
                                 _curPlayer.CurrentHp -= _damage;
@@ -404,6 +408,7 @@ namespace SpartaDungeon
             //Player Attack Print
             //전투에 들어왔다는 출력 문구
             _strbuilder.Clear();
+            _strbuilder.AppendLine("\n===================================================");
             _strbuilder.Append("Battle!! - Player의 턴 \n\n");
             Console.Write(_strbuilder.ToString());
 
@@ -418,18 +423,26 @@ namespace SpartaDungeon
             }
             //방어력 적용해서 데미지 경감 시킬건지 결정해야됨 ( 회의 필요)
             _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 을(를) 맞췄습니다. [데미지 : {_damage}]");
+            if(_hitEnemy.CurrentHp <= 0)
+            {
+                _strbuilder.AppendLine($"{_hitEnemy.Name} HP : {_hitEnemy.CurrentHp + _damage} -> 0");
+            }
+            else
+            {
+                _strbuilder.AppendLine($"{_hitEnemy.Name} HP : {_hitEnemy.CurrentHp + _damage} ->  {_hitEnemy.CurrentHp}");
+            }
 
             //피격당하는 상대방의 체력이 0이 된 경우
             if (_hitEnemy.CurrentHp <= 0)
             {
                 _hitEnemy.IsDead = true;
-                _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
+                _strbuilder.AppendLine($"\nLv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
 
                 //쓰러트린 몬스터의 경험치 획득
                 int _enemyExp = _hitEnemy.Exp + (int)(_hitEnemy.Level * 0.5f);
 
                 _gainExp += _enemyExp;
-                _strbuilder.AppendLine($"경험치 {_enemyExp}을 획득하였습니다. ");
+                _strbuilder.AppendLine($"경험치 {_enemyExp}을 획득하였습니다. \n");
 
                 //쓰러트린 몬스터의 골드 획득
                 _gainGold += _hitEnemy.Gold;
@@ -449,7 +462,7 @@ namespace SpartaDungeon
                     }
                 }
             }
-
+            _strbuilder.AppendLine("===================================================");
             Console.WriteLine(_strbuilder.ToString());
             return true;
         }
@@ -528,6 +541,13 @@ namespace SpartaDungeon
             {
                 case Skill.SkillTargetType.OneTarget:
                     {
+                        _strbuilder.Clear();
+                        _strbuilder.AppendLine("\n===================================================");
+                        _strbuilder.AppendLine($"사용 하는 스킬 : {_useSkill.Name}\n");
+                        _strbuilder.AppendLine("0. 취소\n");
+                        _strbuilder.AppendLine("원하는 대상을 입력해주십시오.\n >>");
+                        Console.WriteLine(_strbuilder.ToString());
+
                         string _input = Console.ReadLine(); //Player 선택지 입력 대기
                         if (!int.TryParse(_input, out int _select)) //숫자가 아닌 문자,문자열 입력시 예외처리
                         {
