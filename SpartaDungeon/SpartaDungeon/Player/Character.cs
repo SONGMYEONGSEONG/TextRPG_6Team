@@ -216,8 +216,10 @@ namespace SpartaDungeon
                 }
             }
         }
-        public void DisplayInventory()
+        public void DisplayInventory(MyInventory myInventory)
         {
+            List<Item> Inventory = new List<Item>();
+            Inventory = myInventory.Inventory;
             while (true)
             {
                 Console.WriteLine($"[{Name}]의 인벤토리");
