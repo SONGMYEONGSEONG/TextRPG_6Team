@@ -41,7 +41,8 @@ namespace SpartaDungeon
 
         List<Enemy> _enemyList; //이번 전투에 참여하는 적
         int _curBattleEnemyCount; //이번 전투에 참여한 적의 갯수
-        int _allEnemySumHP; //이번 전투에 참여한 모든 적의 HP 총합
+        //int _allEnemySumHP; //이번 전투에 참여한 모든 적의 HP 총합
+        int _allDeadCount; //이번 전투에 참여한 적의 죽음 카운트 변수
 
         Dictionary<int, Quest> _playerQuest; //몬스터 처치 관련 퀘스트를 보관하는 컨테이너
 
@@ -63,7 +64,8 @@ namespace SpartaDungeon
             isAttack = false;
             isSkill = false;
             isPlayerWin = false;
-            _allEnemySumHP = 0;
+            //_allEnemySumHP = 0;
+            _allDeadCount = 0;
 
             _enemyList = new List<Enemy>();
             Random random = new Random();
@@ -77,7 +79,7 @@ namespace SpartaDungeon
                 //Enemy _battleEnemy = new Enemy(enemies[1]);//리스트에서 랜덤으로 적 객체를 생성
 
                 _battleEnemy.SetStatRandom(); //리스트에서 불러온 적 객체를 랜덤 스텟 조정
-                _allEnemySumHP += (int)_battleEnemy.MaxHp; //이번 전투에 참여한 모든 적의 HP 총합
+                //_allEnemySumHP += (int)_battleEnemy.MaxHp; //이번 전투에 참여한 모든 적의 HP 총합
 
                 _enemyList.Add(_battleEnemy);
             }
@@ -190,7 +192,7 @@ namespace SpartaDungeon
 
         private void Update()
         {
-            while (_curPlayer.CurrentHp > 0 && _allEnemySumHP > 0 && !isRun)
+            while (_curPlayer.CurrentHp > 0 && /*_allEnemySumHP > 0*/ _allDeadCount < _enemyList.Count() && !isRun)
             {
 
                 switch (_curTurn)
@@ -282,16 +284,14 @@ namespace SpartaDungeon
 
             }
 
-            if (_allEnemySumHP <= 0)
+            if (/*_allEnemySumHP <= 0*/ _allDeadCount >= _enemyList.Count())
             {
                 //플레이어 승리
-                //isPlayerWin = true;
                 BattleResult(true);
             }
             else if (_curPlayer.CurrentHp <= 0 || isRun)
             {
                 //플레이어 패배
-                //isPlayerWin = false;
                 BattleResult(false);
             }
         }
@@ -403,7 +403,7 @@ namespace SpartaDungeon
             int _damage = (int)MathF.Ceiling((DamageCaculate(_curPlayer, _hitEnemy) * _skillValue));
 
             _hitEnemy.CurrentHp -= _damage;
-            _allEnemySumHP -= _damage;
+            //_allEnemySumHP -= _damage;
 
             //Player Attack Print
             //전투에 들어왔다는 출력 문구
@@ -436,6 +436,7 @@ namespace SpartaDungeon
             if (_hitEnemy.CurrentHp <= 0)
             {
                 _hitEnemy.IsDead = true;
+                _allDeadCount++;
                 _strbuilder.AppendLine($"\nLv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
 
                 //쓰러트린 몬스터의 경험치 획득
@@ -583,7 +584,7 @@ namespace SpartaDungeon
                             {
                                 //살아있는 몬스터가 1마리인 상태에서 공격 기회가 남았는데 죽어버렸을경우 무한루프가 발생
                                 //해당 현상 탈출을 위한 예외처리
-                                if (_allEnemySumHP <= 0)
+                                if (/*_allEnemySumHP <= 0*/ _allDeadCount >= _enemyList.Count())
                                 {
                                     break;
                                 }
