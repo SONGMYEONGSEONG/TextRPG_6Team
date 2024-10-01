@@ -21,6 +21,7 @@ namespace SpartaDungeon
         bool isRun; //도주하기 기능
 
         MageSkill _mageSkill; //스킬 테스트
+        int _gainExp; //해당 전투에서 얻은 총 경험치
         /*Debug*/
 
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
@@ -50,6 +51,7 @@ namespace SpartaDungeon
             isRun = false;
 
             _mageSkill = new MageSkill(); //스킬 테스트
+            _gainExp = 0;
             /*Debug*/
 
             _curPlayer = _player;
@@ -150,6 +152,7 @@ namespace SpartaDungeon
             _strbuilder.AppendLine($"Lv.{_curPlayer.Level}  {_curPlayer.Name}  ({_curPlayer.CharacterJobType})");
             _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} / {_curPlayer.TotalMaxHp}");
             _strbuilder.AppendLine($"MP {_curPlayer.CurrentMp} / {_curPlayer.TotalMaxMp}");
+            _strbuilder.AppendLine($"EXP {_curPlayer.Exp} / {_curPlayer.MaxExp}");
             Console.Write(_strbuilder.ToString());
         }
 
@@ -206,7 +209,9 @@ namespace SpartaDungeon
                                 {
                                     isAttack = false;
                                     _curTurn = Turn.Enemy; //턴 교체 (Player -> Enemy)
+                                    Console.ReadLine();
                                 }
+                                
                             }
                             else if (isSkill)
                             {
@@ -215,6 +220,7 @@ namespace SpartaDungeon
                                 {
                                     isSkill = false;
                                     _curTurn = Turn.Enemy; //턴 교체 (Player -> Enemy)
+                                    Console.ReadLine();
                                 }
                             }
                             else
@@ -371,7 +377,7 @@ namespace SpartaDungeon
             return _damage;
         }
 
-        private bool HitEnemyRun(int _enemyIndex, float _skillValue = 1f , bool _isMultiTarget = false, string _skillName = "")
+        private bool OnHitReaction(int _enemyIndex, float _skillValue = 1f, bool _isMultiTarget = false, string _skillName = "")
         {
             //피격 몬스터 초기화 , 배열/리스트는 참조형식이기에 자동으로 얕은복사 된 상태
             Enemy _hitEnemy = _enemyList[_enemyIndex];
@@ -419,6 +425,12 @@ namespace SpartaDungeon
                 _hitEnemy.IsDead = true;
                 _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
 
+                //쓰러트린 몬스터의 경험치 획득
+                int _enemyExp = _hitEnemy.Exp + (int)(_hitEnemy.Level * 0.5f);
+
+                _gainExp += _enemyExp;
+                _strbuilder.AppendLine($"경험치 {_enemyExp}을 획득하였습니다. ");
+
                 //쓰러트린 몬스터의 골드 획득
                 _gainGold += _hitEnemy.Gold;
 
@@ -461,7 +473,7 @@ namespace SpartaDungeon
                 return false;
             }
 
-            return HitEnemyRun(_select - 1);  
+            return OnHitReaction(_select - 1);
         }
 
         private bool PlayerSkillSelect()
@@ -511,7 +523,6 @@ namespace SpartaDungeon
         {
             Random randTarget;
 
-
             //공격 타겟 대상에 의한 스킬 분류
             switch (_useSkill.TargetType)
             {
@@ -523,7 +534,6 @@ namespace SpartaDungeon
                             ErrorInput();
                             return false;
                         }
-                        //else if (_select < 0 || _select > _enemyTestList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
                         else if (_select < 0 || _select > _enemyList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
                         {
                             ErrorInput();
@@ -536,7 +546,7 @@ namespace SpartaDungeon
                         }
 
                         _curPlayer.CurrentMp -= _useSkill.MpCost;
-                        return HitEnemyRun(_select - 1, _useSkill.SkillValue,true, _useSkill.Name);
+                        return OnHitReaction(_select - 1, _useSkill.SkillValue, true, _useSkill.Name);
                     }
 
                 case Skill.SkillTargetType.RandomTarget:
@@ -547,13 +557,21 @@ namespace SpartaDungeon
                         for (int i = 0; i < _useSkill.TargetCount; i++)
                         {
                             int _ememyIndex = randTarget.Next(0, _enemyList.Count);
-
-                            if(!HitEnemyRun(_ememyIndex, _useSkill.SkillValue,true, _useSkill.Name))
+                            
+                            //false인경우 해당 몬스터는 이미 죽어있는 대상을 공격대상으로 하였음
+                            if (!OnHitReaction(_ememyIndex, _useSkill.SkillValue, true, _useSkill.Name))
                             {
+                                //살아있는 몬스터가 1마리인 상태에서 공격 기회가 남았는데 죽어버렸을경우 무한루프가 발생
+                                //해당 현상 탈출을 위한 예외처리
+                                if (_allEnemySumHP <= 0)
+                                {
+                                    break;
+                                }
+
+                                //공격기회를 복구하고 다시 공격대상 랜덤 선택
                                 i--;
                                 continue;
                             }
-
                         }
 
                         return true;
@@ -563,7 +581,7 @@ namespace SpartaDungeon
                         _curPlayer.CurrentMp -= _useSkill.MpCost;
                         for (int i = 0; i < _enemyList.Count; i++)
                         {
-                            HitEnemyRun(i ,_useSkill.SkillValue,true, _useSkill.Name);
+                            OnHitReaction(i, _useSkill.SkillValue, true, _useSkill.Name);
                         }
 
                         return true;
@@ -644,7 +662,17 @@ namespace SpartaDungeon
                         break;
                 }
 
-                _strbuilder.AppendLine("[획득 아이템]");
+                //잡은 몬스터에 대한 경험치 지급
+                _strbuilder.AppendLine("[획득 경험치]");
+                _strbuilder.AppendLine($"EXP {_curPlayer.Exp} -> {_curPlayer.Exp + _gainExp}");
+                _curPlayer.Exp += _gainExp + 100;
+                if(_curPlayer.LevelUpCheck())
+                {
+                    _strbuilder.AppendLine($"\n축하합니다!! \n{_curPlayer.Name}의 Lv이 {_curPlayer.Level}로 레벨업 하였습니다!!");
+                }
+
+                //잡은 몬스터에 대한 골드보상 지급
+                _strbuilder.AppendLine("\n[획득 아이템]");
                 _strbuilder.AppendLine($"{_gainGold} Gold");
                 _curPlayer.Gold += _gainGold;
 

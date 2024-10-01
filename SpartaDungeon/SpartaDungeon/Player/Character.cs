@@ -305,5 +305,37 @@ namespace SpartaDungeon
                 CurrentHp -= _selectItem.AdditionalHP;
             }
         }
+
+        /* EXP(경험치) 작업하면서 변수 추가 - 20241001송명성*/
+        //외부에서 호출되는 레벨업 체크 함수
+        public bool LevelUpCheck()
+        {
+            if(Exp >= MaxExp)
+            {
+                Exp -= MaxExp;
+                Level++;
+                LevelUpStat();
+                return true;
+            }
+
+            return false;
+        }
+
+        //레벨업시 스텟 변화량 함수
+        private void LevelUpStat()
+        {
+            //레벨업시 스텟 증가량 회의 필요
+            MaxExp = (int)MathF.Floor(MaxExp * 1.5f); //현재 경험치의 1.5배,내림처리
+            MaxHp += 10f;
+            MaxMp += 5f;
+            Attack += 10f;
+            Defense += 10f;
+            Agility += 10f;
+            Accuracy += 10f;
+            Luck += 10f;
+        }
+
+
+        /* !EXP(경험치) 작업하면서 변수 추가 - 20241001송명성*/
     }
 }
