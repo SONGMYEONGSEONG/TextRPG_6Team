@@ -1,29 +1,38 @@
-﻿namespace SpartaDungeon
+﻿using System.Text;
+
+namespace SpartaDungeon
 {
-    internal class ArcherSkill : Skill
+    internal class ArcherSkill
     {
-        public void HeadShot()
+        StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
+        List<Skill> _skillList;
+        public List<Skill> SkillList { get { return _skillList; } }
+
+        public ArcherSkill()
         {
-            Name = "헤드샷";
-            MpCost = 10f;
-            Description = "강력한 한 발을 적의 급소에 명중시킨다. 데미지 2배";
-            // damage = player.atk * 2
+            _skillList = new List<Skill>();
+
+            Skill _skill1 = new Skill(0, "멀티샷", 15, "화살 2발을 동시에 쏴 랜덤으로 2명을 공격한다. 데미지 1.5배", Skill.SkillTargetType.RandomTarget, 2, 1.5f);
+            Skill _skill2 = new Skill(1, "에로우 레인", 60, "화살로 된 비를 내려 모든 적을 공격한다. 데미지 3배", Skill.SkillTargetType.AllTarget, 4, 3.0f);
+            Skill _skill3 = new Skill(2, "비장의 한 발", 80, "정신을 집중하고 공을 들여 만든 완벽한 한 발로 적을 공격한다. 데미지 6배", Skill.SkillTargetType.OneTarget, 1, 6.0f);
+
+            _skillList.Add(_skill1);
+            _skillList.Add(_skill2);
+            _skillList.Add(_skill3);
         }
 
-        public void QuickShot()
-        {
-            // 3발 속사
-        }
 
-        public void TrackingArrow()
+        public void Print()
         {
-            // 추적화살
-            // 회피 불가
-        }
+            _strbuilder.Clear();
+            _strbuilder.AppendLine();
 
-        public override void AllPrint()
-        {
+            foreach (Skill skill in SkillList)
+            {
+                _strbuilder.AppendLine($"{skill.ID + 1}. {skill.Name}({skill.MpCost}) : {skill.Description} ");
+            }
 
+            Console.Write(_strbuilder.ToString());
         }
     }
 }
