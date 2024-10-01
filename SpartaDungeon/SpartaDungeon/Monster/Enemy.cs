@@ -34,6 +34,7 @@ namespace SpartaDungeon
             _enemyType = _enemyData._enemyType;
             Name = _enemyData.Name;
             Level = _enemyData.Level;
+            Exp = _enemyData.Exp;
             Attack = _enemyData.Attack;
             Defense = _enemyData.Defense;
             Agility = _enemyData.Agility;
@@ -47,13 +48,14 @@ namespace SpartaDungeon
             GainItem = _enemyData.GainItem;
         }
 
-        public Enemy(SummonArea area, EnemyType enemyType, string name, int level, float hp, float mp,
+        public Enemy(SummonArea area, EnemyType enemyType, string name, int level,int exp, float hp, float mp,
                          float atk, float def, float agl, float acc, float luc, int gold, string gainItem)
         {
             _summonArea = area;
             _enemyType = enemyType;
             Name = name;
             Level = level;
+            Exp = exp;
             Attack = atk;
             Defense = def;
             Agility = agl;
