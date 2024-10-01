@@ -59,6 +59,20 @@ namespace SpartaDungeon
 
                     Enemy enemy;
 
+                    //0 몬스터 등장 지역
+                    //1 몬스터 종류
+                    //2 몬스터 이름
+                    //3 몬스터 레벨
+                    //4 몬스터 최대 HP
+                    //5 몬스터 최대 MP
+                    //6 몬스터 공격력
+                    //7 몬스터 방어력
+                    //8 몬스터 민첩 : 회피 확률에 영향
+                    //9 몬스터 명중 : 상대의 회피 확률과 내 공격 크리티컬 확률에 영향
+                    //10 몬스터 행운 : 공격 크리티컬 확률, 보상에 영향
+                    //11 몬스터 드랍 골드
+                    //12 몬스터 드랍 아이템
+
                     switch (Enum.Parse(typeof(SummonArea), values[0]))
                     {
                         case SummonArea.Forest:
