@@ -56,7 +56,7 @@ namespace SpartaDungeon
                     quest.RewardType = values[7];
                     quest.RewardValue = values[8];
                     quest.RewardGold = int.Parse(values[9]);
-                    quest.Type = values[10];
+                    quest.Type = (QuestType)Enum.Parse(typeof(QuestType), values[10]);
 
                     csvData.Add(int.Parse(values[0]), quest);
                 }
