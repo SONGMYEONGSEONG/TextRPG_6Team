@@ -17,7 +17,7 @@ namespace SpartaDungeon
 
         public QuestManager()
         {
-            string csvFilePath = @"..\..\..\TextRPG_Quest.csv";
+            string csvFilePath = @"..\..\..\Data\TextRPG_Quest.csv";
 
             // 1. CSV 파일을 UTF-8 인코딩으로 읽기
             Dictionary<int, Quest> csvData = new Dictionary<int, Quest>();

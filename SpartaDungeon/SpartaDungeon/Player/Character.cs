@@ -48,6 +48,9 @@ namespace SpartaDungeon
         public Item EquipWeapon = new Item();
         public Item EquipArmor = new Item();
 
+        /*Test - 20240930.송명성 추가*/
+        public Dictionary<int, Quest> PlayerQuest = new Dictionary<int, Quest>();
+        /**/
 
         //public Character()
         //{
@@ -161,6 +164,17 @@ namespace SpartaDungeon
             {
                 CurrentMp = TotalMaxMp;
             }
+
+            //HP ,MP 음수로 내려가는거 방지 코드
+            if (CurrentHp <= 0)
+            {
+                CurrentHp = 1;
+            }
+            if (CurrentMp < 0)
+            {
+                CurrentMp = 0;
+            }
+
         }
 
         // 플레이어 상태 보기

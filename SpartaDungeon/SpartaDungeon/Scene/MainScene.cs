@@ -36,13 +36,15 @@ namespace SpartaDungeon
 
             while (true)
             {
+                Console.Clear();
                 // 메인 화면 올때마다 플레이어 스텟 최신화
                 character.UpdateStat();
 
                 Console.WriteLine("마을에서 다음 활동을 선택할 수 있습니다.\n");
                 Console.WriteLine("[1] 상태 보기");
                 Console.WriteLine("[2] 인벤토리 보기");
-                Console.WriteLine("[3] 던전 입장");
+                Console.Write("[3] 던전 입장");
+                Console.WriteLine($"(던전 지역 : {_curSelectArea})");
                 Console.WriteLine("[4] 던전 스테이지 선택");
                 Console.WriteLine("[5] 퀘스트 보기");
                 Console.WriteLine("[6] 상점 보기");
@@ -75,7 +77,7 @@ namespace SpartaDungeon
                             break;
                         case ((int)MainSceneChoice.EnterDungeon):
                             Console.Clear();
-                            _battleScene.Initialize(character, _enemyManager.GetEnemies(SummonArea.Forest));
+                            _battleScene.Initialize(character, _enemyManager.GetEnemies(_curSelectArea));
                             _battleScene.SceneStart();
                             _battleScene.SceneExit(ref character);
                             break;
