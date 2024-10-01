@@ -113,7 +113,7 @@ namespace SpartaDungeon
         }
 
         //구매선택
-        public void ChoosePurchaseType(Player player)
+        public void ChoosePurchaseType(Character player)
         {
             while (true)
             {

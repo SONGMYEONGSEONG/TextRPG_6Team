@@ -25,6 +25,11 @@ namespace SpartaDungeon
             }
         }
 
+        public void AddInventory()
+        { 
+            
+        }
+
        
 
         //public void ShowInventory(Character player)
