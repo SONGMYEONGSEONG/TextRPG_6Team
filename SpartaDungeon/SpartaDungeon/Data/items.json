@@ -46,21 +46,6 @@
   },
   {
     "itemNum": "004",
-    "itemType": "HealingItem",
-    "name": "HP포션",
-    "price": 1000,
-    "atk": 0,
-    "def": 0,
-    "agl": 0,
-    "acc": 0,
-    "luc": 0,
-    "additionalHP": 0,
-    "description": "체력을 회복해주는 포션",
-    "isPurchased": "false",
-    "isNotForSale": "false"
-  },
-  {
-    "itemNum": "005",
     "itemType": "ExtraItem",
     "name": "쓰레기",
     "price": 0,
@@ -75,7 +60,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "006",
+    "itemNum": "005",
     "itemType": "ExtraItem",
     "name": "보석",
     "price": 500,
@@ -90,7 +75,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "007",
+    "itemNum": "006",
     "itemType": "ExtraItem",
     "name": "스켈레톤의 머리",
     "price": 15,
@@ -105,7 +90,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "008",
+    "itemNum": "007",
     "itemType": "Armor",
     "name": "고블린의 가죽 옷",
     "price": 15,
@@ -120,7 +105,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "009",
+    "itemNum": "008",
     "itemType": "MainWeapon",
     "name": "오크의 뭉둥이",
     "price": 50,
@@ -135,7 +120,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "010",
+    "itemNum": "009",
     "itemType": "ExtraItem",
     "name": "로랑의 집게발",
     "price": 50,
@@ -150,7 +135,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "011",
+    "itemNum": "010",
     "itemType": "ExtraItem",
     "name": "클랑의 집게발",
     "price": 60,
@@ -165,7 +150,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "012",
+    "itemNum": "011",
     "itemType": "ExtraItem",
     "name": "엄티의 등껍질",
     "price": 70,
@@ -180,7 +165,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "013",
+    "itemNum": "012",
     "itemType": "ExtraItem",
     "name": "사원 스켈레톤의 손",
     "price": 80,
@@ -195,7 +180,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "014",
+    "itemNum": "013",
     "itemType": "ExtraItem",
     "name": "경비병의 손",
     "price": 100,
@@ -210,7 +195,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "015",
+    "itemNum": "014",
     "itemType": "ExtraItem",
     "name": "왕의 왕관",
     "price": 200,
@@ -225,7 +210,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "016",
+    "itemNum": "015",
     "itemType": "ExtraItem",
     "name": "쓸만한 모자",
     "price": 100,
@@ -240,7 +225,7 @@
     "isNotForSale": "true"
   },
   {
-    "itemNum": "017",
+    "itemNum": "016",
     "itemType": "ExtraItem",
     "name": "쓸만한 방패",
     "price": 100,
@@ -448,5 +433,65 @@
     "description": "주술사의 지팡이",
     "isPurchased": "false",
     "isNotForSale": "true"
+  },
+  {
+    "itemNum": 501,
+    "itemType": "HealingItem",
+    "name": "100HP포션",
+    "price": 1000,
+    "atk": 0,
+    "def": 0,
+    "agl": 0,
+    "acc": 0,
+    "luc": 0,
+    "additionalHP": 0,
+    "description": "체력을 100 회복해주는 포션",
+    "isPurchased": "true",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 502,
+    "itemType": "HealingItem",
+    "name": "100MP포션",
+    "price": 1000,
+    "atk": 0,
+    "def": 0,
+    "agl": 0,
+    "acc": 0,
+    "luc": 0,
+    "additionalHP": 0,
+    "description": "마나를 100 회복해주는 포션",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 503,
+    "itemType": "HealingItem",
+    "name": "80HP포션",
+    "price": 800,
+    "atk": 0,
+    "def": 0,
+    "agl": 0,
+    "acc": 0,
+    "luc": 0,
+    "additionalHP": 0,
+    "description": "체력을 80 회복해주는 포션",
+    "isPurchased": "false",
+    "isNotForSale": "false"
+  },
+  {
+    "itemNum": 504,
+    "itemType": "HealingItem",
+    "name": "80MP포션",
+    "price": 800,
+    "atk": 0,
+    "def": 0,
+    "agl": 0,
+    "acc": 0,
+    "luc": 0,
+    "additionalHP": 0,
+    "description": "마나를 80 회복해주는 포션",
+    "isPurchased": "false",
+    "isNotForSale": "false"
   }
 ]
