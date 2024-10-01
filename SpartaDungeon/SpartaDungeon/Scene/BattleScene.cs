@@ -21,17 +21,17 @@ namespace SpartaDungeon
         bool isRun; //도주하기 기능
 
         MageSkill _mageSkill; //스킬 테스트
-        int _gainExp; //해당 전투에서 얻은 총 경험치
         /*Debug*/
 
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
         Turn _curTurn; //현재 진행중인 유저의 턴
         Character _curPlayer; //현재 전투에 참여한 플레이어 오브젝트
         float _curPlayerBattleHP; //전투에 참여했을떄의 플레이어 HP
+        SkillDeck _skillDeck; //플레이어가 사용하는 스킬덱
 
-        //획득 아이템 저장 컨테이너
         int _gainGold; //몬스터를 쓰러트릴때마다 골드를 저장
-        List<string> _gainItem; //Item 완성되는데로 수정 필요함 - 이지혜 님
+        List<string> _gainItem; //획득 아이템 저장 컨테이너, Item 완성되는데로 수정 필요함 - 이지혜 님
+        int _gainExp; //해당 전투에서 얻은 총 경험치
 
         bool isAttack;//[1.공격]을 선택 체크 변수
         bool isSkill;//[2.스킬]을 선택 체크 변수
@@ -51,7 +51,8 @@ namespace SpartaDungeon
             /*Debug*/
             isRun = false;
 
-            _mageSkill = new MageSkill(); //스킬 테스트
+            //_mageSkill = new MageSkill(); //스킬 테스트
+
             _gainExp = 0;
             /*Debug*/
 
@@ -178,7 +179,8 @@ namespace SpartaDungeon
             else if (!isAttack && isSkill)
             {
                 //플레이어 스킬 리스트 출력
-                _mageSkill.Print();
+                _curPlayer.SkillDeck.Print();
+                //_mageSkill.Print();
                 _strbuilder.AppendLine("원하시는 스킬을 입력해주세요.");
             }
             else
@@ -551,7 +553,7 @@ namespace SpartaDungeon
                 ErrorInput();
                 return false;
             }
-            else if (_select < 0 || _select > _mageSkill.SkillList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
+            else if (_select < 0 || _select > /*_mageSkill.SkillList.Count()*/_curPlayer.SkillDeck.SkillList.Count()) //적 번호를 초과하거나 미만으로 입력시 예외처리
             {
                 ErrorInput();
                 return false;
@@ -563,7 +565,8 @@ namespace SpartaDungeon
             }
 
             //사용할 스킬 선택
-            Skill _useSkill = _mageSkill.SkillList[int.Parse(_input) - 1];
+            //Skill _useSkill = _mageSkill.SkillList[int.Parse(_input) - 1];
+            Skill _useSkill = _curPlayer.SkillDeck.SkillList[int.Parse(_input) - 1];
 
             //사용할 스킬 MP와 현재 플레이어 MP 비교 체크
             if (_useSkill.MpCost > _curPlayer.CurrentMp)
