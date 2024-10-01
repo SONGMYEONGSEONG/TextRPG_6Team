@@ -125,7 +125,7 @@ namespace SpartaDungeon
             _strbuilder.Clear();
             _strbuilder.Append("\n\n");
             _strbuilder.AppendLine("[내 정보]");
-            _strbuilder.AppendLine($"Lv.{_curPlayer.Level}  {_curPlayer.Name}  ({_curPlayer.CharacterJobType})");
+            _strbuilder.AppendLine($"Lv.{_curPlayer.Level}  {_curPlayer.Name}  ({_curPlayer.Job})");
             _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} / {_curPlayer.TotalMaxHp}");
             Console.Write(_strbuilder.ToString());
         }
