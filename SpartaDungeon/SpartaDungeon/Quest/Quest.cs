@@ -9,8 +9,18 @@ using System.Reflection.Emit;
 
 namespace SpartaDungeon
 {
+    internal enum QuestType
+    {
+        None = 0,
+        MonsterKillCount = 1,
+        EquipCheck = 2,
+        UseSkill = 3,
+        End
+    }
+
     internal class Quest
     {
+
         //0 퀘스트 ID
         //1 퀘스트 이름
         //2 퀘스트 내용
@@ -32,7 +42,8 @@ namespace SpartaDungeon
         public string RewardType { get; set; }
         public string RewardValue { get; set; }
         public int RewardGold { get; set; }
-        public string Type;
+        public QuestType Type;
+        //public string Type;
 
         public Quest() { }
 
@@ -40,21 +51,21 @@ namespace SpartaDungeon
         {
             switch(Type)
             {
-                case "MonsterKillCount":
+                case QuestType.MonsterKillCount:
                     if (CurProgressRequired >= EndProgressRequired)
                     {
                         return true;
                     }
                     break;
 
-                case "EquipCheck":
+                case QuestType.EquipCheck:
                     if(_curPlayer.EquipWeapon.Name != "" || _curPlayer.EquipArmor.Name != "")
                     {
                         return true;
                     }
                     break;
 
-                case "UseSkill":
+                case QuestType.UseSkill:
 
                     break;
 

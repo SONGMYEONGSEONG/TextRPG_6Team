@@ -17,9 +17,18 @@ namespace SpartaDungeon
      */
     internal class BattleScene
     {
+        /*Debug*/
+        bool isRun;
+        /*Debug*/
+
         StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
         Turn _curTurn; //현재 진행중인 유저의 턴
         Character _curPlayer; //현재 전투에 참여한 플레이어 오브젝트
+        float _curPlayerBattleHP; //전투에 참여했을떄의 플레이어 HP
+
+        //획득 아이템 저장 컨테이너
+        int _gainGold; //몬스터를 쓰러트릴때마다 골드를 저장
+        List<string> _gainItem; //Item 완성되는데로 수정 필요함 - 이지혜 님
 
         bool isAttack;//[1.공격]을 선택 체크 변수
         bool isSkill;//[2.스킬]을 선택 체크 변수
@@ -28,13 +37,21 @@ namespace SpartaDungeon
         public bool IsPlayerWin { get { return isPlayerWin; } private set { } } //전투 결과 Scene에서 사용하시면 됩니다. -이지혜님
 
         List<Enemy> _enemyList; //이번 전투에 참여하는 적
+        int _curBattleEnemyCount; //이번 전투에 참여한 적의 갯수
         int _allEnemySumHP; //이번 전투에 참여한 모든 적의 HP 총합
 
         Dictionary<int, Quest> _playerQuest; //몬스터 처치 관련 퀘스트를 보관하는 컨테이너
 
         public void Initialize(Character _player, List<Enemy> enemies)//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
         {
+            /*Debug*/
+            isRun = false;
+            /*Debug*/
+
             _curPlayer = _player;
+            _curPlayerBattleHP = (float)_curPlayer.CurrentHp;
+            _gainGold = 0;
+            _gainItem = new List<string>();
 
             _curTurn = Turn.Player; //선턴은 바로 플레이어로 지정
             isAttack = false;
@@ -45,6 +62,7 @@ namespace SpartaDungeon
             _enemyList = new List<Enemy>();
             Random random = new Random();
             int _battleEnemyCount = random.Next(1, 5); //전투에 참여되는 적 숫자
+            _curBattleEnemyCount = _battleEnemyCount;
             for (int i = 0; i < _battleEnemyCount; i++)
             {
                 int enemyIndex = random.Next(0, enemies.Count()); //해당 지역(SummonArea)에서 랜덤으로 적을 선택
@@ -62,7 +80,7 @@ namespace SpartaDungeon
             _playerQuest = new Dictionary<int, Quest>();
             foreach (KeyValuePair<int, Quest> questData in _curPlayer.PlayerQuest)
             {
-                if (questData.Value.Type == "MonsterKillCount")
+                if (questData.Value.Type == QuestType.MonsterKillCount)
                 {
                     _playerQuest.Add(questData.Key, questData.Value);
                 }
@@ -158,26 +176,14 @@ namespace SpartaDungeon
 
         private void Update()
         {
-            while (_curPlayer.CurrentHp > 0 && _allEnemySumHP > 0)
+            while (_curPlayer.CurrentHp > 0 && _allEnemySumHP > 0 && !isRun)
             {
-                if (_allEnemySumHP <= 0)
-                {
-                    //플레이어 승리
-                    isPlayerWin = true;
-                    break;
-                }
-                else if (_curPlayer.CurrentHp <= 0)
-                {
-                    //플레이어 패배
-                    isPlayerWin = false;
-                    break;
-                }
 
                 switch (_curTurn)
                 {
                     case Turn.Player:
 
-                        while (_curTurn == Turn.Player)
+                        while ((_curTurn == Turn.Player) && !isRun)
                         {
                             Console.Clear();
                             BattleStatusPrint();
@@ -208,11 +214,16 @@ namespace SpartaDungeon
 
                         for (int i = 0; i < _enemyList.Count; i++)
                         {
+                            //플레이어 체력 0 되면 반복문 탈출
+                            if (_curPlayer.CurrentHp <= 0)
+                            {
+                                break;
+                            }
+
                             Console.Clear();
 
                             if (!_enemyList[i].IsDead) //Enemy가 죽어있으면 동작하지 않게하기
                             {
-
                                 _damage = DamageCaculate(_curPlayer, _enemyList[i]);
 
                                 //Enemy Attack Print
@@ -222,7 +233,16 @@ namespace SpartaDungeon
                                 _strbuilder.AppendLine();
 
                                 _strbuilder.AppendLine($"LV.{_curPlayer.Level} {_curPlayer.Name}");
-                                _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {_curPlayer.CurrentHp - _damage}");
+
+                                //플레이어 체력을 초과한 데미지를 받을경우 0으로 표시
+                                if (_curPlayer.CurrentHp - _damage <= 0)
+                                {
+                                    _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {0}");
+                                }
+                                else
+                                {
+                                    _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {_curPlayer.CurrentHp - _damage}");
+                                }
                                 Console.Write(_strbuilder.ToString());
 
                                 _curPlayer.CurrentHp -= _damage;
@@ -236,11 +256,24 @@ namespace SpartaDungeon
                 }
 
             }
+
+            if (_allEnemySumHP <= 0)
+            {
+                //플레이어 승리
+                //isPlayerWin = true;
+                BattleResult(true);
+            }
+            else if (_curPlayer.CurrentHp <= 0 || isRun)
+            {
+                //플레이어 패배
+                //isPlayerWin = false;
+                BattleResult(false);
+            }
         }
 
         public void SceneExit(ref Character player)
         {
-            foreach(KeyValuePair<int, Quest> questData in _playerQuest)
+            foreach (KeyValuePair<int, Quest> questData in _playerQuest)
             {
                 _curPlayer.PlayerQuest[questData.Key] = questData.Value;
             }
@@ -377,14 +410,22 @@ namespace SpartaDungeon
                 _hitEnemy.IsDead = true;
                 _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
 
+                //쓰러트린 몬스터의 골드 획득
+                _gainGold += _hitEnemy.Gold;
+
+                //쓰러트린 몬스터의 아이템 획득
+                _gainItem.Add(_hitEnemy.GainItem);
+
                 //전투 관련 퀘스트 스택 증가
                 foreach (KeyValuePair<int, Quest> questData in _playerQuest)
                 {
-                    if (questData.Value.CurProgressRequired < questData.Value.EndProgressRequired)
+                    if (questData.Value.Purpose == _hitEnemy.Name)
                     {
-                        questData.Value.CurProgressRequired++;
+                        if (questData.Value.CurProgressRequired < questData.Value.EndProgressRequired)
+                        {
+                            questData.Value.CurProgressRequired++;
+                        }
                     }
-
                 }
 
             }
@@ -412,6 +453,12 @@ namespace SpartaDungeon
 
                     break;
 
+                /*debug - 도망가기 기능*/
+                case "3":
+                    isRun = true;
+                    break;
+                /*debug - 도망가기 기능*/
+
                 case "0":
                     if (isAttack)
                     {
@@ -429,6 +476,62 @@ namespace SpartaDungeon
 
             }
         }
-    }
 
+        //전투결과 화면 
+        private void BattleResult(bool isPlayerWin)
+        {
+            //BattleResult - Print
+            while (true)
+            {
+                Console.Clear();
+                _strbuilder.Clear();
+                _strbuilder.AppendLine("Battle!! - Result\n");
+
+                switch (isPlayerWin)
+                {
+                    case true:
+                        _strbuilder.AppendLine("Victory\n");
+                        _strbuilder.AppendLine($"던전에서 몬스터 {_curBattleEnemyCount}마리를 잡았습니다.\n");
+                        _strbuilder.AppendLine("[캐릭터 정보]");
+                        _strbuilder.AppendLine($"Lv.{_curPlayer.Level} {_curPlayer.Name}");
+                        _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> {_curPlayer.CurrentHp}\n");
+                        break;
+
+                    case false:
+                        _strbuilder.AppendLine("You Lose\n");
+                        _strbuilder.AppendLine($"Lv.{_curPlayer.Level} {_curPlayer.Name}");
+                        _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> 0\n");
+                        break;
+                }
+
+                _strbuilder.AppendLine("[획득 아이템]");
+                _strbuilder.AppendLine($"{_gainGold} Gold");
+                _curPlayer.Gold += _gainGold;
+
+                //나중에 Item 코드 Merge 할때 변경 필요 + Player에게 적용하게 변경되야함
+                foreach (string ItemName in _gainItem)
+                {
+                    _strbuilder.AppendLine($"{ItemName} - 1");
+                    //_curPlayer.Inventory.Add(/*Item*/);
+                }
+
+                _strbuilder.AppendLine("\n0. 다음\n");
+                _strbuilder.AppendLine(">>");
+
+                Console.Write(_strbuilder.ToString());
+                string _input = Console.ReadLine(); //Player 선택지 입력 대기
+                switch (_input)
+                {
+                    case "0":
+                        return;
+
+                    default:
+                        ErrorInput();
+                        break;
+                }
+            }
+        }
+
+
+    }
 }
