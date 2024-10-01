@@ -66,7 +66,7 @@ namespace SpartaDungeon
                     break;
 
                 case QuestType.UseSkill:
-
+                    //해당 스킬을 받는 시점의 MP와 전투를 취하고 MP가 적으면 퀘스트 완료
                     break;
 
             }
