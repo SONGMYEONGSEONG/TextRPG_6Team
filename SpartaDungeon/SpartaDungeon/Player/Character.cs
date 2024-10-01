@@ -19,6 +19,7 @@ namespace SpartaDungeon
     {
         public JobType CharacterJobType { get; set; }
         public string Job { get; set; }
+        public int MaxExp { get; set; } // EXP(경험치) 작업하면서 변수 추가 - 20241001송명성
 
         public float ExtraHp { get; set; }
         public float TotalMaxHp { get; set; }
@@ -73,6 +74,8 @@ namespace SpartaDungeon
             // 디폴트 값
             Name = _name;
             Level = 1;
+            Exp = 0;// EXP(경험치) 작업하면서 변수 추가 - 20241001송명성
+            MaxExp = 100;// EXP(경험치) 작업하면서 변수 추가 - 20241001송명성
             MaxHp = 100f;
             MaxMp = 100f;
             Attack = 10f;
@@ -185,6 +188,7 @@ namespace SpartaDungeon
                 Console.WriteLine($"\n[플레이어의 현재 상태]\n");
                 Console.WriteLine($"이름: {Name}");
                 Console.WriteLine($"레벨: {Level}");
+                Console.WriteLine($"경험치: {Exp} / {MaxExp}"); // EXP(경험치) 작업하면서 변수 추가 - 20241001송명성
                 Console.WriteLine($"직업: {Job}");
                 Console.WriteLine($"체력: {CurrentHp} / {TotalMaxHp} ({MaxHp} +{ExtraHp})");
                 Console.WriteLine($"마력: {CurrentMp} / {TotalMaxMp} ({MaxMp} +{ExtraMp})");
