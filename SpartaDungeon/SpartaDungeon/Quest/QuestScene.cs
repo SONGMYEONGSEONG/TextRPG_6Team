@@ -116,8 +116,6 @@ namespace SpartaDungeon
                         if (!_questManager.Quests[_questselectID].IsFinish)
                         {
                             _questManager.QuestAccept(_questselectID);
-
-                            //Test : 플레이어 class 안에 수락퀘스트 넣어보기
                             _curPlayer.PlayerQuest = _questManager.AcceptedQuest;
                         }
                         else
