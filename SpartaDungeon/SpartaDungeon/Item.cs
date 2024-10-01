@@ -10,7 +10,8 @@ namespace SpartaDungeon
     {
         MainWeapon,
         SubWeapon,
-        Armor
+        Armor,
+        HealingItem
     }
     internal class Item
     {
@@ -45,6 +46,7 @@ namespace SpartaDungeon
             if (itemType == ITEMTYPE.MainWeapon) ItemTypeKorean = "주무기";
             else if (itemType == ITEMTYPE.SubWeapon) ItemTypeKorean = "보조무기";
             else if (itemType == ITEMTYPE.Armor) ItemTypeKorean = "갑옷";
+            else if (itemType == ITEMTYPE.HealingItem) ItemTypeKorean = "회복아이템";
             Name = name;
             Price = price;
             Atk = atk;

@@ -29,6 +29,7 @@ namespace SpartaDungeon
         SummonArea _curSelectArea = SummonArea.Forest;
 
         Store _store = new Store();
+        MyInventory _inventory = new MyInventory();
 
         public void VillageScene(Character character)
         {
@@ -73,7 +74,8 @@ namespace SpartaDungeon
                             break;
                         case ((int)MainSceneChoice.Inventory):
                             Console.Clear();
-                            character.DisplayInventory();
+                            //character.DisplayInventory();
+                            character.DisplayInventory(_inventory);
                             break;
                         case ((int)MainSceneChoice.EnterDungeon):
                             Console.Clear();

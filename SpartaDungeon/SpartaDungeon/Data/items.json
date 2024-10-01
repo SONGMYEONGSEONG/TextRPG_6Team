@@ -74,7 +74,7 @@
     "def": 0,
     "additionalHP": 0,
     "description": "녹슬고 무딘 철검",
-    "isPurchased": "true"
+    "isPurchased": "false"
   },
   {
     "itemNum": 102,
@@ -107,7 +107,7 @@
     "def": 0,
     "additionalHP": 0,
     "description": "균열이 있는 완드",
-    "isPurchased": "true"
+    "isPurchased": "false"
   },
   {
     "itemNum": 402,
@@ -129,6 +129,28 @@
     "def": 1,
     "additionalHP": 5,
     "description": "전설에 가까워지게 하는 완드",
+    "isPurchased": "false"
+  },
+  {
+    "itemNum": 403,
+    "itemType": "MainWeapon",
+    "name": "희귀 완드",
+    "price": 1000,
+    "atk": 8,
+    "def": 1,
+    "additionalHP": 5,
+    "description": "전설에 가까워지게 하는 완드",
+    "isPurchased": "false"
+  },
+  {
+    "itemNum": "007",
+    "itemType": "HealingItem",
+    "name": "HP포션",
+    "price": 1000,
+    "atk": 0,
+    "def": 0,
+    "additionalHP": 0,
+    "description": "체력을 회복해주는 포션",
     "isPurchased": "false"
   }
 ]
