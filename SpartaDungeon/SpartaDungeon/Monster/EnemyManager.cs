@@ -74,7 +74,8 @@ namespace SpartaDungeon
                                                 int.Parse(values[8]),
                                                 int.Parse(values[9]),
                                                 int.Parse(values[10]),
-                                                int.Parse(values[11])
+                                                int.Parse(values[11]),
+                                                values[12]
                                                 );
 
                             _enemies[(int)SummonArea.Forest].Add(enemy);
@@ -93,7 +94,8 @@ namespace SpartaDungeon
                                                 int.Parse(values[8]),
                                                 int.Parse(values[9]),
                                                 int.Parse(values[10]),
-                                                int.Parse(values[11])
+                                                int.Parse(values[11]),
+                                                values[12]
                                                 );
 
                             _enemies[(int)SummonArea.Temple].Add(enemy);
@@ -112,7 +114,8 @@ namespace SpartaDungeon
                                                 int.Parse(values[8]),
                                                 int.Parse(values[9]),
                                                 int.Parse(values[10]),
-                                                int.Parse(values[11])
+                                                int.Parse(values[11]),
+                                                values[12]
                                                 );
 
                             _enemies[(int)SummonArea.Beach].Add(enemy);
@@ -122,9 +125,6 @@ namespace SpartaDungeon
 
                             break;
                     }
-
-
-
 
                     //row[int.Parse(values[0])] = quest;
                 }

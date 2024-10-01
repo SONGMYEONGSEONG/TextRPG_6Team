@@ -44,11 +44,11 @@ namespace SpartaDungeon
             CurrentHp = MaxHp;
             CurrentMp = MaxMp;
             Gold = _enemyData.Gold;
-
+            GainItem = _enemyData.GainItem;
         }
 
         public Enemy(SummonArea area, EnemyType enemyType, string name, int level, float hp, float mp,
-                         float atk, float def, float agl, float acc, float luc, int gold)
+                         float atk, float def, float agl, float acc, float luc, int gold, string gainItem)
         {
             _summonArea = area;
             _enemyType = enemyType;
@@ -64,6 +64,7 @@ namespace SpartaDungeon
             CurrentHp = MaxHp;
             CurrentMp = MaxMp;
             Gold = gold;
+            GainItem = gainItem;
             _isDead = false;
         }
 
