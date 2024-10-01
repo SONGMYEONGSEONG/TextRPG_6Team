@@ -127,6 +127,10 @@ namespace SpartaDungeon
                 Luck = 15f;
                 Intelligence = 20f;
             }
+
+            //-----플레이어 생성 시 인벤토리 초기화------
+            MyInventory myInventory = new MyInventory(Job);
+            Inventory = myInventory.Inventory;
         }
 
         //public Character(string _name, JobType _jobType, string _job, float _hp, float _mp,
@@ -224,10 +228,8 @@ namespace SpartaDungeon
                 }
             }
         }
-        public void DisplayInventory(MyInventory myInventory)
+        public void DisplayInventory()
         {
-            List<Item> Inventory = new List<Item>();
-            Inventory = myInventory.Inventory;
             while (true)
             {
                 Console.WriteLine($"[{Name}]의 인벤토리");

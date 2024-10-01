@@ -12,8 +12,6 @@ namespace SpartaDungeon
 
     internal class Store
     {
-        public List<Item> WarriorItemList;
-        public List<Item> MageItemList;
         public List<Item> StoreItemList = new List<Item>();
         public List<Item> SelectTypeItemList = new List<Item>();
 
@@ -46,7 +44,7 @@ namespace SpartaDungeon
             for (int i = 0; i < SelectTypeItemList.Count; i++)
             {
                 string completedPurchase = "";
-                if (StoreItemList[i].IsPurchased == true)
+                if (SelectTypeItemList[i].IsPurchased == true)
                 {
                     completedPurchase = "(구매완료)";
                 }
@@ -65,18 +63,26 @@ namespace SpartaDungeon
 
         public void EnterStore(Character player)
         {
-            if (player.CharacterJobType == JobType.Warrior)
+            if (player.Job == "전사")
             {
                 StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("1")
                     || item.ItemNum.StartsWith("0")).ToList();
-                //StoreItemList = WarriorItemList;
 
             }
-            else if (player.CharacterJobType == JobType.Mage)
+            else if (player.Job == "궁수")
+            {
+                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("2")
+                    || item.ItemNum.StartsWith("0")).ToList();
+            }
+            else if (player.Job == "도적")
+            {
+                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("3")
+                    || item.ItemNum.StartsWith("0")).ToList();
+            }
+            else if (player.Job == "마법사")
             {
                 StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("4")
                     || item.ItemNum.StartsWith("0")).ToList();
-                //StoreItemList = MageItemList;
             }
 
             while (true)
@@ -185,16 +191,16 @@ namespace SpartaDungeon
                     }
                     else if (select > 0 && select <= SelectTypeItemList.Count)
                     {
-                        if (player.Gold >= StoreItemList[select - 1].Price && StoreItemList[select - 1].IsPurchased == false)
+                        if (player.Gold >= SelectTypeItemList[select - 1].Price && SelectTypeItemList[select - 1].IsPurchased == false)
                         {
-                            StoreItemList[select - 1].IsPurchased = true;
-                            player.Gold -= StoreItemList[select - 1].Price;
-                            player.Inventory.Add(StoreItemList[select - 1]);
+                            SelectTypeItemList[select - 1].IsPurchased = true;
+                            player.Gold -= SelectTypeItemList[select - 1].Price;
+                            player.Inventory.Add(SelectTypeItemList[select - 1]);
                             Console.Clear();
-                            Console.WriteLine($"\"{StoreItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
+                            Console.WriteLine($"\"{SelectTypeItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
                             Console.WriteLine();
                         }
-                        else if (StoreItemList[select - 1].IsPurchased == true)
+                        else if (SelectTypeItemList[select - 1].IsPurchased == true)
                         {
                             Console.Clear();
                             Console.WriteLine("이미 구매된 아이템입니다.");

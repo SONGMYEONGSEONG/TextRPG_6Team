@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Newtonsoft.Json;
-using SpartaDungeon;
 
 namespace SpartaDungeon
 {
@@ -13,104 +12,77 @@ namespace SpartaDungeon
     {
         public List<Item> Inventory = new List<Item>();
 
-        public MyInventory() 
+        // json 파일에서 데이터를 불러오는 메소드
+        private List<Item> LoadItemsFromJson(string path)
         {
-            //json데이터 넣어주기
-            string relativePath = "../../../Data/items.json";
-            string jsonFilePath = Path.GetFullPath(relativePath);
+            string jsonFilePath = Path.GetFullPath(path);
             if (File.Exists(jsonFilePath))
             {
                 string jsonContent = File.ReadAllText(jsonFilePath);
-                List<Item> items = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
-                Inventory = items.FindAll(item => item.IsPurchased == true);
+                return JsonConvert.DeserializeObject<List<Item>>(jsonContent);
             }
-            
+            return new List<Item>();
+        }
+
+        // 기본 생성자: 구매된 아이템만 추가
+        public MyInventory()
+        {
+            string relativePath = "../../../Data/items.json";
+            List<Item> items = LoadItemsFromJson(relativePath);
+            Inventory = items.FindAll(item => item.IsPurchased == true);
+        }
+
+        // 직업에 따른 초기 인벤토리 셋팅
+        public MyInventory(string job)
+        {
+            string relativePath = "../../../Data/items.json";
+            List<Item> items = LoadItemsFromJson(relativePath);
+            Inventory = items.FindAll(item => item.IsPurchased == true);
+
+            if (job == "전사")
+            {
+                // 전사 시작템
+                AddInventory(items.Find(item => item.ItemNum == "101"));
+            }
+            else if (job == "궁수")
+            {
+                // 궁수 시작템
+                AddInventory(items.Find(item => item.ItemNum == "201"));
+            }
+            else if (job == "도적")
+            {
+                // 도적 시작템
+                AddInventory(items.Find(item => item.ItemNum == "301"));
+            }
+            else if (job == "마법사")
+            {
+                // 마법사 시작템
+                AddInventory(items.Find(item => item.ItemNum == "401"));
+            }
+        }
+
+        public void AddInventory(Item newItem)
+        {
+            newItem.IsPurchased = true;
+            Inventory.Add(newItem);
+            Console.WriteLine($"\"{newItem.Name}\" 아이템이 인벤토리에 추가되었습니다.");
 
         }
 
-        public void AddInventory()
-        { 
-            
+        public void DelInventory (Item delItem)
+        {
+            if (!delItem.IsPurchased)
+            {
+                if (Inventory.Contains(delItem))
+                {
+                    Inventory.Remove(delItem);
+                    Console.WriteLine($"\"{delItem.Name}\" 아이템이 인벤토리에서 제거되었습니다.");
+                }
+                else
+                {
+                    Console.WriteLine($"\"{delItem.Name}\" 아이템은 인벤토리에 존재하지 않습니다.");
+                }
+            }
         }
-
-       
-
-        //public void ShowInventory(Character player)
-        //{
-        //    while (true)
-        //    {
-        //        Console.WriteLine("[테스트]" + player.Name + "의 인벤토리");
-        //        Console.WriteLine();
-        //        Console.WriteLine("[아이템 목록]");
-        //        for (int i = 0; i < Inventory.Count; i++)
-        //        {
-        //            string itemEquipState = (Inventory[i] == player.EquipWeapon || Inventory[i] == player.EquipArmor) ? "[E]" : "";
-
-        //            Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-        //            Console.WriteLine($" [{i + 1}] {itemEquipState}{Inventory[i].Name}({Inventory[i].ItemTypeKorean})" +
-        //                              $" | {Inventory[i].Description}" +
-        //                              $" | 공격력 +{Inventory[i].Atk}" +
-        //                              $" 방어력 +{Inventory[i].Def}" +
-        //                              $" 추가체력 +{Inventory[i].AdditionalHP}" +
-        //                              $" | {Inventory[i].Price}G |");
-        //        }
-        //        Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-        //        Console.WriteLine();
-        //        Console.WriteLine("아이템 번호를 입력하면 해당 아이템을 장착하거나 해제할 수 있습니다.");
-        //        Console.WriteLine("주무기, 보조무기, 갑옷을 한 개씩 장착할 수 있습니다.");
-        //        Console.WriteLine();
-        //        Console.WriteLine("[0] 나가기");
-        //        Console.WriteLine();
-        //        Console.Write(">> ");
-
-        //        string input = Console.ReadLine();
-
-        //        int select;
-        //        bool isNum = int.TryParse(input, out select);
-
-        //        if (isNum)
-        //        {
-        //            if (select == 0) break;
-        //            else if (select > 0 && select <= Inventory.Count && Inventory[select - 1].ItemType == ITEMTYPE.HealingItem)
-        //            {
-        //                Console.Clear();
-        //                if (player.CurrentHp == player.TotalMaxHp)
-        //                {
-        //                    Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-        //                    Console.WriteLine("이미 최대 체력 상태입니다.");
-        //                    Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-        //                }
-        //                else
-        //                {
-        //                    RecoverySystem recovery = new RecoverySystem(player.TotalMaxHp, player.CurrentHp);
-        //                    player.CurrentHp = recovery.HpRecover(Inventory[select - 1].ItemNum);
-        //                    Console.WriteLine($"현재 체력: {player.CurrentHp}/{player.TotalMaxHp}");
-        //                    Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-        //                }
-
-        //            }
-        //            else if (select > 0 && select <= Inventory.Count)
-        //            {
-        //                player.ManageItemEquip(Inventory[select - 1]);
-        //                Console.Clear();
-        //            }
-        //            else
-        //            {
-        //                Console.Clear();
-        //                Console.WriteLine("목록에 없는 숫자를 입력했습니다.");
-        //                Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
-        //                Console.WriteLine();
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Console.Clear();
-        //            Console.WriteLine("잘못된 입력입니다.");
-        //            Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
-        //            Console.WriteLine();
-        //        }
-        //    }
-        //    Console.Clear();
-        //}
     }
 }
