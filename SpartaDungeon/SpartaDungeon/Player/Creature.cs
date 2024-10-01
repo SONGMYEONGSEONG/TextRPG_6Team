@@ -28,5 +28,7 @@ namespace SpartaDungeon
         public float Luck { get; set; }         // Luc of Luk   : 행운. 공격 크리티컬 확률, 보상에 영향
 
         public int Gold { get; set; }
+
+        public string GainItem { get; set; }
     }
 }
