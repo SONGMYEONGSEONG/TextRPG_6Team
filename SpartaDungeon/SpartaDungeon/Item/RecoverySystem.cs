@@ -4,25 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpartaDungeon.Heal
+namespace SpartaDungeon
 {
     internal class RecoverySystem
     {
-        public int? CurrentHP { get; private set; }
-        public int MaxHP { get; private set; }
+        public float? CurrentHP { get; private set; }
+        public float MaxHP { get; private set; }
 
         // 회복량을 저장하는 변수
         private int recoveryAmount;
 
         // 생성자: 초기 체력과 최대 체력을 설정
-        public RecoverySystem(int maxHP, int? currentHP)
+        public RecoverySystem(float maxHP, float? currentHP)
         {
             MaxHP = maxHP;
             CurrentHP = currentHP;
         }
 
         // 회복 기능
-        public int? HpRecover(string itemNum)
+        public float? HpRecover(string itemNum)
         {
             //포션종류에 따른 회복량
             if (itemNum == "007") { recoveryAmount = 100; }
