@@ -20,5 +20,10 @@
             // 추적화살
             // 회피 불가
         }
+
+        public override void AllPrint()
+        {
+
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace SpartaDungeon
     {
         public string Name { get; set; }
         public int Level { get; set; }
+        public int Exp { get; set; } // EXP(경험치) 작업하면서 변수 추가 - 20241001송명성
 
         public float MaxHp { get; set; }
         public float? CurrentHp { get; set; }
