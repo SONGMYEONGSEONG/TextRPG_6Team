@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -43,8 +44,15 @@ namespace SpartaDungeon
                     if (_questData.Value.RewardType != "")
                     {
                         _strbuilder.AppendLine($"{_questData.Value.RewardType} x {_questData.Value.RewardValue} ");
-                        //Item rewardItem = new Item(ITEMTYPE.Armor, _questData.Value.RewardType, 300, 0, 3, 10, "쓸만해보이는 방패", true);
-                        //_curPlayer.inventory.Add(rewardItem);
+
+                        Item dropitem = ItemDataCall(_questData.Value.RewardType);
+
+                        if (dropitem == null)
+                        {
+                            Console.WriteLine("items.json이 존재하지 않습니다.");
+                        }
+
+                        _curPlayer.Inventory.Add(dropitem);
 
                     }
                     /*!Debug*/
@@ -194,6 +202,26 @@ namespace SpartaDungeon
         {
             _curPlayer.PlayerQuest = _questManager.AcceptedQuest;
             player = _curPlayer;
+        }
+
+        private Item ItemDataCall(string _itemName)
+        {
+            //Item 획득
+            string jsonFilePath = Path.GetFullPath("../../../Data/items.json");
+            List<Item> allItem = new List<Item>();
+            if (File.Exists(jsonFilePath))
+            {
+                string jsonContent = File.ReadAllText(jsonFilePath);
+                allItem = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
+            }
+            else
+            {
+                return null;
+            }
+
+            Item _dropItem = allItem.Find(item => item.Name == _itemName);
+
+            return _dropItem;
         }
     }
 }

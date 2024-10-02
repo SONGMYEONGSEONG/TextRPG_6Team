@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -749,22 +751,33 @@ namespace SpartaDungeon
                     _strbuilder.AppendLine($"\n축하합니다!! \n{_curPlayer.Name}의 Lv이 {_curPlayer.Level}로 레벨업 하였습니다!!");
                 }
 
-                //잡은 몬스터에 대한 골드보상 지급
+                //잡은 몬스터에 보상 문구 출력
                 _strbuilder.AppendLine("\n[획득 아이템]");
                 _strbuilder.AppendLine($"{_gainGold} Gold");
-               
+                foreach (string _itemName in _gainItem)
+                {
+                    _strbuilder.AppendLine($"{_itemName} - 1");
+                }
+
+                //잡은 몬스터의 보상 data 적용
                 if (!_isReward)
                 {
                     _isReward = true;
                     _curPlayer.Exp += _gainExp;
                     _curPlayer.Gold += _gainGold;
 
-                    //나중에 Item 코드 Merge 할때 변경 필요 + Player에게 적용하게 변경되야함
-                    foreach (string ItemName in _gainItem)
+                    foreach (string _itemName in _gainItem)
                     {
-                        _strbuilder.AppendLine($"{ItemName} - 1");
-                        //_curPlayer.Inventory.Add(/*Item*/);
+                        Item dropitem = ItemDataCall(_itemName);
+
+                        if (dropitem == null)
+                        {
+                            Console.WriteLine("items.json이 존재하지 않습니다.");
+                        }
+
+                        _curPlayer.Inventory.Add(dropitem);
                     }
+                   
                 }
 
                 _strbuilder.AppendLine("\n0. 다음\n");
@@ -784,6 +797,25 @@ namespace SpartaDungeon
             }
         }
 
+        private Item ItemDataCall(string _itemName)
+        {
+            //Item 획득
+            string jsonFilePath = Path.GetFullPath("../../../Data/items.json");
+            List<Item> allItem = new List<Item>();
+            if (File.Exists(jsonFilePath))
+            {
+                string jsonContent = File.ReadAllText(jsonFilePath);
+                allItem = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
+            }
+            else
+            { 
+                return null;
+            }
+
+            Item _dropItem = allItem.Find(item => item.Name == _itemName);
+
+            return _dropItem;
+        }
 
     }
 }
