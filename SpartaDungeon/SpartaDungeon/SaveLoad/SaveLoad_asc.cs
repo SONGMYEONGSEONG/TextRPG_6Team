@@ -21,23 +21,14 @@ namespace SpartaDungeon.SaveLoad
         public void SaveData<T>(T t, string name) where T : class
         {
             string relativePath = @$"../../../Data/{name}.json";
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
 
-            string jsonStr = JsonConvert.SerializeObject(t,Formatting.Indented, settings);
+            string jsonStr = JsonConvert.SerializeObject(t);
             File.WriteAllText(relativePath, jsonStr);
         }
 
         public T? LoadData<T>(string name) where T : class
         {
             string relativePath = @$"../../../Data/{name}.json";
-
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
 
             if (!File.Exists(relativePath))
             {
@@ -46,7 +37,7 @@ namespace SpartaDungeon.SaveLoad
             else
             {
                 string jsonStr = File.ReadAllText(relativePath);
-                T t = JsonConvert.DeserializeObject<T>(jsonStr, settings);
+                T t = JsonConvert.DeserializeObject<T>(jsonStr);
                 if (t == null)
                 {
                     return null;
