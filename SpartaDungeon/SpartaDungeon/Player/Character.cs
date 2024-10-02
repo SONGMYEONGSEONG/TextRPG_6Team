@@ -164,59 +164,6 @@ namespace SpartaDungeon
 
         }
 
-        // 플레이어 스탯 Load (저장/불러오기 기능)
-        public void LoadData(/*Character _charcter*/)
-        {
-            //.json으로 역직렬화 통해서 Data 전부 초기화함
-
-            //Name = _charcter.Name;
-            //Level = _charcter.Level;
-            //Exp = _charcter.Exp;
-            //MaxExp = _charcter.MaxExp;
-            //CurrentHp = _charcter.CurrentHp;
-            //MaxHp = _charcter.MaxHp;
-            //CurrentMp = _charcter.CurrentMp;
-            //MaxMp = _charcter.MaxMp;
-            //Attack = _charcter.Attack;
-            //Defense = _charcter.Defense;
-            //Agility = _charcter.Agility;
-            //Accuracy = _charcter.Accuracy;
-            //Luck = _charcter.Luck;
-            //Gold = _charcter.Gold;
-            //CharacterJobType = _charcter.CharacterJobType;
-            //Job = _charcter.Job;
-
-            //스킬 로드
-            switch (CharacterJobType)
-            {
-                case JobType.Warrior:
-                    SkillDeck = new WarriorSkill();
-                    break;
-
-                case JobType.Rogue:
-                    SkillDeck = new RogueSkill();
-                    break;
-
-                case JobType.Archer:
-                    SkillDeck = new ArcherSkill();
-                    break;
-
-                case JobType.Mage:
-                    SkillDeck = new MageSkill();
-                    break;
-            }
-
-            //퀘스트 로드
-
-
-            //인벤토리 로드
-
-
-            //장착템 로드
-
-
-        }
-
         // 플레이어 상태 보기
         public void DisplayStatus()
         {

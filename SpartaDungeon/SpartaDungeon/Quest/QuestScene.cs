@@ -52,7 +52,7 @@ namespace SpartaDungeon
                             Console.WriteLine("items.json이 존재하지 않습니다.");
                         }
 
-                        _curPlayer.Inventory.Add(dropitem);
+                        _curPlayer.myInventory.Inventory.Add(dropitem);
 
                     }
                     /*!Debug*/
