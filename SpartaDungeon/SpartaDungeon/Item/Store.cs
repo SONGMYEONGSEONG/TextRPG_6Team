@@ -39,15 +39,14 @@ namespace SpartaDungeon
             Console.WriteLine();
             Console.WriteLine($"{itemType}[상점 아이템 목록]");
            
-            SelectTypeItemList = StoreItemList.FindAll(item => item.ItemType == itemType);
+            SelectTypeItemList = StoreItemList.FindAll(item => item.ItemType == itemType && item.IsNotForSale == false);
             PlayerInventory = player.myInventory.Inventory;
 
             for (int i = 0; i < SelectTypeItemList.Count; i++)
             {
                 string completedPurchase = "";
-
+                
                 var matchedItem = PlayerInventory.Find(item => item.ItemNum == SelectTypeItemList[i].ItemNum);
-
                 if (matchedItem != null && matchedItem.Count > 0)
                 {
                     completedPurchase = $"({matchedItem.Count}개 보유)";
@@ -190,19 +189,18 @@ namespace SpartaDungeon
                     }
                     else if (select > 0 && select <= SelectTypeItemList.Count)
                     {
-                        if (player.Gold >= SelectTypeItemList[select - 1].Price && SelectTypeItemList[select - 1].IsPurchased == false)
+                        if (player.Gold >= SelectTypeItemList[select - 1].Price)
                         {
-                            SelectTypeItemList[select - 1].IsPurchased = true;
                             player.Gold -= SelectTypeItemList[select - 1].Price;
-                            player.myInventory.Inventory.Add(SelectTypeItemList[select - 1]);
+                            player.myInventory.AddInventory(SelectTypeItemList[select - 1]);
                             Console.Clear();
                             Console.WriteLine($"\"{SelectTypeItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
                             Console.WriteLine();
                         }
-                        else if (SelectTypeItemList[select - 1].IsPurchased == true)
+                        else
                         {
                             Console.Clear();
-                            Console.WriteLine("이미 구매된 아이템입니다.");
+                            Console.WriteLine("Gold가 부족합니다.");
                             Console.WriteLine();
                         }
                     }
