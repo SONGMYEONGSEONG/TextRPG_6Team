@@ -226,7 +226,7 @@ namespace SpartaDungeon
         {
             while (true)
             {
-                Console.WriteLine("소유한 아이템을 정가의 85%로 판매할 수 있습니다.");
+                Console.WriteLine("소유한 아이템을 정가의 50%로 판매할 수 있습니다.");
                 Console.WriteLine("현재 소지금: {0}G", player.Gold);
                 Console.WriteLine();
                 Console.WriteLine("내 인벤토리");
@@ -240,7 +240,8 @@ namespace SpartaDungeon
                                       $" | 공격력 +{player.myInventory.Inventory[i].Atk}" +
                                       $" 방어력 +{player.myInventory.Inventory[i].Def}" +
                                       $" 추가체력 +{player.myInventory.Inventory[i].AdditionalHP}" +
-                                      $" | 판매 금액: {(int)(player.myInventory.Inventory[i].Price * 0.85f)}G |");
+                                      $" | 판매 금액: {(int)(player.myInventory.Inventory[i].Price * 0.5f)}G |" +
+                                      $" [ {player.myInventory.Inventory[i].Count} 개 |");
                 }
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
 
@@ -263,15 +264,14 @@ namespace SpartaDungeon
                     }
                     else if (select > 0 && select <= player.myInventory.Inventory.Count)
                     {
-                        player.myInventory.Inventory[select - 1].IsPurchased = false;
-                        player.Gold += (int)(player.myInventory.Inventory[select - 1].Price * 0.85f);
+                        player.Gold += (int)(player.myInventory.Inventory[select - 1].Price * 0.5f);
                         AddSellItemToStoreItemList(player.myInventory.Inventory[select - 1]);
                         UnWearItemSell(player, player.myInventory.Inventory[select - 1]);
                         Console.Clear();
                         Console.WriteLine($"\"{player.myInventory.Inventory[select - 1].Name}\" 을" +
-                                          $"{(int)(player.myInventory.Inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
+                                          $"{(int)(player.myInventory.Inventory[select - 1].Price * 0.5f)}G 에 판매하셨습니다.");
                         Console.WriteLine();
-                        player.myInventory.Inventory.RemoveAt(select - 1);                        
+                        player.myInventory.DelInventory(player.myInventory.Inventory[select - 1]);                        
                     }
                     else
                     {
