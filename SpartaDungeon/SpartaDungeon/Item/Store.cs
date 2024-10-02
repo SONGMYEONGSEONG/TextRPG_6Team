@@ -241,7 +241,7 @@ namespace SpartaDungeon
                                       $" 방어력 +{player.myInventory.Inventory[i].Def}" +
                                       $" 추가체력 +{player.myInventory.Inventory[i].AdditionalHP}" +
                                       $" | 판매 금액: {(int)(player.myInventory.Inventory[i].Price * 0.5f)}G |" +
-                                      $" [ {player.myInventory.Inventory[i].Count} 개 |");
+                                      $"  {player.myInventory.Inventory[i].Count} 개 |");
                 }
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
 
@@ -265,7 +265,6 @@ namespace SpartaDungeon
                     else if (select > 0 && select <= player.myInventory.Inventory.Count)
                     {
                         player.Gold += (int)(player.myInventory.Inventory[select - 1].Price * 0.5f);
-                        AddSellItemToStoreItemList(player.myInventory.Inventory[select - 1]);
                         UnWearItemSell(player, player.myInventory.Inventory[select - 1]);
                         Console.Clear();
                         Console.WriteLine($"\"{player.myInventory.Inventory[select - 1].Name}\" 을" +
@@ -288,23 +287,6 @@ namespace SpartaDungeon
                     Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
                     Console.WriteLine();
                 }
-            }
-        }
-
-        // 판매한 아이템이 상점 아이템 리스트에 있는지 체크
-        void AddSellItemToStoreItemList(Item sellItem)
-        {
-            bool isExist = false;
-            foreach (Item item in StoreItemList)
-            {
-                if (item == sellItem)
-                {
-                    isExist = true;
-                }
-            }
-            if (!isExist)
-            {
-                StoreItemList.Add(sellItem);
             }
         }
 
