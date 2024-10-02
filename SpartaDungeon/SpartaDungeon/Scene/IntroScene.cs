@@ -13,17 +13,30 @@
             Console.WriteLine("Sparta Dungeon");
             Console.WriteLine("게임 시작");
             Console.WriteLine("Press Enter to Start.");
+            Console.WriteLine("\n[1] 저장된 게임 불러오기");
+            Console.WriteLine("[2] 새 게임 시작\n");
             Console.Write(">> ");
             string? input = Console.ReadLine();
 
-            if (input != null)
+            if (input == "1")
+            {
+                Console.Clear();
+                player = mainScene.LoadGame();
+                if (player == null)
+                {
+                    Console.WriteLine("저장된 게임이 없습니다. 새 게임을 시작합니다.");
+                    SetPlayerName();
+                }
+                else
+                {
+                    mainScene.VillageScene(player);
+                }
+            }
+            else if (input == "2")
             {
                 Console.Clear();
                 SetPlayerName();
             }
-
-            // [1] 저장된 게임
-            // [2] 새 게임
         }
 
         void SetPlayerName()
