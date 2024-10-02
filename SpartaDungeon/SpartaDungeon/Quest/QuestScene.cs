@@ -28,7 +28,7 @@ namespace SpartaDungeon
         public void SceneStart()
         {
             //클리어된 퀘스트 있는지 체크
-            foreach (KeyValuePair<int, Quest> _questData in _questManager.AcceptedQuest)
+            foreach (KeyValuePair<int, Quest> _questData in _curPlayer.PlayerQuest)
             {
                 if (_questData.Value.QuestCheck(_curPlayer))
                 {
@@ -41,18 +41,33 @@ namespace SpartaDungeon
 
                     /*Debug*/
                     //아이템 퀘스트 보상
-                    if (_questData.Value.RewardType != "")
+                    if (_questData.Value.RewardItemName != "")
                     {
-                        _strbuilder.AppendLine($"{_questData.Value.RewardType} x {_questData.Value.RewardValue} ");
+                        _strbuilder.AppendLine($"{_questData.Value.RewardItemName} x {_questData.Value.RewardValue} ");
 
-                        Item dropitem = _curPlayer.myInventory.ItemDataCall(_questData.Value.RewardType);
+                        int dropItemIndex;
 
-                        if (dropitem == null)
+                        dropItemIndex = _curPlayer.myInventory.Inventory.FindIndex(item => item.Name == _questData.Value.RewardItemName);
+
+                        if (dropItemIndex == -1)
                         {
-                            Console.WriteLine("items.json이 존재하지 않습니다.");
+                            Item rewarditem = _curPlayer.myInventory.ItemDataCall(_questData.Value.RewardItemName);
+                            rewarditem.Count++;
+                            _curPlayer.myInventory.Inventory.Add(rewarditem);
+                        }
+                        else
+                        {
+                            _curPlayer.myInventory.Inventory[dropItemIndex].Count++;
                         }
 
-                        _curPlayer.myInventory.Inventory.Add(dropitem);
+                        //Item dropitem = _curPlayer.myInventory.ItemDataCall(_questData.Value.RewardType);
+
+                        //if (dropitem == null)
+                        //{
+                        //    Console.WriteLine("items.json이 존재하지 않습니다.");
+                        //}
+
+                        //_curPlayer.myInventory.Inventory.Add(dropitem);
 
                     }
                     /*!Debug*/
@@ -66,7 +81,7 @@ namespace SpartaDungeon
 
                     Console.WriteLine(_strbuilder.ToString());
                     //수락한 퀘스트 리스트에서 제거
-                    _questManager.AcceptedQuest.Remove(_questData.Key);
+                    _curPlayer.PlayerQuest.Remove(_questData.Key);
 
                     Console.ReadLine();
                 }
@@ -100,7 +115,7 @@ namespace SpartaDungeon
 
             _strbuilder.AppendLine("[현재 수락중인 퀘스트]\n");
 
-            foreach (KeyValuePair<int, Quest> _questData in _questManager.AcceptedQuest)
+            foreach (KeyValuePair<int, Quest> _questData in _curPlayer.PlayerQuest)
             {
                 _strbuilder.AppendLine($"- {_questData.Value.Label}");
             }
@@ -114,25 +129,42 @@ namespace SpartaDungeon
             {
                 Console.Clear();
                 _questManager.Print(_questselectID);
-                QuestAcceptCheckPrint();
+
+                //이미 완료한 퀘스트인경우 수락/거절 선택지를 제공하지 않음
+                if (_questManager.Quests[_questselectID].IsFinish)
+                {
+                    _strbuilder.Clear();
+                    _strbuilder.AppendLine("해당 퀘스트는 이미 완료 하셨습니다.");   
+                }
+                else if (_curPlayer.PlayerQuest.ContainsKey(_questselectID))
+                {
+                    _strbuilder.Clear();
+                    _strbuilder.AppendLine("해당 퀘스트는 진행 중 입니다.");
+                }
+                else
+                {
+                    QuestAcceptCheckPrint();
+                }
+
+                _strbuilder.AppendLine("0. 나가기");
+                _strbuilder.AppendLine("\n원하시는 행동을 입력해주세요.");
+                _strbuilder.AppendLine(">>");
+                Console.WriteLine(_strbuilder.ToString());
 
                 string _input = Console.ReadLine();
 
                 switch (_input)
                 {
+                    case "0": //나가기
+                        return;
+
                     case "1": //수락
-                        if (!_questManager.Quests[_questselectID].IsFinish)
+                        if (!_curPlayer.PlayerQuest.ContainsKey(_questselectID))
                         {
-                            _questManager.QuestAccept(_questselectID);
-                            _curPlayer.PlayerQuest = _questManager.AcceptedQuest;
+                            _curPlayer.PlayerQuest.Add(_questselectID, _questManager.Quests[_questselectID]);
                         }
-                        else
-                        {
-                            _strbuilder.Clear();
-                            _strbuilder.AppendLine("해당 퀘스트는 이미 완료 하셨습니다.");
-                            Console.WriteLine(_strbuilder.ToString());
-                        }
-                        Console.ReadLine();
+                        //_questManager.QuestAccept(_questselectID);
+                        //_curPlayer.PlayerQuest = _questManager.AcceptedQuest;
                         return;
 
                     case "2": //거절
@@ -150,8 +182,6 @@ namespace SpartaDungeon
             _strbuilder.Clear();
             _strbuilder.AppendLine("1. 수락");
             _strbuilder.AppendLine("2. 거절");
-            _strbuilder.AppendLine("\n원하시는 행동을 입력해주세요.\n >>");
-            Console.Write(_strbuilder.ToString());
         }
 
         private void ErrorInput()
@@ -200,7 +230,7 @@ namespace SpartaDungeon
 
         public void SceneExit(ref Character player)
         {
-            _curPlayer.PlayerQuest = _questManager.AcceptedQuest;
+            //_curPlayer.PlayerQuest = _questManager.AcceptedQuest;
             player = _curPlayer;
         }
 

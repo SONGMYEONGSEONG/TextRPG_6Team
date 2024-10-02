@@ -39,7 +39,7 @@ namespace SpartaDungeon
         public int CurProgressRequired { get; set; }
         public int EndProgressRequired { get; set; }
         public bool IsFinish { get; set; }
-        public string RewardType { get; set; }
+        public string RewardItemName { get; set; }
         public string RewardValue { get; set; }
         public int RewardGold { get; set; }
         public QuestType Type;

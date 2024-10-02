@@ -242,8 +242,9 @@ namespace SpartaDungeon
                                       $" | 공격력 +{player.myInventory.Inventory[i].Atk}" +
                                       $" 방어력 +{player.myInventory.Inventory[i].Def}" +
                                       $" 추가체력 +{player.myInventory.Inventory[i].AdditionalHP}" +
-                                      $" | 판매 금액: {(int)(player.myInventory.Inventory[i].Price * 0.85f)}G |");
-                }
+                                      $" | 판매 금액: {(int)(player.myInventory.Inventory[i].Price * 0.85f)}G |" +
+                                      $" | 소유 갯수: {(int)(player.myInventory.Inventory[i].Count)}개|");
+            }
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
 
                 Console.WriteLine("[0] 나가기");
@@ -273,7 +274,16 @@ namespace SpartaDungeon
                         Console.WriteLine($"\"{player.myInventory.Inventory[select - 1].Name}\" 을" +
                                           $"{(int)(player.myInventory.Inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
                         Console.WriteLine();
-                        player.myInventory.Inventory.RemoveAt(select - 1);                        
+
+                        //아이템이 2개 이상인경우 1개만 판매하게 되는 로직
+                        if (player.myInventory.Inventory[select - 1].Count > 1)
+                        {
+                            player.myInventory.Inventory[select - 1].Count--;
+                        }
+                        else
+                        {
+                            player.myInventory.Inventory.RemoveAt(select - 1);
+                        }
                     }
                     else
                     {

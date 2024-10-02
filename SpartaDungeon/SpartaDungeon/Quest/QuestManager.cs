@@ -15,6 +15,8 @@ namespace SpartaDungeon
         Dictionary<int, Quest> _acceptedQuest; //플레이어가 수락한 퀘스트 
         public Dictionary<int, Quest> AcceptedQuest {  get { return _acceptedQuest; } }
 
+        
+
         public QuestManager()
         {
             string csvFilePath = @"..\..\..\Data\TextRPG_Quest.csv";
@@ -53,7 +55,7 @@ namespace SpartaDungeon
                     quest.CurProgressRequired = int.Parse(values[4]);
                     quest.EndProgressRequired = int.Parse(values[5]);
                     quest.IsFinish = bool.Parse(values[6]);
-                    quest.RewardType = values[7];
+                    quest.RewardItemName = values[7];
                     quest.RewardValue = values[8];
                     quest.RewardGold = int.Parse(values[9]);
                     quest.Type = (QuestType)Enum.Parse(typeof(QuestType), values[10]);
@@ -96,9 +98,9 @@ namespace SpartaDungeon
             _strbuilder.AppendLine();
             _strbuilder.AppendLine("-보상-");
 
-            if (_quests[_questID].RewardType != "")
+            if (_quests[_questID].RewardItemName != "")
             {
-                _strbuilder.AppendLine($"{_quests[_questID].RewardType} x {_quests[_questID].RewardValue}");
+                _strbuilder.AppendLine($"{_quests[_questID].RewardItemName} x {_quests[_questID].RewardValue}");
             }
             if (_quests[_questID].RewardGold != 0)
             {

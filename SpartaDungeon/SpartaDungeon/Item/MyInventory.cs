@@ -131,7 +131,7 @@ namespace SpartaDungeon
             }
         }
 
-        //외부에서 아이템 호출 기능
+        //외부에서 아이템 호출 기능 - 이름
         public Item ItemDataCall(string _itemName)
         {
             Item _dropItem = _allItemList.Find(item => item.Name == _itemName);

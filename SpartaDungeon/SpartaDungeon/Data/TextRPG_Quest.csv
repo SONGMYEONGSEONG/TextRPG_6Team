@@ -1,4 +1,4 @@
-﻿ID,Label,Detail,PurPose,CurProgress,EndProgress,IsFinish,RewardName,RewardCount,RewardGold,QuestType
+﻿ID,Label,Detail,PurPose,CurProgress,EndProgress,IsFinish,RewardItemNum,RewardCount,RewardGold,QuestType
 1,마을 사람들을 지켜라,안녕하신가? 내이름은 이촌장이라네.. \n 마을사람들이 위협받고 있으니 고블린을 잡아와주게,고블린,0,3,FALSE,쓸만한 모자,1,1000,MonsterKillCount
 2,장비를 장착하라,장비를 장착하면 강해진다 \n 한번 테스트 해보자,장비를 장착하기,0,1,FALSE,쓸만한 방패,1,500,EquipCheck
 3,스킬을 사용하자,스킬을 사용하면 더욱 강한 공격을 할 수 있다고 들었는데.. \n 한번 사용해보자,스킬을 사용하기,0,1,FALSE,,,100,UseSkill
