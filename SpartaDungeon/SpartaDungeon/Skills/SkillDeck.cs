@@ -8,21 +8,20 @@ namespace SpartaDungeon
 {
     internal class SkillDeck
     {
-        protected StringBuilder _strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
-        //protected List<Skill> _skillList;
+        public StringBuilder Strbuilder = new StringBuilder(); //문자열 최적화를 위한 스트링빌더 선언
         public List<Skill> SkillList { get; set; }
 
         public virtual void Print()
         {
-            _strbuilder.Clear();
-            _strbuilder.AppendLine();
+            Strbuilder.Clear();
+            Strbuilder.AppendLine();
 
             foreach (Skill skill in SkillList)
             {
-                _strbuilder.AppendLine($"{skill.ID + 1}. {skill.Name}({skill.MpCost}) : {skill.Description} ");
+                Strbuilder.AppendLine($"{skill.ID + 1}. {skill.Name}({skill.MpCost}) : {skill.Description} ");
             }
 
-            Console.Write(_strbuilder.ToString());
+            Console.Write(Strbuilder.ToString());
         }
 
         public virtual void SkillSet()

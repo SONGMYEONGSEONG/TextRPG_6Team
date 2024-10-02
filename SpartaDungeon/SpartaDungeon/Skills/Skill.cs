@@ -14,11 +14,11 @@
         /*Debug*/
         public int ID { get; set; }
         public SkillTargetType TargetType { get; set; }
-        public int TargetCount { get;  set; } //TargetCount : 스킬을 사용하는 횟수 , //Skill.SkillTargetType.RandomTarget 일때만 사용되는 변수 그 외는 0으로 설정하면됨
+        public int TargetCount { get; set; } //TargetCount : 스킬을 사용하는 횟수 , //Skill.SkillTargetType.RandomTarget 일때만 사용되는 변수 그 외는 0으로 설정하면됨
         public float SkillValue { get; set; } //스킬 계수
         /*Debug*/
         public string Name { get; set; }
-        public float MpCost { get;  set; }
+        public float MpCost { get; set; }
         public string Description { get; set; }
 
         /*Debug*/
