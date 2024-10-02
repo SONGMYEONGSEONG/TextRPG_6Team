@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SpartaDungeon
 {
@@ -42,7 +43,7 @@ namespace SpartaDungeon
         public float ExtraLuck { get; set; }
         public float TotalLuck { get; set; }
 
-        public float? Intelligence { get; set; }
+        //public float? Intelligence { get; set; }
         // public float ExtraIntelligence { get; set; }
         // public float TotalIntelligence { get; set; }
 
@@ -87,7 +88,7 @@ namespace SpartaDungeon
             Agility = 10f;
             Accuracy = 10f;
             Luck = 10f;
-            Intelligence = null;
+            //Intelligence = null;
             Gold = 500;
 
             if (_jobTypeNum == (int)JobType.Warrior)
@@ -132,7 +133,7 @@ namespace SpartaDungeon
                 Agility = 5f;
                 Accuracy = 5f;
                 Luck = 15f;
-                Intelligence = 20f;
+                //Intelligence = 20f;
                 SkillDeck = new MageSkill();
             }
 
@@ -196,6 +197,59 @@ namespace SpartaDungeon
 
         }
 
+        // 플레이어 스탯 Load (저장/불러오기 기능)
+        public void LoadData(/*Character _charcter*/)
+        {
+            //.json으로 역직렬화 통해서 Data 전부 초기화함
+
+            //Name = _charcter.Name;
+            //Level = _charcter.Level;
+            //Exp = _charcter.Exp;
+            //MaxExp = _charcter.MaxExp;
+            //CurrentHp = _charcter.CurrentHp;
+            //MaxHp = _charcter.MaxHp;
+            //CurrentMp = _charcter.CurrentMp;
+            //MaxMp = _charcter.MaxMp;
+            //Attack = _charcter.Attack;
+            //Defense = _charcter.Defense;
+            //Agility = _charcter.Agility;
+            //Accuracy = _charcter.Accuracy;
+            //Luck = _charcter.Luck;
+            //Gold = _charcter.Gold;
+            //CharacterJobType = _charcter.CharacterJobType;
+            //Job = _charcter.Job;
+
+            //스킬 로드
+            switch (CharacterJobType)
+            {
+                case JobType.Warrior:
+                    //SkillDeck = new Warriorkill();
+                    break;
+
+                case JobType.Rogue:
+                    SkillDeck = new RogueSkill();
+                    break;
+
+                case JobType.Archer:
+                    SkillDeck = new ArcherSkill();
+                    break;
+
+                case JobType.Mage:
+                    SkillDeck = new MageSkill();
+                    break;
+            }
+
+            //퀘스트 로드
+
+
+            //인벤토리 로드
+
+
+            //장착템 로드
+
+
+        }
+
         // 플레이어 상태 보기
         public void DisplayStatus()
         {
@@ -210,10 +264,10 @@ namespace SpartaDungeon
                 Console.WriteLine($"마력: {CurrentMp} / {TotalMaxMp} ({MaxMp} +{ExtraMp})");
                 Console.WriteLine($"공격력: {TotalAttack}");
                 Console.WriteLine($"방어력: {TotalDefense}");
-                if (Intelligence != null)
-                {
-                    Console.WriteLine($"지능: {Intelligence}");
-                }
+                //if (Intelligence != null)
+                //{
+                //    Console.WriteLine($"지능: {Intelligence}");
+                //}
                 Console.WriteLine($"민첩: {Agility}");
                 Console.WriteLine($"명중: {Accuracy}");
                 Console.WriteLine($"행운: {Luck}");
@@ -279,13 +333,13 @@ namespace SpartaDungeon
                         {
                             ManageItemEquip(selectItem);
                             Console.Clear();
-                        } 
-                        else if(selectItem.ItemType == ITEMTYPE.HealingItem)
+                        }
+                        else if (selectItem.ItemType == ITEMTYPE.HealingItem)
                         {
                             ManageRecovery(selectItem);
                             Console.Clear();
                         }
-                        
+
                     }
                     else
                     {
@@ -345,14 +399,14 @@ namespace SpartaDungeon
                 recoverySystem.InitializeMp(MaxMp, CurrentMp);
                 CurrentMp = recoverySystem.HpRecover(selectItem.ItemNum);
             }
-            
+
         }
 
         /* EXP(경험치) 작업하면서 변수 추가 - 20241001송명성*/
         //외부에서 호출되는 레벨업 체크 함수
         public bool LevelUpCheck()
         {
-            if(Exp >= MaxExp)
+            if (Exp >= MaxExp)
             {
                 Exp -= MaxExp;
                 Level++;

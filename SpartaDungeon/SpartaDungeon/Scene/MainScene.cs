@@ -27,12 +27,15 @@ namespace SpartaDungeon
         EnemyManager _enemyManager = new EnemyManager();
         StageSelectScene _stageSelectScene = new StageSelectScene();
         SummonArea _curSelectArea = SummonArea.Forest;
+        /*Debu*/
+        SMS_SaveLoadManager sms_SaveLoadManager = new SMS_SaveLoadManager();
 
         Store _store = new Store();
 
         public void VillageScene(Character character)
         {
             _enemyManager.Initialize();
+            sms_SaveLoadManager.SMS_Load(ref character);
 
             while (true)
             {
@@ -65,6 +68,9 @@ namespace SpartaDungeon
                     switch (chooceScene)
                     {
                         case ((int)MainSceneChoice.Save):
+                            /*Debug*/
+                            sms_SaveLoadManager.SMS_Save(character);
+                            /*Debug*/
                             Console.Clear();
                             break;
                         case ((int)MainSceneChoice.Status):
