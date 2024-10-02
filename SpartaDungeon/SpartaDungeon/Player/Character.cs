@@ -79,6 +79,7 @@ namespace SpartaDungeon
                 Attack = 15f;
                 Defense = 15f;
                 SkillDeck = new WarriorSkill();
+                SkillDeck.SkillSet();
             }
             else if (_jobTypeNum == (int)JobType.Rogue)
             {
@@ -88,6 +89,7 @@ namespace SpartaDungeon
                 Agility = 15f;
                 Luck = 20f;
                 SkillDeck = new RogueSkill();
+                SkillDeck.SkillSet();
             }
             else if (_jobTypeNum == (int)JobType.Archer)
             {
@@ -100,6 +102,7 @@ namespace SpartaDungeon
                 Agility = 20f;
                 Accuracy = 15f;
                 SkillDeck = new ArcherSkill();
+                SkillDeck.SkillSet();
             }
             else if (_jobTypeNum == (int)JobType.Mage)
             {
@@ -113,6 +116,7 @@ namespace SpartaDungeon
                 Accuracy = 5f;
                 Luck = 15f;
                 SkillDeck = new MageSkill();
+                SkillDeck.SkillSet();
             }
 
             //-----플레이어 생성 시 인벤토리 초기화------
