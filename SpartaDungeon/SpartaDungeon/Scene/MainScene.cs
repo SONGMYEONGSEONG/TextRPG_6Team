@@ -32,7 +32,7 @@ namespace SpartaDungeon
 
         Store _store = new Store();
 
-        public void VillageScene(Character character)
+        public void VillageScene(Character _player)
         {
             _enemyManager.Initialize();
 
@@ -40,7 +40,7 @@ namespace SpartaDungeon
             {
                 Console.Clear();
                 // 메인 화면 올때마다 플레이어 스텟 최신화
-                character.UpdateStat();
+                _player.UpdateStat();
 
                 Console.WriteLine("마을에서 다음 활동을 선택할 수 있습니다.\n");
                 Console.WriteLine("[1] 상태 보기");
@@ -68,21 +68,21 @@ namespace SpartaDungeon
                     {
                         case ((int)MainSceneChoice.Save):
                             Console.Clear();
-                            SaveGame(character);
+                            SaveGame(_player);
                             break;
                         case ((int)MainSceneChoice.Status):
                             Console.Clear();
-                            character.DisplayStatus();
+                            _player.DisplayStatus();
                             break;
                         case ((int)MainSceneChoice.Inventory):
                             Console.Clear();
-                            character.DisplayInventory();
+                            _player.DisplayInventory();
                             break;
                         case ((int)MainSceneChoice.EnterDungeon):
                             Console.Clear();
-                            _battleScene.Initialize(character, _enemyManager.GetEnemies(_curSelectArea));
+                            _battleScene.Initialize(_player, _enemyManager.GetEnemies(_curSelectArea));
                             _battleScene.SceneStart();
-                            _battleScene.SceneExit(ref character);
+                            _battleScene.SceneExit(ref _player);
                             break;
                         case ((int)MainSceneChoice.DungeonStage):
                             Console.Clear();
@@ -92,16 +92,16 @@ namespace SpartaDungeon
                             break;
                         case ((int)MainSceneChoice.Quest):
                             Console.Clear();
-                            _questScene.Initialize(character);
+                            _questScene.Initialize(_player);
                             _questScene.SceneStart();
-                            _questScene.SceneExit(ref character);
+                            _questScene.SceneExit(ref _player);
                             break;
                         case ((int)MainSceneChoice.Store):
                             Console.Clear();
-                            _store.EnterStore(character);
+                            _store.EnterStore(_player);
                             break;
                         case ((int)MainSceneChoice.Exit):
-                            ExitGame(character);
+                            ExitGame(_player);
                             break;
                         default:
                             Console.Clear();
