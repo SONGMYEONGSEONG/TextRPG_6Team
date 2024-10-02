@@ -101,7 +101,7 @@ namespace SpartaDungeon
                             _store.EnterStore(character);
                             break;
                         case ((int)MainSceneChoice.Exit):
-                            // 종료 호출
+                            ExitGame(character);
                             break;
                         default:
                             Console.Clear();
@@ -135,6 +135,13 @@ namespace SpartaDungeon
                 Character player = saveLoad.LoadData<Character>("player");
                 return player;
             }
+        }
+
+        void ExitGame(Character _player)
+        {
+            SaveGame(_player);
+            Console.WriteLine("게임이 종료됩니다.");
+            Environment.Exit(0);
         }
     }
 }
