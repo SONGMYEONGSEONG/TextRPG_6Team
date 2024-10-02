@@ -12,6 +12,9 @@ namespace SpartaDungeon
     {
         public List<Item> Inventory = new List<Item>();
 
+        private List<Item> _allItemList;
+        private string jsonFilePath;
+
         // json 파일에서 데이터를 불러오는 메소드
         private List<Item> LoadItemsFromJson(string path)
         {
@@ -25,16 +28,28 @@ namespace SpartaDungeon
         }
 
         // 기본 생성자: 구매된 아이템만 추가
-        public MyInventory()
-        {
-            string relativePath = "../../../Data/items.json";
-            List<Item> items = LoadItemsFromJson(relativePath);
-            Inventory = items.FindAll(item => item.IsPurchased == true);
-        }
+        //기본 생성자로 사용하는 구간이 없어서 주석처리 하였음 - 20241002 송명성//
+        //public MyInventory()
+        //{
+        //    //플레이어 인벤토리 아이템 생성
+        //    string relativePath = "../../../Data/items.json";
+        //    List<Item> items = LoadItemsFromJson(relativePath);
+        //    Inventory = items.FindAll(item => item.IsPurchased == true);
+        //}
 
         // 직업에 따른 초기 인벤토리 셋팅
         public MyInventory(string job)
         {
+            //모든 아이템 .json 호출하여 하나의 컨테이너로 생성 - 20241002 솜영성// 
+            jsonFilePath = Path.GetFullPath("../../../Data/items.json");
+            _allItemList = new List<Item>();
+            if (File.Exists(jsonFilePath))
+            {
+                string jsonContent = File.ReadAllText(jsonFilePath);
+                _allItemList = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
+            }
+            //========================================================================//
+
             string relativePath = "../../../Data/items.json";
             List<Item> items = LoadItemsFromJson(relativePath);
 
@@ -114,6 +129,13 @@ namespace SpartaDungeon
             {
                 Console.WriteLine($"\"{delItem.Name}\" 아이템은 인벤토리에 존재하지 않습니다.");
             }
+        }
+
+        //외부에서 아이템 호출 기능
+        public Item ItemDataCall(string _itemName)
+        {
+            Item _dropItem = _allItemList.Find(item => item.Name == _itemName);
+            return _dropItem;
         }
     }
 }

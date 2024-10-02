@@ -777,7 +777,7 @@ namespace SpartaDungeon
 
                     foreach (string _itemName in _gainItem)
                     {
-                        Item dropitem = ItemDataCall(_itemName);
+                        Item dropitem = _curPlayer.myInventory.ItemDataCall(_itemName);
 
                         if (dropitem == null)
                         {
@@ -804,26 +804,6 @@ namespace SpartaDungeon
                         break;
                 }
             }
-        }
-
-        private Item ItemDataCall(string _itemName)
-        {
-            //Item 획득
-            string jsonFilePath = Path.GetFullPath("../../../Data/items.json");
-            List<Item> allItem = new List<Item>();
-            if (File.Exists(jsonFilePath))
-            {
-                string jsonContent = File.ReadAllText(jsonFilePath);
-                allItem = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
-            }
-            else
-            { 
-                return null;
-            }
-
-            Item _dropItem = allItem.Find(item => item.Name == _itemName);
-
-            return _dropItem;
         }
 
     }

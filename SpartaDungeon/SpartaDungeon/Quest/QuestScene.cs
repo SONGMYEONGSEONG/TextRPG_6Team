@@ -45,7 +45,7 @@ namespace SpartaDungeon
                     {
                         _strbuilder.AppendLine($"{_questData.Value.RewardType} x {_questData.Value.RewardValue} ");
 
-                        Item dropitem = ItemDataCall(_questData.Value.RewardType);
+                        Item dropitem = _curPlayer.myInventory.ItemDataCall(_questData.Value.RewardType);
 
                         if (dropitem == null)
                         {
@@ -204,24 +204,5 @@ namespace SpartaDungeon
             player = _curPlayer;
         }
 
-        private Item ItemDataCall(string _itemName)
-        {
-            //Item 획득
-            string jsonFilePath = Path.GetFullPath("../../../Data/items.json");
-            List<Item> allItem = new List<Item>();
-            if (File.Exists(jsonFilePath))
-            {
-                string jsonContent = File.ReadAllText(jsonFilePath);
-                allItem = JsonConvert.DeserializeObject<List<Item>>(jsonContent);
-            }
-            else
-            {
-                return null;
-            }
-
-            Item _dropItem = allItem.Find(item => item.Name == _itemName);
-
-            return _dropItem;
-        }
     }
 }

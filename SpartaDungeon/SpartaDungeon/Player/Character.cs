@@ -44,7 +44,8 @@ namespace SpartaDungeon
         public float TotalLuck { get; set; }
 
         //public float? Intelligence { get; set; }
-        public MyInventory myInventory = new MyInventory();
+        //public MyInventory myInventory = new MyInventory();
+        public MyInventory myInventory;
         public Item EquipWeapon = new Item();
         public Item EquipArmor = new Item();
 
@@ -116,6 +117,7 @@ namespace SpartaDungeon
 
             //-----플레이어 생성 시 인벤토리 초기화------
             myInventory = new MyInventory(Job);
+            
         }
 
         // 플레이어 스탯 갱신
@@ -210,7 +212,7 @@ namespace SpartaDungeon
 
                 for (int i = 0; i < myInventory.Inventory.Count; i++)
                 {
-                    string itemEquipState = (myInventory.Inventory[i] == EquipWeapon || myInventory.Inventory[i] == EquipArmor) ? "[E]" : "";
+                    string itemEquipState = (myInventory.Inventory[i].ItemNum == EquipWeapon.ItemNum || myInventory.Inventory[i].ItemNum == EquipArmor.ItemNum) ? "[E]" : "";
 
                     Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
                     Console.WriteLine($" [{i + 1}] {itemEquipState}{myInventory.Inventory[i].Name}({myInventory.Inventory[i].ItemTypeKorean})" +
