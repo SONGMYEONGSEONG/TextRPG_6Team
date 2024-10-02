@@ -75,7 +75,7 @@ namespace SpartaDungeon
                 MaxMp = 50f;
                 Attack = 15f;
                 Defense = 15f;
-                //SkillDeck = new WarriorSkill();
+                SkillDeck = new WarriorSkill();
             }
             else if (_jobTypeNum == (int)JobType.Rogue)
             {
