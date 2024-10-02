@@ -389,9 +389,9 @@ namespace SpartaDungeon
             MaxMp += 5f;
             Attack += 10f;
             Defense += 10f;
-            Agility += 10f;
-            Accuracy += 10f;
-            Luck += 10f;
+            Agility += 3f;
+            Accuracy += 3f;
+            Luck += 3f;
         }
 
 
