@@ -170,7 +170,7 @@ namespace SpartaDungeon
 
                     case "1": //수락
                         if (!_curPlayer.PlayerQuest.ContainsKey(_questselectID))
-                        {
+                        {    
                             _curPlayer.PlayerQuest.Add(_questselectID, _questManager.Quests[_questselectID]);
                         }
                         //_questManager.QuestAccept(_questselectID);

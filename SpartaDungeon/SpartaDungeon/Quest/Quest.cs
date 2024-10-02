@@ -66,7 +66,11 @@ namespace SpartaDungeon
                     break;
 
                 case QuestType.UseSkill:
-                    //해당 스킬을 받는 시점의 MP와 전투를 취하고 MP가 적으면 퀘스트 완료
+                    //캐릭터의 현재 마나가 최대 마나량보다 작으면 스킬 사용한걸로 취급
+                    if(_curPlayer.MaxMp > _curPlayer.CurrentMp)
+                    {
+                        return true;
+                    }
                     break;
 
             }
