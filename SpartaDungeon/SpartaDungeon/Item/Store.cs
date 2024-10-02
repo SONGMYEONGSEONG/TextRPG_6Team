@@ -14,6 +14,7 @@ namespace SpartaDungeon
     {
         public List<Item> StoreItemList = new List<Item>();
         public List<Item> SelectTypeItemList = new List<Item>();
+        public List<Item> PlayerInventory = new List<Item>();
 
         public Store()
         {
@@ -32,30 +33,34 @@ namespace SpartaDungeon
 
         }
 
-        void ShowStoreItemList(ITEMTYPE itemType)
+        void ShowStoreItemList(Character player, ITEMTYPE itemType)
         {
 
             Console.WriteLine();
             Console.WriteLine($"{itemType}[상점 아이템 목록]");
-
-
-            SelectTypeItemList = StoreItemList.Where(item => item.ItemType == itemType).ToList();
+           
+            SelectTypeItemList = StoreItemList.FindAll(item => item.ItemType == itemType);
+            PlayerInventory = player.myInventory.Inventory;
 
             for (int i = 0; i < SelectTypeItemList.Count; i++)
             {
                 string completedPurchase = "";
-                if (SelectTypeItemList[i].IsPurchased == true)
+
+                var matchedItem = PlayerInventory.Find(item => item.ItemNum == SelectTypeItemList[i].ItemNum);
+
+                if (matchedItem != null && matchedItem.Count > 0)
                 {
-                    completedPurchase = "(구매완료)";
+                    completedPurchase = $"({matchedItem.Count}개 보유)";
                 }
 
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-                Console.WriteLine($" {completedPurchase}[{i + 1}] {SelectTypeItemList[i].Name}({SelectTypeItemList[i].ItemTypeKorean})" +
+                Console.WriteLine($" [{i + 1}] {SelectTypeItemList[i].Name}({SelectTypeItemList[i].ItemTypeKorean})" +
                                   $" | {SelectTypeItemList[i].Description}" +
                                   $" | 공격력 +{SelectTypeItemList[i].Atk}" +
                                   $" 방어력 +{SelectTypeItemList[i].Def}" +
                                   $" 추가체력 +{SelectTypeItemList[i].AdditionalHP}" +
-                                  $" | {SelectTypeItemList[i].Price}G |");
+                                  $" | {SelectTypeItemList[i].Price}G |" +
+                                  $" \t{completedPurchase}");
             }
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine();
@@ -63,27 +68,26 @@ namespace SpartaDungeon
 
         public void EnterStore(Character player)
         {
+            List<Item>filteredItems = StoreItemList.Where(item => item.ItemNum.StartsWith("5") || item.ItemNum.StartsWith("0")).ToList();
+
             if (player.Job == "전사")
             {
-                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("1")
-                    || item.ItemNum.StartsWith("0")).ToList();
-
+                filteredItems.AddRange(StoreItemList.Where(item => item.ItemNum.StartsWith("1")));
             }
             else if (player.Job == "궁수")
             {
-                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("2")
-                    || item.ItemNum.StartsWith("0")).ToList();
+                filteredItems.AddRange(StoreItemList.Where(item => item.ItemNum.StartsWith("2")));
             }
             else if (player.Job == "도적")
             {
-                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("3")
-                    || item.ItemNum.StartsWith("0")).ToList();
+                filteredItems.AddRange(StoreItemList.Where(item => item.ItemNum.StartsWith("3")));
             }
             else if (player.Job == "마법사")
             {
-                StoreItemList = StoreItemList.Where(item => item.ItemNum.StartsWith("4")
-                    || item.ItemNum.StartsWith("0")).ToList();
+                filteredItems.AddRange(StoreItemList.Where(item => item.ItemNum.StartsWith("4")));
             }
+
+            StoreItemList = filteredItems;
 
             while (true)
             {
@@ -169,7 +173,7 @@ namespace SpartaDungeon
                 Console.WriteLine("아이템 리스트에서 아이템을 확인하고 구매하고자 하는 아이템의 번호를 입력해주세요.");
                 Console.WriteLine($"현재 소지금: {player.Gold}G");
 
-                ShowStoreItemList(itemType);
+                ShowStoreItemList(player, itemType);
 
                 Console.WriteLine("[0] 나가기\n");
                 Console.Write(">> ");
