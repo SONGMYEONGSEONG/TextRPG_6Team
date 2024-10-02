@@ -67,7 +67,12 @@ namespace SpartaDungeon
 
                 case QuestType.UseSkill:
                     //캐릭터의 현재 마나가 최대 마나량보다 작으면 스킬 사용한걸로 취급
-                    if(_curPlayer.MaxMp > _curPlayer.CurrentMp)
+                    //if(_curPlayer.MaxMp > _curPlayer.CurrentMp)
+                    //{
+                    //    return true;
+                    //}
+                    //break;
+                    if (CurProgressRequired >= EndProgressRequired)
                     {
                         return true;
                     }

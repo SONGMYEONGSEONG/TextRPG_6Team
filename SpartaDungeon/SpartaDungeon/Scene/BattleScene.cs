@@ -48,6 +48,10 @@ namespace SpartaDungeon
 
         Dictionary<int, Quest> _playerQuest; //몬스터 처치 관련 퀘스트를 보관하는 컨테이너
 
+        /*Debug*/
+        Dictionary<int, Quest> _playerUseSkillQuest; //스킬 사용 퀘스트를 보관하는 컨테이너
+        /*Debug*/
+
         public void Initialize(Character _player, List<Enemy> enemies)//나중에는 GameManager나 EnemyManager에서 배열로 적 받아와야됨
         {
             /*Debug*/
@@ -89,12 +93,21 @@ namespace SpartaDungeon
 
             //Battle에서만 사용되는 퀘스트 목록 정리
             _playerQuest = new Dictionary<int, Quest>();
+            /*Debug*/
+            _playerUseSkillQuest = new Dictionary<int, Quest>();
+            /*Debug*/
             foreach (KeyValuePair<int, Quest> questData in _curPlayer.PlayerQuest)
             {
                 if (questData.Value.Type == QuestType.MonsterKillCount)
                 {
                     _playerQuest.Add(questData.Key, questData.Value);
                 }
+                /*Debug*/
+                else if (questData.Value.Type == QuestType.UseSkill)
+                {
+                    _playerUseSkillQuest.Add(questData.Key, questData.Value);
+                }
+                /*Debug*/
             }
         }
 
@@ -224,6 +237,13 @@ namespace SpartaDungeon
                                 //PlayerSkillSelect();
                                 if (PlayerSkillSelect())
                                 {
+                                    /*Debug*/
+                                    foreach (KeyValuePair<int, Quest> questData in _playerUseSkillQuest)
+                                    {
+                                        questData.Value.CurProgressRequired++;
+                                    }
+                                    /*Debug*/
+
                                     isSkill = false;
                                     _curTurn = Turn.Enemy; //턴 교체 (Player -> Enemy)
                                     Console.ReadLine();
@@ -319,6 +339,12 @@ namespace SpartaDungeon
                 _curPlayer.PlayerQuest[questData.Key] = questData.Value;
             }
 
+            /*Debug*/
+            foreach (KeyValuePair<int, Quest> questData in _playerUseSkillQuest)
+            {
+                _curPlayer.PlayerQuest[questData.Key] = questData.Value;
+            }
+            /*Debug*/
 
             player = _curPlayer;
         }
