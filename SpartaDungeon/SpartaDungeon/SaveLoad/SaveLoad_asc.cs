@@ -21,12 +21,8 @@ namespace SpartaDungeon.SaveLoad
         public void SaveData<T>(T t, string name) where T : class
         {
             string relativePath = @$"../../../Data/{name}.json";
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
 
-            string jsonStr = JsonConvert.SerializeObject(t,Formatting.Indented, settings);
+            string jsonStr = JsonConvert.SerializeObject(t);
             File.WriteAllText(relativePath, jsonStr);
         }
 
@@ -34,11 +30,6 @@ namespace SpartaDungeon.SaveLoad
         {
             string relativePath = @$"../../../Data/{name}.json";
 
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
-
             if (!File.Exists(relativePath))
             {
                 return null;
@@ -46,7 +37,7 @@ namespace SpartaDungeon.SaveLoad
             else
             {
                 string jsonStr = File.ReadAllText(relativePath);
-                T t = JsonConvert.DeserializeObject<T>(jsonStr, settings);
+                T t = JsonConvert.DeserializeObject<T>(jsonStr);
                 if (t == null)
                 {
                     return null;
@@ -58,35 +49,5 @@ namespace SpartaDungeon.SaveLoad
             }
 
         }
-
-        public Character LoadData(string name)
-        {
-            string relativePath = @$"../../../Data/{name}.json";
-
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
-
-            if (!File.Exists(relativePath))
-            {
-                return null;
-            }
-            else
-            {
-                string jsonStr = File.ReadAllText(relativePath);
-                Character t = JsonConvert.DeserializeObject<Character>(jsonStr, settings);
-                if (t == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return t;
-                }
-            }
-
-        }
-
     }
 }
