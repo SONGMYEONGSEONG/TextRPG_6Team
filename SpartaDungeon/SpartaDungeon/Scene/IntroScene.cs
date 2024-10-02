@@ -21,7 +21,9 @@
             if (input == "1")
             {
                 Console.Clear();
-                player = mainScene.LoadGame();
+                //player = mainScene.LoadGame();
+                player = mainScene.LoadGame_Test();
+
                 if (player == null)
                 {
                     Console.WriteLine("저장된 게임이 없습니다. 새 게임을 시작합니다.");

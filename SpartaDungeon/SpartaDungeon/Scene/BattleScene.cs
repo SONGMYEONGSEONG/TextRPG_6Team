@@ -32,7 +32,7 @@ namespace SpartaDungeon
         SkillDeck _skillDeck; //플레이어가 사용하는 스킬덱
 
         int _gainGold; //몬스터를 쓰러트릴때마다 골드를 저장
-        List<string> _gainItem; //획득 아이템 저장 컨테이너, Item 완성되는데로 수정 필요함 - 이지혜 님
+        Dictionary<string,Item> _gainItem; //획득 아이템 저장 컨테이너, Item 완성되는데로 수정 필요함 - 이지혜 님
         int _gainExp; //해당 전투에서 얻은 총 경험치
 
         bool isAttack;//[1.공격]을 선택 체크 변수
@@ -61,7 +61,7 @@ namespace SpartaDungeon
             _curPlayer = _player;
             _curPlayerBattleHP = (float)_curPlayer.CurrentHp;
             _gainGold = 0;
-            _gainItem = new List<string>();
+            _gainItem = new Dictionary<string, Item>();
 
             _curTurn = Turn.Player; //선턴은 바로 플레이어로 지정
             isAttack = false;
@@ -512,7 +512,18 @@ namespace SpartaDungeon
                     _gainGold += _hitEnemy.Gold;
 
                     //쓰러트린 몬스터의 아이템 획득
-                    _gainItem.Add(_hitEnemy.GainItem);
+                    Item dropItem = _curPlayer.myInventory.ItemDataCall(_hitEnemy.GainItem);
+
+                    if (_gainItem.ContainsKey(dropItem.Name))
+                    {
+                        _gainItem[dropItem.Name].Count++;
+                    }
+                    else
+                    {
+                        dropItem.Count++;
+                        _gainItem.Add(dropItem.Name, dropItem);
+                    }
+                    
 
                     //전투 관련 퀘스트 스택 증가
                     foreach (KeyValuePair<int, Quest> questData in _playerQuest)
@@ -763,9 +774,9 @@ namespace SpartaDungeon
                 //잡은 몬스터에 보상 문구 출력
                 _strbuilder.AppendLine("\n[획득 아이템]");
                 _strbuilder.AppendLine($"{_gainGold} Gold");
-                foreach (string _itemName in _gainItem)
+                foreach (KeyValuePair<string,Item> _itemData in _gainItem)
                 {
-                    _strbuilder.AppendLine($"{_itemName} - 1");
+                    _strbuilder.AppendLine($"{_itemData.Value.Name} x {_itemData.Value.Count}");
                 }
 
                 //잡은 몬스터의 보상 data 적용
@@ -775,16 +786,21 @@ namespace SpartaDungeon
                     _curPlayer.Exp += _gainExp;
                     _curPlayer.Gold += _gainGold;
 
-                    foreach (string _itemName in _gainItem)
+                    int dropItemIndex;
+
+                    foreach (KeyValuePair<string, Item> _itemData in _gainItem)
                     {
-                        Item dropitem = _curPlayer.myInventory.ItemDataCall(_itemName);
+                        dropItemIndex = _curPlayer.myInventory.Inventory.FindIndex(item => item.ItemNum == _itemData.Value.ItemNum);
 
-                        if (dropitem == null)
+                        if (dropItemIndex == -1)
                         {
-                            Console.WriteLine("items.json이 존재하지 않습니다.");
+                            _curPlayer.myInventory.Inventory.Add(_itemData.Value);
                         }
-
-                        _curPlayer.myInventory.Inventory.Add(dropitem);
+                        else
+                        {
+                            _curPlayer.myInventory.Inventory[dropItemIndex].Count++;
+                        }
+                        
                     }
                    
                 }

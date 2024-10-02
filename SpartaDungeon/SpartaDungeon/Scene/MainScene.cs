@@ -126,15 +126,29 @@ namespace SpartaDungeon
 
         public Character? LoadGame()
         {
-            if (saveLoad.LoadData<Character>("player") == null)
-            {
-                return null;
-            }
-            else
-            {
+            //if (saveLoad.LoadData<Character>("player") == null)
+            //{
+            //    return null;
+            //}
+            //else
+            //{
                 Character player = saveLoad.LoadData<Character>("player");
                 return player;
-            }
+            //}
         }
+
+        public Character LoadGame_Test()
+        {
+            //if (saveLoad.LoadData<Character>("player") == null)
+            //{
+            //    return null;
+            //}
+            //else
+            //{
+            Character player = saveLoad.LoadData("player");
+            return player;
+            //}
+        }
+
     }
 }
