@@ -58,35 +58,5 @@ namespace SpartaDungeon.SaveLoad
             }
 
         }
-
-        public Character LoadData(string name)
-        {
-            string relativePath = @$"../../../Data/{name}.json";
-
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
-
-            if (!File.Exists(relativePath))
-            {
-                return null;
-            }
-            else
-            {
-                string jsonStr = File.ReadAllText(relativePath);
-                Character t = JsonConvert.DeserializeObject<Character>(jsonStr, settings);
-                if (t == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return t;
-                }
-            }
-
-        }
-
     }
 }
