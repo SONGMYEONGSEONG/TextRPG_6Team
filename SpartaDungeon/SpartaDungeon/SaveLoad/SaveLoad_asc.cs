@@ -21,7 +21,7 @@ namespace SpartaDungeon.SaveLoad
         public void SaveData<T>(T t, string name) where T : class
         {
             string relativePath = @$"../../../Data/{name}.json";
-            string jsonStr = JsonConvert.SerializeObject(t);
+            string jsonStr = JsonConvert.SerializeObject(t,Formatting.Indented);
             File.WriteAllText(relativePath, jsonStr);
         }
 
