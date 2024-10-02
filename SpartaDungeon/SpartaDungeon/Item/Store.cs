@@ -39,15 +39,14 @@ namespace SpartaDungeon
             Console.WriteLine();
             Console.WriteLine($"{itemType}[상점 아이템 목록]");
            
-            SelectTypeItemList = StoreItemList.FindAll(item => item.ItemType == itemType);
+            SelectTypeItemList = StoreItemList.FindAll(item => item.ItemType == itemType && item.IsNotForSale == false);
             PlayerInventory = player.myInventory.Inventory;
 
             for (int i = 0; i < SelectTypeItemList.Count; i++)
             {
                 string completedPurchase = "";
-
+                
                 var matchedItem = PlayerInventory.Find(item => item.ItemNum == SelectTypeItemList[i].ItemNum);
-
                 if (matchedItem != null && matchedItem.Count > 0)
                 {
                     completedPurchase = $"({matchedItem.Count}개 보유)";
@@ -190,19 +189,18 @@ namespace SpartaDungeon
                     }
                     else if (select > 0 && select <= SelectTypeItemList.Count)
                     {
-                        if (player.Gold >= SelectTypeItemList[select - 1].Price && SelectTypeItemList[select - 1].IsPurchased == false)
+                        if (player.Gold >= SelectTypeItemList[select - 1].Price)
                         {
-                            SelectTypeItemList[select - 1].IsPurchased = true;
                             player.Gold -= SelectTypeItemList[select - 1].Price;
                             player.myInventory.AddInventory(SelectTypeItemList[select - 1]);
                             Console.Clear();
                             Console.WriteLine($"\"{SelectTypeItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
                             Console.WriteLine();
                         }
-                        else if (SelectTypeItemList[select - 1].IsPurchased == true)
+                        else
                         {
                             Console.Clear();
-                            Console.WriteLine("이미 구매된 아이템입니다.");
+                            Console.WriteLine("Gold가 부족합니다.");
                             Console.WriteLine();
                         }
                     }
@@ -228,7 +226,7 @@ namespace SpartaDungeon
         {
             while (true)
             {
-                Console.WriteLine("소유한 아이템을 정가의 85%로 판매할 수 있습니다.");
+                Console.WriteLine("소유한 아이템을 정가의 50%로 판매할 수 있습니다.");
                 Console.WriteLine("현재 소지금: {0}G", player.Gold);
                 Console.WriteLine();
                 Console.WriteLine("내 인벤토리");
@@ -242,9 +240,9 @@ namespace SpartaDungeon
                                       $" | 공격력 +{player.myInventory.Inventory[i].Atk}" +
                                       $" 방어력 +{player.myInventory.Inventory[i].Def}" +
                                       $" 추가체력 +{player.myInventory.Inventory[i].AdditionalHP}" +
-                                      $" | 판매 금액: {(int)(player.myInventory.Inventory[i].Price * 0.85f)}G |" +
-                                      $" | 소유 갯수: {(int)(player.myInventory.Inventory[i].Count)}개|");
-            }
+                                      $" | 판매 금액: {(int)(player.myInventory.Inventory[i].Price * 0.5f)}G |" +
+                                      $"  {player.myInventory.Inventory[i].Count} 개 |");
+                }
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
 
                 Console.WriteLine("[0] 나가기");
@@ -266,13 +264,11 @@ namespace SpartaDungeon
                     }
                     else if (select > 0 && select <= player.myInventory.Inventory.Count)
                     {
-                        player.myInventory.Inventory[select - 1].IsPurchased = false;
-                        player.Gold += (int)(player.myInventory.Inventory[select - 1].Price * 0.85f);
-                        AddSellItemToStoreItemList(player.myInventory.Inventory[select - 1]);
+                        player.Gold += (int)(player.myInventory.Inventory[select - 1].Price * 0.5f);
                         UnWearItemSell(player, player.myInventory.Inventory[select - 1]);
                         Console.Clear();
                         Console.WriteLine($"\"{player.myInventory.Inventory[select - 1].Name}\" 을" +
-                                          $"{(int)(player.myInventory.Inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
+                                          $"{(int)(player.myInventory.Inventory[select - 1].Price * 0.5f)}G 에 판매하셨습니다.");
                         Console.WriteLine();
 
                         //아이템이 2개 이상인경우 1개만 판매하게 되는 로직
@@ -300,23 +296,6 @@ namespace SpartaDungeon
                     Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
                     Console.WriteLine();
                 }
-            }
-        }
-
-        // 판매한 아이템이 상점 아이템 리스트에 있는지 체크
-        void AddSellItemToStoreItemList(Item sellItem)
-        {
-            bool isExist = false;
-            foreach (Item item in StoreItemList)
-            {
-                if (item == sellItem)
-                {
-                    isExist = true;
-                }
-            }
-            if (!isExist)
-            {
-                StoreItemList.Add(sellItem);
             }
         }
 
