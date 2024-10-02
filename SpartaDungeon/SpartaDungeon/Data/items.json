@@ -220,7 +220,7 @@
     "acc": 0,
     "luc": 0,
     "additionalHP": 0,
-    "description": "쓸만해 보이는 모자",
+    "description": "쓸만해 보이는 모자지만 나는 사용 할수 없다.",
     "isPurchased": "false",
     "isNotForSale": "true"
   },
@@ -235,7 +235,7 @@
     "acc": 0,
     "luc": 0,
     "additionalHP": 0,
-    "description": "쓸만해 보이는 방패",
+    "description": "쓸만해 보이는 방패지만 나는 사용 할수 없다.",
     "isPurchased": "false",
     "isNotForSale": "true"
   },
