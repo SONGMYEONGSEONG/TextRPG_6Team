@@ -336,14 +336,13 @@ namespace SpartaDungeon
             //float numPossibility = 0;
             float defaultDodgePercent = 5.0f;
 
-
             switch (_curTurn)
             {
                 case Turn.Player:
-                    return numPossibility <= defaultDodgePercent + _curPlayer.TotalAccuracy - _enemy.Agility;
+                    return numPossibility <= defaultDodgePercent + _curPlayer.TotalAgility - _enemy.Accuracy;
 
                 case Turn.Enemy:
-                    return numPossibility <= defaultDodgePercent + _enemy.Accuracy - _curPlayer.TotalAgility;
+                    return numPossibility <= defaultDodgePercent + _enemy.Agility - _curPlayer.TotalAccuracy;
             }
 
             return false;
@@ -715,6 +714,8 @@ namespace SpartaDungeon
         //전투결과 화면 
         private void BattleResult(bool isPlayerWin)
         {
+            bool _isReward = false; // Input 오류시에 보상을 무한으로 받는 버그를 고치기 위해 생성
+
             //BattleResult - Print
             while (true)
             {
@@ -742,7 +743,7 @@ namespace SpartaDungeon
                 //잡은 몬스터에 대한 경험치 지급
                 _strbuilder.AppendLine("[획득 경험치]");
                 _strbuilder.AppendLine($"EXP {_curPlayer.Exp} -> {_curPlayer.Exp + _gainExp}");
-                _curPlayer.Exp += _gainExp;
+                
                 if (_curPlayer.LevelUpCheck())
                 {
                     _strbuilder.AppendLine($"\n축하합니다!! \n{_curPlayer.Name}의 Lv이 {_curPlayer.Level}로 레벨업 하였습니다!!");
@@ -751,13 +752,19 @@ namespace SpartaDungeon
                 //잡은 몬스터에 대한 골드보상 지급
                 _strbuilder.AppendLine("\n[획득 아이템]");
                 _strbuilder.AppendLine($"{_gainGold} Gold");
-                _curPlayer.Gold += _gainGold;
-
-                //나중에 Item 코드 Merge 할때 변경 필요 + Player에게 적용하게 변경되야함
-                foreach (string ItemName in _gainItem)
+               
+                if (!_isReward)
                 {
-                    _strbuilder.AppendLine($"{ItemName} - 1");
-                    //_curPlayer.Inventory.Add(/*Item*/);
+                    _isReward = true;
+                    _curPlayer.Exp += _gainExp;
+                    _curPlayer.Gold += _gainGold;
+
+                    //나중에 Item 코드 Merge 할때 변경 필요 + Player에게 적용하게 변경되야함
+                    foreach (string ItemName in _gainItem)
+                    {
+                        _strbuilder.AppendLine($"{ItemName} - 1");
+                        //_curPlayer.Inventory.Add(/*Item*/);
+                    }
                 }
 
                 _strbuilder.AppendLine("\n0. 다음\n");
