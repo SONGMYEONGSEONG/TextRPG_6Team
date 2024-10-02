@@ -336,14 +336,13 @@ namespace SpartaDungeon
             //float numPossibility = 0;
             float defaultDodgePercent = 5.0f;
 
-
             switch (_curTurn)
             {
                 case Turn.Player:
-                    return numPossibility <= defaultDodgePercent + _curPlayer.TotalAccuracy - _enemy.Agility;
+                    return numPossibility <= defaultDodgePercent + _curPlayer.TotalAgility - _enemy.Accuracy;
 
                 case Turn.Enemy:
-                    return numPossibility <= defaultDodgePercent + _enemy.Accuracy - _curPlayer.TotalAgility;
+                    return numPossibility <= defaultDodgePercent + _enemy.Agility - _curPlayer.TotalAccuracy;
             }
 
             return false;
