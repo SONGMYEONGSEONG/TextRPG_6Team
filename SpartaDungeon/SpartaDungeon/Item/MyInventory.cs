@@ -37,7 +37,15 @@ namespace SpartaDungeon
         {
             string relativePath = "../../../Data/items.json";
             List<Item> items = LoadItemsFromJson(relativePath);
-            Inventory = items.FindAll(item => item.IsPurchased == true);
+
+            //공통 시작템
+            AddInventory(items.Find(item => item.ItemNum == "001"));
+
+            for (int i = 0; i < 3; i++)
+            {
+                AddInventory(items.Find(item => item.ItemNum == "501"));
+                AddInventory(items.Find(item => item.ItemNum == "502"));
+            }
 
             if (job == "전사")
             {
@@ -63,25 +71,48 @@ namespace SpartaDungeon
 
         public void AddInventory(Item newItem)
         {
-            newItem.IsPurchased = true;
-            Inventory.Add(newItem);
-            Console.WriteLine($"\"{newItem.Name}\" 아이템이 인벤토리에 추가되었습니다.");
-
-        }
-
-        public void DelInventory (Item delItem)
-        {
-            if (!delItem.IsPurchased)
+            if (newItem != null)
             {
-                if (Inventory.Contains(delItem))
+                // 이미 해당 아이템이 인벤토리에 있으면 Count 증가
+                Item existingItem = Inventory.Find(i => i.ItemNum == newItem.ItemNum);
+                if (existingItem != null)
                 {
-                    Inventory.Remove(delItem);
-                    Console.WriteLine($"\"{delItem.Name}\" 아이템이 인벤토리에서 제거되었습니다.");
+                    existingItem.Count += 1;  // 중복 아이템의 경우 수량만 증가
                 }
                 else
                 {
-                    Console.WriteLine($"\"{delItem.Name}\" 아이템은 인벤토리에 존재하지 않습니다.");
+                    newItem.Count = 1;  // 처음 추가되는 아이템이면 Count 1로 설정
+                    Inventory.Add(newItem);  // 새로운 아이템 추가
                 }
+
+                //Console.WriteLine($"\"{newItem.Name}\" 아이템이 인벤토리에 추가되었습니다. (수량: {newItem.Count})");
+            }
+        }
+
+        public void DelInventory(Item delItem)
+        {
+            // 인벤토리에서 해당 아이템을 찾기
+            var existingItem = Inventory.Find(i => i.ItemNum == delItem.ItemNum);
+
+            if (existingItem != null)
+            {
+                if (existingItem.Count > 1)
+                {
+                    // Count가 1보다 크면 Count만 감소
+                    existingItem.Count -= 1;
+                    Console.WriteLine($"\"{delItem.Name}\" 아이템의 수량이 감소되었습니다. (남은 수량: {existingItem.Count})");
+                }
+                else
+                {
+                    // Count가 1인 경우, 인벤토리에서 완전히 제거
+                    existingItem.Count -= 1;
+                    Inventory.Remove(existingItem);
+                    Console.WriteLine($"\"{delItem.Name}\" 아이템이 인벤토리에서 제거되었습니다.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\"{delItem.Name}\" 아이템은 인벤토리에 존재하지 않습니다.");
             }
         }
     }

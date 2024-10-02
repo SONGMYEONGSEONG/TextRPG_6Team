@@ -126,7 +126,7 @@ namespace SpartaDungeon
 
                 Console.WriteLine("상점 아이템 리스트에서 구매하거나, 소유한 아이템을 판매할 수 있습니다.");
                 Console.WriteLine();
-                Console.WriteLine("[1] 메인무기 구매\n");
+                Console.WriteLine("[1] 무기 구매\n");
                 Console.WriteLine("[2] 갑옷 구매\n");
                 Console.WriteLine("[3] 회복아이템 구매\n");
                 Console.WriteLine("[0] 나가기\n");
@@ -190,7 +190,7 @@ namespace SpartaDungeon
                         {
                             SelectTypeItemList[select - 1].IsPurchased = true;
                             player.Gold -= SelectTypeItemList[select - 1].Price;
-                            player.Inventory.Add(SelectTypeItemList[select - 1]);
+                            player.myInventory.Inventory.Add(SelectTypeItemList[select - 1]);
                             Console.Clear();
                             Console.WriteLine($"\"{SelectTypeItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
                             Console.WriteLine();
@@ -230,15 +230,15 @@ namespace SpartaDungeon
                 Console.WriteLine("내 인벤토리");
                 Console.WriteLine("[아이템 목록]");
 
-                for (int i = 0; i < player.Inventory.Count; i++)
+                for (int i = 0; i < player.myInventory.Inventory.Count; i++)
                 {
                     Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-                    Console.WriteLine($" [{i + 1}] {player.Inventory[i].Name}({player.Inventory[i].ItemTypeKorean})" +
-                                      $" | {player.Inventory[i].Description}" +
-                                      $" | 공격력 +{player.Inventory[i].Atk}" +
-                                      $" 방어력 +{player.Inventory[i].Def}" +
-                                      $" 추가체력 +{player.Inventory[i].AdditionalHP}" +
-                                      $" | 판매 금액: {(int)(player.Inventory[i].Price * 0.85f)}G |");
+                    Console.WriteLine($" [{i + 1}] {player.myInventory.Inventory[i].Name}({player.myInventory.Inventory[i].ItemTypeKorean})" +
+                                      $" | {player.myInventory.Inventory[i].Description}" +
+                                      $" | 공격력 +{player.myInventory.Inventory[i].Atk}" +
+                                      $" 방어력 +{player.myInventory.Inventory[i].Def}" +
+                                      $" 추가체력 +{player.myInventory.Inventory[i].AdditionalHP}" +
+                                      $" | 판매 금액: {(int)(player.myInventory.Inventory[i].Price * 0.85f)}G |");
                 }
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
 
@@ -259,17 +259,17 @@ namespace SpartaDungeon
                         Console.Clear();
                         break;
                     }
-                    else if (select > 0 && select <= player.Inventory.Count)
+                    else if (select > 0 && select <= player.myInventory.Inventory.Count)
                     {
-                        player.Inventory[select - 1].IsPurchased = false;
-                        player.Gold += (int)(player.Inventory[select - 1].Price * 0.85f);
-                        AddSellItemToStoreItemList(player.Inventory[select - 1]);
-                        UnWearItemSell(player, player.Inventory[select - 1]);
+                        player.myInventory.Inventory[select - 1].IsPurchased = false;
+                        player.Gold += (int)(player.myInventory.Inventory[select - 1].Price * 0.85f);
+                        AddSellItemToStoreItemList(player.myInventory.Inventory[select - 1]);
+                        UnWearItemSell(player, player.myInventory.Inventory[select - 1]);
                         Console.Clear();
-                        Console.WriteLine($"\"{player.Inventory[select - 1].Name}\" 을" +
-                                          $"{(int)(player.Inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
+                        Console.WriteLine($"\"{player.myInventory.Inventory[select - 1].Name}\" 을" +
+                                          $"{(int)(player.myInventory.Inventory[select - 1].Price * 0.85f)}G 에 판매하셨습니다.");
                         Console.WriteLine();
-                        player.Inventory.RemoveAt(select - 1);                        
+                        player.myInventory.Inventory.RemoveAt(select - 1);                        
                     }
                     else
                     {
