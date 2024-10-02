@@ -31,6 +31,7 @@ namespace SpartaDungeon
         public string Description { get; set; }
         public bool IsPurchased { get; set; }
         public bool IsNotForSale { get; set; }
+        public int Count{ get; set; }
 
 
         public Item()
@@ -46,9 +47,10 @@ namespace SpartaDungeon
             Luc = 0;
             AdditionalHP = 0;
             Description = "";
+            Count = 0;
         }
 
-        public Item(string itemNum, ITEMTYPE itemType, string name, int price, int atk, int def, int agl, int acc, int luc, int additionalHP, string description, bool isPurchased, bool isNotForSale)
+        public Item(string itemNum, ITEMTYPE itemType, string name, int price, int atk, int def, int agl, int acc, int luc, int additionalHP, string description, bool isPurchased, bool isNotForSale, int count)
         {
             ItemNum = itemNum;
             ItemType = itemType;
@@ -68,6 +70,7 @@ namespace SpartaDungeon
             Description = description;
             IsPurchased = isPurchased;
             IsNotForSale = isNotForSale;
+            Count = count;
         }
     }
 }
