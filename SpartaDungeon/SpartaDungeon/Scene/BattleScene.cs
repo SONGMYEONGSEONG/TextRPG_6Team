@@ -336,15 +336,20 @@ namespace SpartaDungeon
             Random rand = new Random();
             float numPossibility = rand.Next(1, 101);
             //float numPossibility = 0;
-            float defaultDodgePercent = 5.0f;
+            float defaultDodgePercent = 5f;
+            float probability;
 
             switch (_curTurn)
             {
                 case Turn.Player:
-                    return numPossibility <= defaultDodgePercent + _curPlayer.TotalAgility - _enemy.Accuracy;
+                    probability = defaultDodgePercent + _enemy.Agility - _curPlayer.TotalAccuracy;
+                    probability = probability > 1f ? probability : 1f;
+                    return numPossibility <= probability;
 
                 case Turn.Enemy:
-                    return numPossibility <= defaultDodgePercent + _enemy.Agility - _curPlayer.TotalAccuracy;
+                    probability = defaultDodgePercent + _curPlayer.TotalAgility - _enemy.Accuracy;
+                    probability = probability > 1f ? probability : 1f;
+                    return numPossibility <= probability;
             }
 
             return false;
@@ -357,15 +362,19 @@ namespace SpartaDungeon
             float numPossibility = rand.Next(1, 101);
             //float numPossibility = 0;
             float defaultDodgePercent = 3f;
-
+            float probability;
 
             switch (_curTurn)
             {
                 case Turn.Player:
-                    return numPossibility <= defaultDodgePercent + _curPlayer.TotalAccuracy + _curPlayer.TotalLuck - _enemy.Agility;
+                    probability = defaultDodgePercent + _curPlayer.TotalAccuracy + _curPlayer.TotalLuck - _enemy.Agility;
+                    probability = probability > 1f ? probability : 1f;
+                    return numPossibility <= probability;
 
                 case Turn.Enemy:
-                    return numPossibility <= defaultDodgePercent + _enemy.Accuracy + _enemy.Luck - _curPlayer.Agility;
+                    probability = defaultDodgePercent + _enemy.Accuracy + _enemy.Luck - _curPlayer.TotalAgility;
+                    probability = probability > 1f ? probability : 1f;
+                    return numPossibility <= probability;
             }
 
             return false;
@@ -466,7 +475,7 @@ namespace SpartaDungeon
 
             if (_damage <= 0)//적이 내 공격을 회피 했을 경우
             {
-                _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 을(를) 회피했습니다. [데미지 : 0]");
+                _strbuilder.AppendLine($"Lv.{_hitEnemy.Level}{_hitEnemy.Name} 이(가) 회피했습니다. [데미지 : 0]");
                 _strbuilder.AppendLine();
             }
             else
