@@ -52,6 +52,9 @@ namespace SpartaDungeon
         /*Test - 20240930.송명성 추가*/
         public Dictionary<int, Quest> PlayerQuest = new Dictionary<int, Quest>();
         public SkillDeck SkillDeck;
+
+        //클리어한 퀘스트 ID 목록
+        public HashSet<int> ClearQuestsID { get; set; }
         /**/
 
         public Character(string _name, int _jobTypeNum)
@@ -121,7 +124,9 @@ namespace SpartaDungeon
 
             //-----플레이어 생성 시 인벤토리 초기화------
             myInventory = new MyInventory(Job);
-            
+            //-----플레이어 생성시 플레이어가 완료한 퀘스트 컨테이너 초기화------
+            ClearQuestsID = new HashSet<int>();
+
         }
 
         // 플레이어 스탯 갱신

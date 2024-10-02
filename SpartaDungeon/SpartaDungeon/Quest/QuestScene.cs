@@ -23,6 +23,11 @@ namespace SpartaDungeon
         public void Initialize(Character _player)
         {
             _curPlayer = _player;
+
+            foreach(int _questID in _curPlayer.ClearQuestsID)
+            {
+                _questManager.Quests[_questID].IsFinish = true;
+            }
         }
 
         public void SceneStart()
@@ -32,6 +37,9 @@ namespace SpartaDungeon
             {
                 if (_questData.Value.QuestCheck(_curPlayer))
                 {
+                    //클리어한 퀘스트를 플레이어 Data에 저장
+                    _curPlayer.ClearQuestsID.Add(_questData.Key);
+
                     _strbuilder.Clear();
                     _questData.Value.IsFinish = true; //퀘스트 클리어 처리
                     _strbuilder.AppendLine($"{_questData.Value.Label}의 퀘스트를 완료 하였습니다.\n");
@@ -59,6 +67,8 @@ namespace SpartaDungeon
                         {
                             _curPlayer.myInventory.Inventory[dropItemIndex].Count++;
                         }
+
+
 
                         //Item dropitem = _curPlayer.myInventory.ItemDataCall(_questData.Value.RewardType);
 
@@ -231,6 +241,7 @@ namespace SpartaDungeon
         public void SceneExit(ref Character player)
         {
             //_curPlayer.PlayerQuest = _questManager.AcceptedQuest;
+
             player = _curPlayer;
         }
 

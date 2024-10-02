@@ -12,10 +12,8 @@ namespace SpartaDungeon
         Dictionary<int, Quest> _quests;
         public Dictionary<int, Quest> Quests { get { return _quests; } }
 
-        Dictionary<int, Quest> _acceptedQuest; //플레이어가 수락한 퀘스트 
-        public Dictionary<int, Quest> AcceptedQuest {  get { return _acceptedQuest; } }
-
-        
+        //Dictionary<int, Quest> _acceptedQuest; //플레이어가 수락한 퀘스트 
+        //public Dictionary<int, Quest> AcceptedQuest {  get { return _acceptedQuest; } }
 
         public QuestManager()
         {
@@ -68,11 +66,13 @@ namespace SpartaDungeon
                     _quests = csvData;
                 }
 
-                //플레이어가 수락한 퀘스트 리스트 생성 
-                if(_acceptedQuest == null)
-                {
-                    _acceptedQuest = new Dictionary<int, Quest>();
-                }
+                ////플레이어가 수락한 퀘스트 리스트 생성 
+                //if(_acceptedQuest == null)
+                //{
+                //    _acceptedQuest = new Dictionary<int, Quest>();
+                //}
+                //
+
             }
 
         }
@@ -111,22 +111,22 @@ namespace SpartaDungeon
             Console.Write(_strbuilder.ToString());
         }
 
-        public void QuestAccept(int _questID)
-        {
-            if (!_acceptedQuest.ContainsKey(_questID))
-            {
-                _acceptedQuest.Add(_questID, _quests[_questID]);
-                _strbuilder.Clear();
-                _strbuilder.AppendLine("해당 퀘스트를 수락 하였습니다.");
-                Console.Write(_strbuilder.ToString());
-            }
-            else
-            {
-                _strbuilder.Clear();
-                _strbuilder.AppendLine("해당 퀘스트는 이미 수락 하였습니다.");
-                Console.Write(_strbuilder.ToString());
-            }
-        }
+        //public void QuestAccept(int _questID)
+        //{
+        //    if (!_acceptedQuest.ContainsKey(_questID))
+        //    {
+        //        _acceptedQuest.Add(_questID, _quests[_questID]);
+        //        _strbuilder.Clear();
+        //        _strbuilder.AppendLine("해당 퀘스트를 수락 하였습니다.");
+        //        Console.Write(_strbuilder.ToString());
+        //    }
+        //    else
+        //    {
+        //        _strbuilder.Clear();
+        //        _strbuilder.AppendLine("해당 퀘스트는 이미 수락 하였습니다.");
+        //        Console.Write(_strbuilder.ToString());
+        //    }
+        //}
 
     }
 }
