@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpartaDungeon.SaveLoad
+namespace SpartaDungeon
 {
-    internal class SaveLoad_asc
+    internal class SaveLoad
     {
         // player data
         // equipitem

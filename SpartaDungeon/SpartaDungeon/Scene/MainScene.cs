@@ -1,5 +1,4 @@
-﻿using SpartaDungeon.SaveLoad;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -23,7 +22,7 @@ namespace SpartaDungeon
 
     internal class MainScene
     {
-        SaveLoad_asc saveLoad = new SaveLoad_asc();
+        SaveLoad _saveLoad = new SaveLoad();
         BattleScene _battleScene = new BattleScene();
         QuestScene _questScene = new QuestScene();
         EnemyManager _enemyManager = new EnemyManager();
@@ -121,18 +120,18 @@ namespace SpartaDungeon
         public void SaveGame(Character _player)
         {
             Console.WriteLine("플레이어 데이터를 저장합니다.");
-            saveLoad.SaveData(_player, "player");
+            _saveLoad.SaveData(_player, "player");
         }
 
         public Character? LoadGame()
         {
-            if (saveLoad.LoadData<Character>("player") == null)
+            if (_saveLoad.LoadData<Character>("player") == null)
             {
                 return null;
             }
             else
             {
-                Character player = saveLoad.LoadData<Character>("player");
+                Character player = _saveLoad.LoadData<Character>("player");
                 return player;
             }
         }
