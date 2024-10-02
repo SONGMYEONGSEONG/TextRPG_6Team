@@ -190,7 +190,7 @@ namespace SpartaDungeon
             switch (CharacterJobType)
             {
                 case JobType.Warrior:
-                    //SkillDeck = new Warriorkill();
+                    SkillDeck = new WarriorSkill();
                     break;
 
                 case JobType.Rogue:
@@ -301,6 +301,14 @@ namespace SpartaDungeon
                         {
                             ManageRecovery(selectItem);
                             Console.Clear();
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("해당 아이템 기타 아이템이므로 사용 하실 수 없습니다.");
+                            Console.WriteLine("다른 아이템을 선택해 주세요.");
+                            Console.WriteLine();
+                          
                         }
 
                     }
