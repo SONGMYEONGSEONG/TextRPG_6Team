@@ -127,9 +127,9 @@ namespace SpartaDungeon
                 Console.WriteLine("상점 아이템 리스트에서 구매하거나, 소유한 아이템을 판매할 수 있습니다.");
                 Console.WriteLine();
                 Console.WriteLine("[1] 메인무기 구매\n");
-                Console.WriteLine("[2] 서브무기 구매\n");
-                Console.WriteLine("[3] 갑옷 구매\n");
-                Console.WriteLine("[4] 회복아이템 구매\n");
+                Console.WriteLine("[2] 갑옷 구매\n");
+                Console.WriteLine("[3] 회복아이템 구매\n");
+                Console.WriteLine("[0] 나가기\n");
                 Console.Write(">> ");
                 string input = Console.ReadLine();
 
@@ -146,14 +146,9 @@ namespace SpartaDungeon
                 else if (input == "2")
                 {
                     Console.Clear();
-                    PurchaseItem(player, ITEMTYPE.SubWeapon);
-                }
-                else if (input == "3")
-                {
-                    Console.Clear();
                     PurchaseItem(player, ITEMTYPE.Armor);
                 }
-                else if (input == "4")
+                else if (input == "3")
                 {
                     Console.Clear();
                     PurchaseItem(player, ITEMTYPE.HealingItem);
@@ -204,12 +199,6 @@ namespace SpartaDungeon
                         {
                             Console.Clear();
                             Console.WriteLine("이미 구매된 아이템입니다.");
-                            Console.WriteLine();
-                        }
-                        else
-                        {
-                            Console.Clear();
-                            Console.WriteLine("잘못된 수량입니다. 1 이상의 숫자를 입력하세요.");
                             Console.WriteLine();
                         }
                     }

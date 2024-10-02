@@ -274,8 +274,18 @@ namespace SpartaDungeon
                     if (select == 0) break;
                     else if (select > 0 && select <= Inventory.Count)
                     {
-                        ManageItemEquip(Inventory[select - 1]);
-                        Console.Clear();
+                        Item selectItem = Inventory[select - 1];
+                        if (selectItem.ItemType == ITEMTYPE.MainWeapon || selectItem.ItemType == ITEMTYPE.Armor)
+                        {
+                            ManageItemEquip(selectItem);
+                            Console.Clear();
+                        } 
+                        else if(selectItem.ItemType == ITEMTYPE.HealingItem)
+                        {
+                            ManageRecovery(selectItem);
+                            Console.Clear();
+                        }
+                        
                     }
                     else
                     {
@@ -320,6 +330,22 @@ namespace SpartaDungeon
                 EquipArmor = new Item();
                 CurrentHp -= _selectItem.AdditionalHP;
             }
+        }
+
+        void ManageRecovery(Item selectItem)
+        {
+            RecoverySystem recoverySystem = new RecoverySystem();
+            if (selectItem.Name.Contains("HP"))
+            {
+                recoverySystem.InitializeHp(MaxHp, CurrentHp);
+                CurrentHp = recoverySystem.HpRecover(selectItem.ItemNum);
+            }
+            else if (selectItem.Name.Contains("MP"))
+            {
+                recoverySystem.InitializeMp(MaxMp, CurrentMp);
+                CurrentMp = recoverySystem.HpRecover(selectItem.ItemNum);
+            }
+            
         }
 
         /* EXP(경험치) 작업하면서 변수 추가 - 20241001송명성*/
