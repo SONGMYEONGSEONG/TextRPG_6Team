@@ -194,7 +194,7 @@ namespace SpartaDungeon
                         {
                             SelectTypeItemList[select - 1].IsPurchased = true;
                             player.Gold -= SelectTypeItemList[select - 1].Price;
-                            player.myInventory.Inventory.Add(SelectTypeItemList[select - 1]);
+                            player.myInventory.AddInventory(SelectTypeItemList[select - 1]);
                             Console.Clear();
                             Console.WriteLine($"\"{SelectTypeItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
                             Console.WriteLine();
