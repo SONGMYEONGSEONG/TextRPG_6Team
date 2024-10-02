@@ -48,7 +48,7 @@ namespace SpartaDungeon
 
 
         //public List<Skill> SkillList = new List<Skill>();
-        public List<Item> Inventory = new List<Item>();
+        public MyInventory myInventory = new MyInventory();
         public Item EquipWeapon = new Item();
         public Item EquipArmor = new Item();
 
@@ -137,8 +137,7 @@ namespace SpartaDungeon
             }
 
             //-----플레이어 생성 시 인벤토리 초기화------
-            MyInventory myInventory = new MyInventory(Job);
-            Inventory = myInventory.Inventory;
+            myInventory = new MyInventory(Job);
         }
 
         //public Character(string _name, JobType _jobType, string _job, float _hp, float _mp,
@@ -244,17 +243,18 @@ namespace SpartaDungeon
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
 
-                for (int i = 0; i < Inventory.Count; i++)
+                for (int i = 0; i < myInventory.Inventory.Count; i++)
                 {
-                    string itemEquipState = (Inventory[i] == EquipWeapon || Inventory[i] == EquipArmor) ? "[E]" : "";
+                    string itemEquipState = (myInventory.Inventory[i] == EquipWeapon || myInventory.Inventory[i] == EquipArmor) ? "[E]" : "";
 
                     Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-                    Console.WriteLine($" [{i + 1}] {itemEquipState}{Inventory[i].Name}({Inventory[i].ItemTypeKorean})" +
-                                      $" | {Inventory[i].Description}" +
-                                      $" | 공격력 +{Inventory[i].Atk}" +
-                                      $" 방어력 +{Inventory[i].Def}" +
-                                      $" 추가체력 +{Inventory[i].AdditionalHP}" +
-                                      $" | {Inventory[i].Price}G |");
+                    Console.WriteLine($" [{i + 1}] {itemEquipState}{myInventory.Inventory[i].Name}({myInventory.Inventory[i].ItemTypeKorean})" +
+                                      $" | {myInventory.Inventory[i].Description}" +
+                                      $" | 공격력 +{myInventory.Inventory[i].Atk}" +
+                                      $" 방어력 +{myInventory.Inventory[i].Def}" +
+                                      $" 추가체력 +{myInventory.Inventory[i].AdditionalHP}" +
+                                      $" | {myInventory.Inventory[i].Price}G |" +
+                                      $" | {myInventory.Inventory[i].Count}개 |");
                 }
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
                 Console.WriteLine();
@@ -272,18 +272,18 @@ namespace SpartaDungeon
                 if (isNum)
                 {
                     if (select == 0) break;
-                    else if (select > 0 && select <= Inventory.Count)
+                    else if (select > 0 && select <= myInventory.Inventory.Count)
                     {
-                        Item selectItem = Inventory[select - 1];
+                        Item selectItem = myInventory.Inventory[select - 1];
                         if (selectItem.ItemType == ITEMTYPE.MainWeapon || selectItem.ItemType == ITEMTYPE.Armor)
                         {
-                            ManageItemEquip(selectItem);
                             Console.Clear();
+                            ManageItemEquip(selectItem);
                         } 
                         else if(selectItem.ItemType == ITEMTYPE.HealingItem)
                         {
-                            ManageRecovery(selectItem);
                             Console.Clear();
+                            ManageRecovery(selectItem);
                         }
                         
                     }
@@ -334,18 +334,72 @@ namespace SpartaDungeon
 
         void ManageRecovery(Item selectItem)
         {
-            RecoverySystem recoverySystem = new RecoverySystem();
-            if (selectItem.Name.Contains("HP"))
+            while (true)
             {
-                recoverySystem.InitializeHp(MaxHp, CurrentHp);
-                CurrentHp = recoverySystem.HpRecover(selectItem.ItemNum);
+                Console.WriteLine($"포션을 사용하면 회복 할 수 있습니다.({selectItem.Name}:{selectItem.Count}개)");
+
+                Console.WriteLine("\n[1] 사용하기\n");
+                Console.WriteLine("\n[0] 나가기\n");
+                Console.WriteLine();
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">>");
+                string input = Console.ReadLine();
+
+                int select;
+                bool isNum = int.TryParse(input, out select);
+
+                if (isNum)
+                {
+                    if (select == 0) { Console.Clear(); break; } 
+                    else if (select == 1)
+                    {
+                        if (selectItem.Count > 0)
+                        {
+                            RecoverySystem recoverySystem = new RecoverySystem();
+                            if (selectItem.Name.Contains("HP"))
+                            {
+                                recoverySystem.InitializeHp(MaxHp, CurrentHp);
+                                CurrentHp = recoverySystem.HpRecover(selectItem.ItemNum);
+
+                                myInventory.DelInventory(selectItem);
+                                Console.Clear();
+                                Console.WriteLine("HP가 회복되었습니다.");
+                            }
+
+                            else if (selectItem.Name.Contains("MP"))
+                            {
+                                recoverySystem.InitializeMp(MaxMp, CurrentMp);
+                                CurrentMp = recoverySystem.MpRecover(selectItem.ItemNum);
+
+                                myInventory.DelInventory(selectItem);
+                                Console.Clear();
+                                Console.WriteLine("MP가 회복되었습니다.");
+                            }
+                        }
+                        else 
+                        {
+                            Console.Clear();
+                            Console.WriteLine("해당 포션이 없습니다");
+                            break;
+                        }
+                        
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("목록에 없는 숫자를 입력했습니다.");
+                        Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
+                        Console.WriteLine();
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("목록에 없는 숫자를 입력했습니다.");
+                    Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
+                    Console.WriteLine();
+                }
             }
-            else if (selectItem.Name.Contains("MP"))
-            {
-                recoverySystem.InitializeMp(MaxMp, CurrentMp);
-                CurrentMp = recoverySystem.HpRecover(selectItem.ItemNum);
-            }
-            
         }
 
         /* EXP(경험치) 작업하면서 변수 추가 - 20241001송명성*/

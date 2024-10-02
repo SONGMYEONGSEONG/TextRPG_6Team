@@ -126,7 +126,7 @@ namespace SpartaDungeon
 
                 Console.WriteLine("상점 아이템 리스트에서 구매하거나, 소유한 아이템을 판매할 수 있습니다.");
                 Console.WriteLine();
-                Console.WriteLine("[1] 메인무기 구매\n");
+                Console.WriteLine("[1] 무기 구매\n");
                 Console.WriteLine("[2] 갑옷 구매\n");
                 Console.WriteLine("[3] 회복아이템 구매\n");
                 Console.WriteLine("[0] 나가기\n");

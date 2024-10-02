@@ -67,7 +67,6 @@ namespace SpartaDungeon
                 // 마법사 시작템
                 AddInventory(items.Find(item => item.ItemNum == "401"));
             }
-
         }
 
         public void AddInventory(Item newItem)
@@ -106,6 +105,7 @@ namespace SpartaDungeon
                 else
                 {
                     // Count가 1인 경우, 인벤토리에서 완전히 제거
+                    existingItem.Count -= 1;
                     Inventory.Remove(existingItem);
                     Console.WriteLine($"\"{delItem.Name}\" 아이템이 인벤토리에서 제거되었습니다.");
                 }

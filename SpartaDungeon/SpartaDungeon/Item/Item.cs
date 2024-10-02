@@ -29,7 +29,7 @@ namespace SpartaDungeon
         public float Luc { get; set; }
         public int AdditionalHP { get; set; }
         public string Description { get; set; }
-        public bool IsPurchased { get; set; }
+        public bool IsPurchased { get; set; }   //속성 삭제고려중
         public bool IsNotForSale { get; set; }
         public int Count{ get; set; }
 

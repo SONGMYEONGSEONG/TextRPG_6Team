@@ -34,7 +34,8 @@ namespace SpartaDungeon
         public float? HpRecover(string itemNum)
         {
             // 포션 종류에 따른 회복량
-            if (itemNum == "501") { recoveryAmount = 100f; }
+            if (itemNum == "501") { recoveryAmount = 30f; }
+            else if (itemNum == "503") { recoveryAmount = 80f; }
 
             // 현재 체력에 회복량 추가, 최대 체력을 넘지 않도록 조정
             CurrentHp += recoveryAmount;
@@ -53,7 +54,8 @@ namespace SpartaDungeon
         public float? MpRecover(string itemNum)
         {
             // 포션 종류에 따른 회복량 (예시)
-            if (itemNum == "005") { recoveryAmount = 50f; }
+            if (itemNum == "502") { recoveryAmount = 30f; }
+            if (itemNum == "504") { recoveryAmount = 80f; }
 
             // 현재 마나에 회복량 추가, 최대 마나를 넘지 않도록 조정
             CurrentMp += recoveryAmount;
