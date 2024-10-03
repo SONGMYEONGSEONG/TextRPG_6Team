@@ -136,6 +136,7 @@ namespace SpartaDungeon
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("플레이어 데이터를 저장합니다.");
+            Console.ResetColor();
             _saveLoad.SaveData(_player, "player");
         }
 
