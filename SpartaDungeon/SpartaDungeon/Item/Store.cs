@@ -35,10 +35,11 @@ namespace SpartaDungeon
 
         void ShowStoreItemList(Character player, ITEMTYPE itemType)
         {
-
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine();
             Console.WriteLine($"{itemType}[상점 아이템 목록]");
-           
+            Console.ResetColor();
+
             SelectTypeItemList = StoreItemList.FindAll(item => item.ItemType == itemType && item.IsNotForSale == false);
             PlayerInventory = player.myInventory.Inventory;
 
@@ -51,8 +52,9 @@ namespace SpartaDungeon
                 {
                     completedPurchase = $"({matchedItem.Count}개 보유)";
                 }
-
+                Console.ResetColor();
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($" [{i + 1}] {SelectTypeItemList[i].Name}({SelectTypeItemList[i].ItemTypeKorean})" +
                                   $" | {SelectTypeItemList[i].Description}" +
                                   $" | 공격력 +{SelectTypeItemList[i].Atk}" +
@@ -61,6 +63,7 @@ namespace SpartaDungeon
                                   $" | {SelectTypeItemList[i].Price}G |" +
                                   $" \t{completedPurchase}");
             }
+            Console.ResetColor();
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine();
         }
@@ -90,11 +93,16 @@ namespace SpartaDungeon
 
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("상점 아이템 리스트에서 구매하거나, 소유한 아이템을 판매할 수 있습니다.");
                 Console.WriteLine();
+
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[1] 구매\n");
                 Console.WriteLine("[2] 판매\n");
                 Console.WriteLine("[0] 나가기\n");
+
+                Console.ResetColor();
                 Console.Write(">> ");
                 string input = Console.ReadLine();
 
@@ -116,7 +124,9 @@ namespace SpartaDungeon
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("잘못된 입력입니다.");
+                    Console.ResetColor();
                 }
             }
         }
@@ -126,13 +136,17 @@ namespace SpartaDungeon
         {
             while (true)
             {
-
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("상점 아이템 리스트에서 구매하거나, 소유한 아이템을 판매할 수 있습니다.");
                 Console.WriteLine();
+
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[1] 무기 구매\n");
                 Console.WriteLine("[2] 갑옷 구매\n");
                 Console.WriteLine("[3] 회복아이템 구매\n");
                 Console.WriteLine("[0] 나가기\n");
+
+                Console.ResetColor();
                 Console.Write(">> ");
                 string input = Console.ReadLine();
 
@@ -159,7 +173,9 @@ namespace SpartaDungeon
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("잘못된 입력입니다.");
+                    Console.ResetColor();
                 }
             }
         }
@@ -169,13 +185,19 @@ namespace SpartaDungeon
         {
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("아이템 리스트에서 아이템을 확인하고 구매하고자 하는 아이템의 번호를 입력해주세요.");
                 Console.WriteLine($"현재 소지금: {player.Gold}G");
 
+                Console.ResetColor();
                 ShowStoreItemList(player, itemType);
 
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[0] 나가기\n");
+
+                Console.ResetColor();
                 Console.Write(">> ");
+
                 string input = Console.ReadLine();
 
                 int select;
@@ -194,12 +216,14 @@ namespace SpartaDungeon
                             player.Gold -= SelectTypeItemList[select - 1].Price;
                             player.myInventory.AddInventory(SelectTypeItemList[select - 1]);
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine($"\"{SelectTypeItemList[select - 1].Name}\" 을 구매했습니다. 인벤토리를 확인해보세요.");
                             Console.WriteLine();
                         }
                         else
                         {
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Gold가 부족합니다.");
                             Console.WriteLine();
                         }
@@ -207,6 +231,7 @@ namespace SpartaDungeon
                     else
                     {
                         Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("목록에 없는 숫자를 입력했습니다.");
                         Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
                         Console.WriteLine();
@@ -226,15 +251,23 @@ namespace SpartaDungeon
         {
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("소유한 아이템을 정가의 50%로 판매할 수 있습니다.");
+
+                Console.ResetColor();
                 Console.WriteLine("현재 소지금: {0}G", player.Gold);
                 Console.WriteLine();
+
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("내 인벤토리");
                 Console.WriteLine("[아이템 목록]");
 
                 for (int i = 0; i < player.myInventory.Inventory.Count; i++)
                 {
+                    Console.ResetColor();
                     Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+                    
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($" [{i + 1}] {player.myInventory.Inventory[i].Name}({player.myInventory.Inventory[i].ItemTypeKorean})" +
                                       $" | {player.myInventory.Inventory[i].Description}" +
                                       $" | 공격력 +{player.myInventory.Inventory[i].Atk}" +
@@ -243,12 +276,19 @@ namespace SpartaDungeon
                                       $" | 판매 금액: {(int)(player.myInventory.Inventory[i].Price * 0.5f)}G |" +
                                       $"  {player.myInventory.Inventory[i].Count} 개 |");
                 }
+                Console.ResetColor();
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine();
 
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[0] 나가기");
                 Console.WriteLine();
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("아이템 번호을 입력하면 판매됩니다.");
                 Console.WriteLine();
+
+                Console.ResetColor();
                 Console.Write(">> ");
                 string input = Console.ReadLine();
 
@@ -267,6 +307,7 @@ namespace SpartaDungeon
                         player.Gold += (int)(player.myInventory.Inventory[select - 1].Price * 0.5f);
                         UnWearItemSell(player, player.myInventory.Inventory[select - 1]);
                         Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"\"{player.myInventory.Inventory[select - 1].Name}\" 을" +
                                           $"{(int)(player.myInventory.Inventory[select - 1].Price * 0.5f)}G 에 판매하셨습니다.");
                         Console.WriteLine();
@@ -284,16 +325,20 @@ namespace SpartaDungeon
                     else
                     {
                         Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("목록에 없는 숫자를 입력했습니다.");
                         Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
+                        Console.ResetColor();
                         Console.WriteLine();
                     }
                 }
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("잘못된 입력입니다.");
                     Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
+                    Console.ResetColor();
                     Console.WriteLine();
                 }
             }

@@ -49,26 +49,38 @@ namespace SpartaDungeon
 
         public void Print() 
         {
+            SummonArea _area;
+
             _strbuilder.Clear();
             _strbuilder.AppendLine($"Stage Select\n");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(_strbuilder.ToString());
 
-            SummonArea _area; 
-
+            _strbuilder.Clear();
             for (int i = 1; i < (int)(SummonArea.End) ; i++)
             {
                 _strbuilder.AppendLine($"{i}. {(SummonArea)i}");
             }
-
-            _strbuilder.AppendLine("\n 0. 취소");
-            _strbuilder.AppendLine("\n원하시는 스테이지를 선택해주세요. \n >>");
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(_strbuilder.ToString());
 
+            _strbuilder.Clear();
+            _strbuilder.AppendLine("\n0. 취소");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(_strbuilder.ToString());
+
+            _strbuilder.Clear();
+            _strbuilder.AppendLine("\n원하시는 스테이지를 선택해주세요. \n >>");
+            Console.ResetColor();
+            Console.Write(_strbuilder.ToString());
         }
 
         public void ErrorInput()
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("잘못된 입력입니다.");
             Console.WriteLine();
+            Console.ResetColor();
             Console.ReadLine();
         }
 

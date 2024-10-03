@@ -37,21 +37,32 @@ namespace SpartaDungeon
             {
                 if (_questData.Value.QuestCheck(_curPlayer))
                 {
-                    //클리어한 퀘스트를 플레이어 Data에 저장
+                    //클리어한 퀘스트를 플레이어 Data에 Key데이터로 저장
                     _curPlayer.ClearQuestsID.Add(_questData.Key);
+                    _questData.Value.IsFinish = true; //해당 퀘스트 데이터를 클리어 처리
+                    //퀘스트 매니저의 퀘스트 리스트에도 클리어로 처리
+                    _questManager.Quests[_questData.Key].IsFinish = true;
 
                     _strbuilder.Clear();
-                    _questData.Value.IsFinish = true; //퀘스트 클리어 처리
-                    _strbuilder.AppendLine($"{_questData.Value.Label}의 퀘스트를 완료 하였습니다.\n");
+                    _strbuilder.AppendLine($"{_questData.Value.Label} 퀘스트를 완료 하였습니다.\n");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(_strbuilder.ToString());
+
 
                     //퀘스트 클리어 보상
+                    _strbuilder.Clear();
                     _strbuilder.AppendLine($"퀘스트 보상 : ");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(_strbuilder.ToString());
 
                     /*Debug*/
                     //아이템 퀘스트 보상
                     if (_questData.Value.RewardItemName != "")
                     {
+                        _strbuilder.Clear();
                         _strbuilder.AppendLine($"{_questData.Value.RewardItemName} x {_questData.Value.RewardValue} ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write(_strbuilder.ToString());
 
                         int dropItemIndex;
 
@@ -86,13 +97,17 @@ namespace SpartaDungeon
                     if (_questData.Value.RewardGold != 0)
                     {
                         _curPlayer.Gold += _questData.Value.RewardGold;
-                        _strbuilder.AppendLine($"{_questData.Value.RewardGold} G");
-                    }
 
-                    Console.WriteLine(_strbuilder.ToString());
+                        _strbuilder.Clear();
+                        _strbuilder.AppendLine($"{_questData.Value.RewardGold} G");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write(_strbuilder.ToString());
+
+                    }
                     //수락한 퀘스트 리스트에서 제거
                     _curPlayer.PlayerQuest.Remove(_questData.Key);
 
+                    _strbuilder.Clear();
                     Console.ReadLine();
                 }
 
@@ -107,29 +122,52 @@ namespace SpartaDungeon
             _strbuilder.Clear();
             _strbuilder.AppendLine($"Quest!!\n");
 
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(_strbuilder.ToString());
+
+            _strbuilder.Clear();
             for (int i = 0; i < _questManager.Quests.Count; i++)
             {
+                _strbuilder.Clear();
                 _strbuilder.Append($"{i + 1} . {_questManager.Quests[i + 1].Label}");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(_strbuilder.ToString());
+
+                _strbuilder.Clear();
                 if (_questManager.Quests[i + 1].IsFinish)
                 {
-                    _strbuilder.AppendLine("[ 퀘스트 완료 ]");
+                    _strbuilder.AppendLine(" [퀘스트 완료] ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(_strbuilder.ToString());
                 }
                 else
                 {
                     _strbuilder.AppendLine();
+                    Console.ResetColor();
+                    Console.Write(_strbuilder.ToString());
                 }
             }
 
-            _strbuilder.AppendLine("\n 0. 취소");
-            _strbuilder.AppendLine("원하시는 퀘스트를 선택해주세요. \n >> \n");
 
-            _strbuilder.AppendLine("[현재 수락중인 퀘스트]\n");
+            _strbuilder.Clear();
+            _strbuilder.AppendLine("\n==[현재 수락중인 퀘스트]==");
 
             foreach (KeyValuePair<int, Quest> _questData in _curPlayer.PlayerQuest)
             {
                 _strbuilder.AppendLine($"- {_questData.Value.Label}");
             }
+            _strbuilder.AppendLine("==========================\n");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(_strbuilder.ToString());
 
+            _strbuilder.Clear();
+            _strbuilder.AppendLine("\n 0. 취소");
+           Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(_strbuilder.ToString());
+
+            _strbuilder.Clear();
+            _strbuilder.AppendLine("원하시는 퀘스트를 선택해주세요. \n >> \n");
+            Console.ResetColor();
             Console.Write(_strbuilder.ToString());
         }
 
@@ -144,22 +182,32 @@ namespace SpartaDungeon
                 if (_questManager.Quests[_questselectID].IsFinish)
                 {
                     _strbuilder.Clear();
-                    _strbuilder.AppendLine("해당 퀘스트는 이미 완료 하셨습니다.");   
+                    _strbuilder.AppendLine("해당 퀘스트는 이미 완료 하셨습니다.");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(_strbuilder.ToString());
                 }
                 else if (_curPlayer.PlayerQuest.ContainsKey(_questselectID))
                 {
                     _strbuilder.Clear();
                     _strbuilder.AppendLine("해당 퀘스트는 진행 중 입니다.");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(_strbuilder.ToString());
                 }
                 else
                 {
                     QuestAcceptCheckPrint();
                 }
 
-                _strbuilder.AppendLine("0. 나가기");
+                _strbuilder.Clear();
+                _strbuilder.AppendLine("0. 나가기");              
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(_strbuilder.ToString());
+
+                _strbuilder.Clear();
                 _strbuilder.AppendLine("\n원하시는 행동을 입력해주세요.");
                 _strbuilder.AppendLine(">>");
-                Console.WriteLine(_strbuilder.ToString());
+                Console.ResetColor();
+                Console.Write(_strbuilder.ToString());
 
                 string _input = Console.ReadLine();
 
@@ -189,9 +237,12 @@ namespace SpartaDungeon
 
         private void QuestAcceptCheckPrint()
         {
+
             _strbuilder.Clear();
             _strbuilder.AppendLine("1. 수락");
             _strbuilder.AppendLine("2. 거절");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(_strbuilder.ToString());
         }
 
         private void ErrorInput()
