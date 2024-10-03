@@ -93,11 +93,14 @@
                 Console.ResetColor();
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($" 으로 하시겠습니까?");
+                Console.WriteLine($" 으로 하시겠습니까?\n");
                 Console.ResetColor();
 
-                Console.Write("[1] 네\t[2] 아니요\n>> ");
+                Console.WriteLine("[1] 네");
+                Console.WriteLine("[2] 아니요\n");
+                Console.Write(">> ");
                 string input = Console.ReadLine();
+
                 if (input == "1")
                 {
                     _isContinue = true;
@@ -154,15 +157,16 @@
                     if (jobTypeNum >= 1 && jobTypeNum <= 4)
                     {
                         player = new Character(_name, jobTypeNum);
-                        Console.Clear();
 
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write($"[{player.Job}]!");
+                        Console.Write($"\n[{player.Job}]!");
                         Console.ResetColor();
 
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($" 선택!\n");
                         Console.ResetColor();
+
+                        Console.ReadLine();
                         break;
                     }
                     else
