@@ -11,24 +11,31 @@
         void TitleImage()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(" _______                      __            _____                                            \r\n|     __|.-----..---.-..----.|  |_ .---.-. |     \\ .--.--..-----..-----..-----..-----..-----.\r\n|__     ||  _  ||  _  ||   _||   _||  _  | |  --  ||  |  ||     ||  _  ||  -__||  _  ||     |\r\n|_______||   __||___._||__|  |____||___._| |_____/ |_____||__|__||___  ||_____||_____||__|__|\r\n         |__|                                                    |_____|                     ");
+            Console.WriteLine("    _______                      __            _____                                            \r\n" +
+                              "   |     __|.-----..---.-..----.|  |_ .---.-. |     \\ .--.--..-----..-----..-----..-----..-----.\r\n" +
+                              "   |__     ||  _  ||  _  ||   _||   _||  _  | |  --  ||  |  ||     ||  _  ||  -__||  _  ||     |\r\n" +
+                              "   |_______||   __||___._||__|  |____||___._| |_____/ |_____||__|__||___  ||_____||_____||__|__|\r\n" +
+                              "            |__|                                                    |_____|                     ");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("\r\n                _______                __     ______   ______   _______ \r\n               |_     _|.-----..--.--.|  |_  |   __ \\ |   __ \\ |     __|\r\n                 |   |  |  -__||_   _||   _| |      < |    __/ |    |  |\r\n                 |___|  |_____||__.__||____| |___|__| |___|    |_______|\r\n                                                                        \r\n");
+            Console.WriteLine("\r\n" +
+                "                    _______                __     ______   ______   _______ \r\n" +
+                "                   |_     _|.-----..--.--.|  |_  |   __ \\ |   __ \\ |     __|\r\n" +
+                "                     |   |  |  -__||_   _||   _| |      < |    __/ |    |  |\r\n" +
+                "                     |___|  |_____||__.__||____| |___|__| |___|    |_______|\r\n" +
+                "                                                                            \r\n");
             Console.ResetColor();
-
-    
         }
 
         void GameStart()
         {
             TitleImage();
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\n[1] 저장된 게임 불러오기\n");
-            Console.WriteLine("[2] 새 게임 시작\n");
+            Console.WriteLine("\n                                    [1] 저장된 게임 불러오기\n");
+            Console.WriteLine("                                        [2] 새 게임 시작\n");
 
             Console.ResetColor();
-            Console.Write(">> ");
+            Console.Write("                                            >> ");
             string? input = Console.ReadLine();
 
             if (input == "1")
