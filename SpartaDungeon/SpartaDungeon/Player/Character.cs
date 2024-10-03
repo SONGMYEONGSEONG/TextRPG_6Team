@@ -180,22 +180,75 @@ namespace SpartaDungeon
         {
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"\n[플레이어의 현재 상태]\n");
-                Console.WriteLine($"이름: {Name}");
-                Console.WriteLine($"레벨: {Level}");
-                Console.WriteLine($"경험치: {Exp} / {MaxExp}"); // EXP(경험치) 작업하면서 변수 추가 - 20241001송명성
-                Console.WriteLine($"직업: {Job}");
-                Console.WriteLine($"체력: {CurrentHp} / {TotalMaxHp} ({MaxHp} +{ExtraHp})");
-                Console.WriteLine($"마력: {CurrentMp} / {TotalMaxMp} ({MaxMp} +{ExtraMp})");
-                Console.WriteLine($"공격력: {TotalAttack} ({Attack} +{ExtraAttack})");
-                Console.WriteLine($"방어력: {TotalDefense} ({Defense} +{ExtraDefense})");
-                Console.WriteLine($"민첩: {TotalAgility} ({Agility} +{ExtraAgility})");
-                Console.WriteLine($"명중: {TotalAccuracy} ({Accuracy} +{ExtraAccuracy})");
-                Console.WriteLine($"행운: {TotalLuck} ({Luck} +{ExtraLuck})");
-                Console.WriteLine($"소지금: {Gold}G");
 
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"이름: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{Name}");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"레벨: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{Level}");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"경험치: "); // EXP(경험치) 작업하면서 변수 추가 - 20241001송명성
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{Exp} / {MaxExp}"); // EXP(경험치) 작업하면서 변수 추가 - 20241001송명성
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"직업: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{Job}");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"체력: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{CurrentHp} / {TotalMaxHp} ({MaxHp} +{ExtraHp})");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"마력: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{CurrentMp} / {TotalMaxMp} ({MaxMp} +{ExtraMp})");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"공격력: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{TotalAttack} ({Attack} +{ExtraAttack})");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"방어력: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{TotalDefense} ({Defense} +{ExtraDefense})");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"민첩: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{TotalAgility} ({Agility} +{ExtraAgility})");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"명중: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{TotalAccuracy} ({Accuracy} +{ExtraAccuracy})");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"행운: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{TotalLuck} ({Luck} +{ExtraLuck})");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"소지금: ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{Gold}G");
+
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n[0] 나가기\n");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.ResetColor();
+
                 Console.Write(">> ");
                 string input = Console.ReadLine();
 
@@ -207,7 +260,9 @@ namespace SpartaDungeon
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("잘못된 입력입니다.");
+                    Console.ResetColor();
                 }
             }
         }
@@ -215,16 +270,34 @@ namespace SpartaDungeon
         {
             while (true)
             {
-                Console.WriteLine($"[{Name}]의 인벤토리");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write($"[{Name}]");
+                Console.ResetColor();
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"의 인벤토리");
+                Console.ResetColor();
+
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
 
                 for (int i = 0; i < myInventory.Inventory.Count; i++)
                 {
                     string itemEquipState = (myInventory.Inventory[i].ItemNum == EquipWeapon.ItemNum || myInventory.Inventory[i].ItemNum == EquipArmor.ItemNum) ? "[E]" : "";
-
+                    
+                    Console.ResetColor();
                     Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-                    Console.WriteLine($" [{i + 1}] {itemEquipState}{myInventory.Inventory[i].Name}({myInventory.Inventory[i].ItemTypeKorean})" +
+                   
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($" [{i + 1}]");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write($" { itemEquipState }");
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($" {myInventory.Inventory[i].Name}({myInventory.Inventory[i].ItemTypeKorean}");
+                    Console.WriteLine(
                                       $" | {myInventory.Inventory[i].Description}" +
                                       $" | 공격력 +{myInventory.Inventory[i].Atk}" +
                                       $" 방어력 +{myInventory.Inventory[i].Def}" +
@@ -232,12 +305,19 @@ namespace SpartaDungeon
                                       $" | {myInventory.Inventory[i].Price}G |" +
                                       $" | {myInventory.Inventory[i].Count}개 |");
                 }
+                Console.ResetColor();
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
                 Console.WriteLine();
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("아이템 번호를 입력하면 해당 아이템을 장착하거나 해제할 수 있습니다.");
                 Console.WriteLine("주무기, 갑옷을 한 개씩 장착할 수 있습니다.");
+                Console.ResetColor();
 
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n[0] 나가기\n");
+                Console.ResetColor();
+
                 Console.Write(">> ");
 
                 string input = Console.ReadLine();
@@ -264,8 +344,11 @@ namespace SpartaDungeon
                         else
                         {
                             Console.Clear();
+
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("해당 아이템 기타 아이템이므로 사용 하실 수 없습니다.");
                             Console.WriteLine("다른 아이템을 선택해 주세요.");
+                            Console.ResetColor();
                             Console.WriteLine();
                           
                         }
@@ -274,16 +357,20 @@ namespace SpartaDungeon
                     else
                     {
                         Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("목록에 없는 숫자를 입력했습니다.");
                         Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
+                        Console.ResetColor();
                         Console.WriteLine();
                     }
                 }
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("잘못된 입력입니다.");
                     Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
+                    Console.ResetColor();
                     Console.WriteLine();
                 }
             }
@@ -320,12 +407,18 @@ namespace SpartaDungeon
         {
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"포션을 사용하면 회복 할 수 있습니다.({selectItem.Name}:{selectItem.Count}개)");
 
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\n[1] 사용하기\n");
                 Console.WriteLine("\n[0] 나가기\n");
                 Console.WriteLine();
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.ResetColor();
+
                 Console.Write(">>");
                 string input = Console.ReadLine();
 
@@ -342,28 +435,41 @@ namespace SpartaDungeon
                             RecoverySystem recoverySystem = new RecoverySystem();
                             if (selectItem.Name.Contains("HP"))
                             {
+                                float? _oldHP = CurrentHp;
+
                                 recoverySystem.InitializeHp(MaxHp, CurrentHp);
                                 CurrentHp = recoverySystem.HpRecover(selectItem.ItemNum);
 
                                 myInventory.DelInventory(selectItem);
                                 Console.Clear();
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("HP가 회복되었습니다.");
+                                Console.WriteLine($"HP : {_oldHP} -> {CurrentHp}");
+                                Console.ResetColor();
+
                             }
 
                             else if (selectItem.Name.Contains("MP"))
                             {
+                                float? _oldMP = CurrentMp;
+
                                 recoverySystem.InitializeMp(MaxMp, CurrentMp);
                                 CurrentMp = recoverySystem.MpRecover(selectItem.ItemNum);
 
                                 myInventory.DelInventory(selectItem);
                                 Console.Clear();
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("MP가 회복되었습니다.");
+                                Console.WriteLine($"MP : {_oldMP} -> {CurrentMp}");
+                                Console.ResetColor();
                             }
                         }
                         else 
                         {
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("해당 포션이 없습니다");
+                            Console.ResetColor();
                             break;
                         }
                         
@@ -371,17 +477,21 @@ namespace SpartaDungeon
                     else
                     {
                         Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("목록에 없는 숫자를 입력했습니다.");
                         Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
                         Console.WriteLine();
+                        Console.ResetColor();
                     }
                 }
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("목록에 없는 숫자를 입력했습니다.");
                     Console.WriteLine("아이템 목록에 해당하는 번호나 0을 입력하세요.");
                     Console.WriteLine();
+                    Console.ResetColor();
                 }
             }
         }

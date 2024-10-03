@@ -92,10 +92,22 @@ namespace SpartaDungeon
             _strbuilder.Clear();
             _strbuilder.AppendLine($"{_quests[_questID].Label}");
             _strbuilder.AppendLine();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(_strbuilder.ToString());
+
+            _strbuilder.Clear();
             _strbuilder.AppendLine($"{_quests[_questID].Detail}");
             _strbuilder.AppendLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(_strbuilder.ToString());
+
+            _strbuilder.Clear();
             _strbuilder.AppendLine($"- {_quests[_questID].Purpose} ({_quests[_questID].CurProgressRequired}/{_quests[_questID].EndProgressRequired})");
             _strbuilder.AppendLine();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write(_strbuilder.ToString());
+
+            _strbuilder.Clear();
             _strbuilder.AppendLine("-보상-");
 
             if (_quests[_questID].RewardItemName != "")
@@ -108,6 +120,7 @@ namespace SpartaDungeon
             }
                 _strbuilder.AppendLine();
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(_strbuilder.ToString());
         }
 

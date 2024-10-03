@@ -41,19 +41,30 @@ namespace SpartaDungeon
                 // 메인 화면 올때마다 플레이어 스텟 최신화
                 _player.UpdateStat();
 
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("마을에서 다음 활동을 선택할 수 있습니다.\n");
+                Console.ResetColor();
+
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[1] 상태 보기");
                 Console.WriteLine("[2] 인벤토리 보기");
                 Console.Write("[3] 던전 입장");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"(던전 지역 : {_curSelectArea})");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[4] 던전 스테이지 선택");
                 Console.WriteLine("[5] 퀘스트 보기");
                 Console.WriteLine("[6] 상점 보기");
                 Console.WriteLine();
+
                 Console.WriteLine("[0] 저장하기");
                 Console.WriteLine("[9] 게임종료");
                 Console.WriteLine();
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("원하는 활동을 입력해주세요.");
+                Console.ResetColor();
+
                 Console.Write(">> ");
 
                 string input = Console.ReadLine();
@@ -104,22 +115,28 @@ namespace SpartaDungeon
                             break;
                         default:
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("잘못된 입력입니다.");
                             Console.WriteLine("선택지의 숫자 중 하나를 입력해주세요.\n");
+                            Console.ResetColor();
                             break;
                     }
                 }
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("잘못된 입력입니다.\n");
+                    Console.ResetColor();
                 }
             }
         }
 
         public void SaveGame(Character _player)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("플레이어 데이터를 저장합니다.");
+            Console.ResetColor();
             _saveLoad.SaveData(_player, "player");
         }
 
