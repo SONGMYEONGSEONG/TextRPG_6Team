@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpartaDungeon.SaveLoad;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -22,7 +23,7 @@ namespace SpartaDungeon
 
     internal class MainScene
     {
-        SaveLoad _saveLoad = new SaveLoad();
+        SaveLoad_asc saveLoad = new SaveLoad_asc();
         BattleScene _battleScene = new BattleScene();
         QuestScene _questScene = new QuestScene();
         EnemyManager _enemyManager = new EnemyManager();
@@ -31,7 +32,7 @@ namespace SpartaDungeon
 
         Store _store = new Store();
 
-        public void VillageScene(Character _player)
+        public void VillageScene(Character character)
         {
             _enemyManager.Initialize();
 
@@ -39,7 +40,7 @@ namespace SpartaDungeon
             {
                 Console.Clear();
                 // 메인 화면 올때마다 플레이어 스텟 최신화
-                _player.UpdateStat();
+                character.UpdateStat();
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("마을에서 다음 활동을 선택할 수 있습니다.\n");
@@ -78,21 +79,21 @@ namespace SpartaDungeon
                     {
                         case ((int)MainSceneChoice.Save):
                             Console.Clear();
-                            SaveGame(_player);
+                            SaveGame(character);
                             break;
                         case ((int)MainSceneChoice.Status):
                             Console.Clear();
-                            _player.DisplayStatus();
+                            character.DisplayStatus();
                             break;
                         case ((int)MainSceneChoice.Inventory):
                             Console.Clear();
-                            _player.DisplayInventory();
+                            character.DisplayInventory();
                             break;
                         case ((int)MainSceneChoice.EnterDungeon):
                             Console.Clear();
-                            _battleScene.Initialize(_player, _enemyManager.GetEnemies(_curSelectArea));
+                            _battleScene.Initialize(character, _enemyManager.GetEnemies(_curSelectArea));
                             _battleScene.SceneStart();
-                            _battleScene.SceneExit(ref _player);
+                            _battleScene.SceneExit(ref character);
                             break;
                         case ((int)MainSceneChoice.DungeonStage):
                             Console.Clear();
@@ -102,16 +103,16 @@ namespace SpartaDungeon
                             break;
                         case ((int)MainSceneChoice.Quest):
                             Console.Clear();
-                            _questScene.Initialize(_player);
+                            _questScene.Initialize(character);
                             _questScene.SceneStart();
-                            _questScene.SceneExit(ref _player);
+                            _questScene.SceneExit(ref character);
                             break;
                         case ((int)MainSceneChoice.Store):
                             Console.Clear();
-                            _store.EnterStore(_player);
+                            _store.EnterStore(character);
                             break;
                         case ((int)MainSceneChoice.Exit):
-                            ExitGame(_player);
+                            // 종료 호출
                             break;
                         default:
                             Console.Clear();
@@ -137,27 +138,20 @@ namespace SpartaDungeon
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("플레이어 데이터를 저장합니다.");
             Console.ResetColor();
-            _saveLoad.SaveData(_player, "player");
+            saveLoad.SaveData(_player, "player");
         }
 
         public Character? LoadGame()
         {
-            if (_saveLoad.LoadData<Character>("player") == null)
+            if (saveLoad.LoadData<Character>("player") == null)
             {
                 return null;
             }
             else
             {
-                Character player = _saveLoad.LoadData<Character>("player");
+                Character player = saveLoad.LoadData<Character>("player");
                 return player;
             }
-        }
-
-        void ExitGame(Character _player)
-        {
-            SaveGame(_player);
-            Console.WriteLine("게임이 종료됩니다.");
-            Environment.Exit(0);
         }
     }
 }
