@@ -32,7 +32,7 @@ namespace SpartaDungeon
         SkillDeck _skillDeck; //플레이어가 사용하는 스킬덱
 
         int _gainGold; //몬스터를 쓰러트릴때마다 골드를 저장
-        Dictionary<string,Item> _gainItem; //획득 아이템 저장 컨테이너, Item 완성되는데로 수정 필요함 - 이지혜 님
+        Dictionary<string, Item> _gainItem; //획득 아이템 저장 컨테이너, Item 완성되는데로 수정 필요함 - 이지혜 님
         int _gainExp; //해당 전투에서 얻은 총 경험치
 
         bool isAttack;//[1.공격]을 선택 체크 변수
@@ -136,20 +136,28 @@ namespace SpartaDungeon
                 _enemyStatusStr = $"Lv.{_enemyList[i].Level} {_enemyList[i].Name}";
                 _strbuilder.Append(_enemyStatusStr);
 
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(_strbuilder.ToString());
+                Console.ResetColor();
+                _strbuilder.Clear();
+
                 switch (_enemyList[i].CurrentHp <= 0)
                 {
                     case true: //적의 HP가 0이하 -> 죽음상태를 표시
+
+                        Console.ForegroundColor = ConsoleColor.Red;
                         _strbuilder.Append(" Dead");
                         break;
 
                     case false:
-                        //_strbuilder.Append($" HP {_enemyTestList[i].CurrentHP}");
+                        Console.ForegroundColor = ConsoleColor.White;
                         _strbuilder.Append($" HP {_enemyList[i].CurrentHp}");
                         break;
                 }
 
                 _strbuilder.Append("\n");
                 Console.Write(_strbuilder.ToString());
+                Console.ResetColor();
             }
         }
 
@@ -159,19 +167,31 @@ namespace SpartaDungeon
             //전투에 들어왔다는 출력 문구
             _strbuilder.Clear();
             _strbuilder.Append("Battle!!\n\n");
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(_strbuilder.ToString());
+            Console.ResetColor();
 
             EnemysPrint();
+
+            Console.Write("=================================================");
 
             //Player 정보 출력
             _strbuilder.Clear();
             _strbuilder.Append("\n\n");
             _strbuilder.AppendLine("[내 정보]");
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(_strbuilder.ToString());
+            Console.ResetColor();
+
+            _strbuilder.Clear();
             _strbuilder.AppendLine($"Lv.{_curPlayer.Level}  {_curPlayer.Name}  ({_curPlayer.Job})");
             _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} / {_curPlayer.TotalMaxHp}");
             _strbuilder.AppendLine($"MP {_curPlayer.CurrentMp} / {_curPlayer.TotalMaxMp}");
-            _strbuilder.AppendLine($"EXP {_curPlayer.Exp} / {_curPlayer.MaxExp}");
+
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Write(_strbuilder.ToString());
+            Console.ResetColor();
         }
 
         private void PlayerTurnPrint()
@@ -183,9 +203,16 @@ namespace SpartaDungeon
             {
                 _strbuilder.AppendLine("1. 공격");
                 _strbuilder.AppendLine("2. 스킬");
+                _strbuilder.AppendLine("3. 도망가기");
             }
 
             _strbuilder.AppendLine("\n0. 취소");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(_strbuilder.ToString());
+            Console.ResetColor();
+
+            _strbuilder.Clear();
 
             if (isAttack && !isSkill)
             {
@@ -202,8 +229,13 @@ namespace SpartaDungeon
             {
                 _strbuilder.AppendLine("원하시는 행동을 입력해주세요.");
             }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(_strbuilder.ToString());
+            Console.ResetColor();
 
+            _strbuilder.Clear();
             _strbuilder.Append(">>");
+
             Console.Write(_strbuilder.ToString());
         }
 
@@ -276,8 +308,16 @@ namespace SpartaDungeon
                                 //Enemy Attack Print
                                 _strbuilder.Clear();
                                 _strbuilder.AppendLine("===================================================");
-                                _strbuilder.AppendLine($"Battle!! - Enemy(Lv.{_enemyList[i].Level} {_enemyList[i].Name})의 턴 \n");
+                                Console.ResetColor();
+                                Console.WriteLine(_strbuilder.ToString());
 
+                                _strbuilder.Clear();
+                                _strbuilder.AppendLine($"Battle!! - Enemy(Lv.{_enemyList[i].Level} {_enemyList[i].Name})의 턴 \n");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine(_strbuilder.ToString());
+                                Console.ResetColor();
+
+                                _strbuilder.Clear();
                                 if (_damage <= 0) //공격을 회피한경우 
                                 {
                                     _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
@@ -305,10 +345,18 @@ namespace SpartaDungeon
                                     {
                                         _strbuilder.AppendLine($"HP {_curPlayer.CurrentHp} -> {_curPlayer.CurrentHp - _damage}");
                                     }
-                                    _strbuilder.AppendLine("===================================================");
-                                    _strbuilder.AppendLine(">> 엔터를 누르면 다음 화면으로 넘어갑니다.");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.WriteLine(_strbuilder.ToString());
+                                    Console.ResetColor();
+
                                     _curPlayer.CurrentHp -= _damage;
                                 }
+
+
+                                _strbuilder.Clear();
+                                _strbuilder.AppendLine("===================================================");
+                                _strbuilder.AppendLine(">> 엔터를 누르면 다음 화면으로 넘어갑니다.");
+                                Console.ResetColor();
                                 Console.Write(_strbuilder.ToString());
                                 Console.ReadLine();
                             }
@@ -351,8 +399,10 @@ namespace SpartaDungeon
 
         private void ErrorInput()
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("잘못된 입력입니다.");
             Console.WriteLine();
+            Console.ResetColor();
             Console.ReadLine();
         }
 
@@ -470,7 +520,10 @@ namespace SpartaDungeon
                 {
                     _strbuilder.Clear();
                     _strbuilder.Append("해당 몬스터는 죽어 있습니다.");
+
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(_strbuilder.ToString());
+                    Console.ResetColor();
                     Console.ReadLine();
                 }
                 return false;
@@ -486,8 +539,14 @@ namespace SpartaDungeon
             //전투에 들어왔다는 출력 문구
             _strbuilder.Clear();
             _strbuilder.AppendLine("\n===================================================");
-            _strbuilder.Append("Battle!! - Player의 턴 \n\n");
+            Console.ResetColor();
             Console.Write(_strbuilder.ToString());
+
+            _strbuilder.Clear();
+            _strbuilder.Append("Battle!! - Player의 턴 \n\n");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(_strbuilder.ToString());
+            Console.ResetColor();
 
             _strbuilder.Clear();
             if (isSkill)
@@ -526,13 +585,13 @@ namespace SpartaDungeon
                 {
                     _hitEnemy.IsDead = true;
                     _allDeadCount++;
-                    _strbuilder.AppendLine($"\nLv.{_hitEnemy.Level}{_hitEnemy.Name} 가 쓰러졌습니다!");
+                    _strbuilder.AppendLine($"\nLv.{_hitEnemy.Level}{_hitEnemy.Name}을(를) 쓰러졌습니다!");
 
                     //쓰러트린 몬스터의 경험치 획득
                     int _enemyExp = _hitEnemy.Exp + (int)(_hitEnemy.Level * 0.5f);
 
                     _gainExp += _enemyExp;
-                    _strbuilder.AppendLine($"경험치 {_enemyExp}을 획득하였습니다. \n");
+                    _strbuilder.Append($"경험치 {_enemyExp}을 획득하였습니다.");
 
                     //쓰러트린 몬스터의 골드 획득
                     _gainGold += _hitEnemy.Gold;
@@ -549,7 +608,7 @@ namespace SpartaDungeon
                         dropItem.Count++;
                         _gainItem.Add(dropItem.Name, dropItem);
                     }
-                    
+
 
                     //전투 관련 퀘스트 스택 증가
                     foreach (KeyValuePair<int, Quest> questData in _playerQuest)
@@ -564,9 +623,15 @@ namespace SpartaDungeon
                     }
                 }
             }
-            _strbuilder.AppendLine("===================================================");
-            Console.WriteLine(_strbuilder.ToString());
 
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(_strbuilder.ToString());
+            Console.ResetColor();
+
+            _strbuilder.Clear();
+            _strbuilder.AppendLine("\n===================================================");
+            Console.ResetColor();
+            Console.Write(_strbuilder.ToString());
             return true;
         }
 
@@ -612,7 +677,6 @@ namespace SpartaDungeon
             }
 
             //사용할 스킬 선택
-            //Skill _useSkill = _mageSkill.SkillList[int.Parse(_input) - 1];
             Skill _useSkill = _curPlayer.SkillDeck.SkillList[int.Parse(_input) - 1];
 
             //사용할 스킬 MP와 현재 플레이어 MP 비교 체크
@@ -620,7 +684,10 @@ namespace SpartaDungeon
             {
                 _strbuilder.Clear();
                 _strbuilder.AppendLine($"{_curPlayer.Name}의 MP가 모자랍니다.");
+
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(_strbuilder.ToString());
+                Console.ResetColor();
                 Console.ReadLine();
                 return false;
             }
@@ -647,10 +714,16 @@ namespace SpartaDungeon
                     {
                         _strbuilder.Clear();
                         _strbuilder.AppendLine("\n===================================================");
+                        Console.ResetColor();
+                        Console.WriteLine(_strbuilder.ToString());
+
+                        _strbuilder.Clear();
                         _strbuilder.AppendLine($"사용 하는 스킬 : {_useSkill.Name}\n");
                         _strbuilder.AppendLine("0. 취소\n");
                         _strbuilder.AppendLine("원하는 대상을 입력해주십시오.\n >>");
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine(_strbuilder.ToString());
+                        Console.ResetColor();
 
                         string _input = Console.ReadLine(); //Player 선택지 입력 대기
                         if (!int.TryParse(_input, out int _select)) //숫자가 아닌 문자,문자열 입력시 예외처리
@@ -770,11 +843,18 @@ namespace SpartaDungeon
                 Console.Clear();
                 _strbuilder.Clear();
                 _strbuilder.AppendLine("Battle!! - Result\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(_strbuilder.ToString());
 
                 switch (isPlayerWin)
                 {
                     case true:
+                        _strbuilder.Clear();
                         _strbuilder.AppendLine("Victory\n");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(_strbuilder.ToString());
+
+                        _strbuilder.Clear();
                         _strbuilder.AppendLine($"던전에서 몬스터 {_curBattleEnemyCount}마리를 잡았습니다.\n");
                         _strbuilder.AppendLine("[캐릭터 정보]");
                         _strbuilder.AppendLine($"Lv.{_curPlayer.Level} {_curPlayer.Name}");
@@ -782,16 +862,25 @@ namespace SpartaDungeon
                         break;
 
                     case false:
+                        _strbuilder.Clear();
                         _strbuilder.AppendLine("You Lose\n");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write(_strbuilder.ToString());
+
+                        _strbuilder.Clear();
                         _strbuilder.AppendLine($"Lv.{_curPlayer.Level} {_curPlayer.Name}");
                         _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> 0\n");
                         break;
                 }
 
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(_strbuilder.ToString());
+
+                _strbuilder.Clear();
                 //잡은 몬스터에 대한 경험치 지급
                 _strbuilder.AppendLine("[획득 경험치]");
                 _strbuilder.AppendLine($"EXP {_curPlayer.Exp} -> {_curPlayer.Exp + _gainExp}");
-                
+
                 if (_curPlayer.LevelUpCheck())
                 {
                     _strbuilder.AppendLine($"\n축하합니다!! \n{_curPlayer.Name}의 Lv이 {_curPlayer.Level}로 레벨업 하였습니다!!");
@@ -800,10 +889,13 @@ namespace SpartaDungeon
                 //잡은 몬스터에 보상 문구 출력
                 _strbuilder.AppendLine("\n[획득 아이템]");
                 _strbuilder.AppendLine($"{_gainGold} Gold");
-                foreach (KeyValuePair<string,Item> _itemData in _gainItem)
+                foreach (KeyValuePair<string, Item> _itemData in _gainItem)
                 {
                     _strbuilder.AppendLine($"{_itemData.Value.Name} x {_itemData.Value.Count}");
                 }
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(_strbuilder.ToString());
 
                 //잡은 몬스터의 보상 data 적용
                 if (!_isReward)
@@ -826,15 +918,22 @@ namespace SpartaDungeon
                         {
                             _curPlayer.myInventory.Inventory[dropItemIndex].Count++;
                         }
-                        
+
                     }
-                   
+
                 }
 
+                _strbuilder.Clear();
                 _strbuilder.AppendLine("\n0. 다음\n");
-                _strbuilder.AppendLine(">>");
-
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(_strbuilder.ToString());
+
+
+                _strbuilder.Clear();
+                _strbuilder.AppendLine(">>");
+                Console.ResetColor();
+                Console.Write(_strbuilder.ToString());
+
                 string _input = Console.ReadLine(); //Player 선택지 입력 대기
                 switch (_input)
                 {
