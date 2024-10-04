@@ -19,7 +19,6 @@ namespace SpartaDungeon
     {
         public string ItemNum { get; set; }
         public ITEMTYPE ItemType { get; set; }
-        public string ItemTypeKorean { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
         public float Atk { get; set; }
@@ -37,7 +36,6 @@ namespace SpartaDungeon
         public Item()
         {
             ItemNum = "";
-            ItemTypeKorean = "";
             Name = "";
             Price = 0;
             Atk = 0;
@@ -54,11 +52,6 @@ namespace SpartaDungeon
         {
             ItemNum = itemNum;
             ItemType = itemType;
-            if (itemType == ITEMTYPE.MainWeapon) ItemTypeKorean = "주무기";
-            else if (itemType == ITEMTYPE.SubWeapon) ItemTypeKorean = "보조무기";
-            else if (itemType == ITEMTYPE.Armor) ItemTypeKorean = "갑옷";
-            else if (itemType == ITEMTYPE.HealingItem) ItemTypeKorean = "회복아이템";
-            else if (itemType == ITEMTYPE.HealingItem) ItemTypeKorean = "기타";
             Name = name;
             Price = price;
             Atk = atk;
