@@ -437,7 +437,7 @@ namespace SpartaDungeon
                             {
                                 float? _oldHP = CurrentHp;
 
-                                recoverySystem.InitializeHp(MaxHp, CurrentHp);
+                                recoverySystem.InitializeHp(TotalMaxHp, CurrentHp);
                                 CurrentHp = recoverySystem.HpRecover(selectItem.ItemNum);
 
                                 myInventory.DelInventory(selectItem);
@@ -453,7 +453,7 @@ namespace SpartaDungeon
                             {
                                 float? _oldMP = CurrentMp;
 
-                                recoverySystem.InitializeMp(MaxMp, CurrentMp);
+                                recoverySystem.InitializeMp(TotalMaxMp, CurrentMp);
                                 CurrentMp = recoverySystem.MpRecover(selectItem.ItemNum);
 
                                 myInventory.DelInventory(selectItem);
