@@ -874,7 +874,15 @@ namespace SpartaDungeon
 
                         _strbuilder.Clear();
                         _strbuilder.AppendLine($"Lv.{_curPlayer.Level} {_curPlayer.Name}");
-                        _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> {_curPlayer.CurrentHp}\n");
+                        if( _curPlayer.CurrentHp >= 0) //현재 체력이 0 이상인경우 
+                        {
+                            _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> {_curPlayer.CurrentHp}\n");
+                        }
+                        else //현재 체력이 0 미만인경우
+                        {
+                            _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> 0\n");
+                        }
+                        
                         break;
                 }
 
