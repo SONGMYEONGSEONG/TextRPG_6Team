@@ -154,11 +154,11 @@ namespace SpartaDungeon
             ExtraLuck = EquipWeapon.Luc + EquipArmor.Luc;
             TotalLuck = Luck + ExtraLuck;
 
-            if (CurrentHp == null)
+            if (CurrentHp == null || CurrentHp > TotalMaxHp)
             {
                 CurrentHp = TotalMaxHp;
             }
-            if (CurrentMp == null)
+            if (CurrentMp == null || CurrentMp > TotalMaxMp)
             {
                 CurrentMp = TotalMaxMp;
             }
@@ -381,26 +381,49 @@ namespace SpartaDungeon
         {
             if (_selectItem.ItemType == ITEMTYPE.MainWeapon && _selectItem != EquipWeapon)
             {
-                CurrentHp -= EquipWeapon.AdditionalHP;
                 EquipWeapon = _selectItem;
-                CurrentHp += _selectItem.AdditionalHP;
+                ExtraHp = _selectItem.AdditionalHP;
             }
             else if (_selectItem.ItemType == ITEMTYPE.Armor && _selectItem != EquipArmor)
             {
-                CurrentHp -= EquipArmor.AdditionalHP;
                 EquipArmor = _selectItem;
-                CurrentHp += _selectItem.AdditionalHP;
+                ExtraHp = _selectItem.AdditionalHP;
             }
             else if (_selectItem == EquipWeapon)
             {
                 EquipWeapon = new Item();
-                CurrentHp -= _selectItem.AdditionalHP;
+                ExtraHp = _selectItem.AdditionalHP;
             }
             else if (_selectItem == EquipArmor)
             {
                 EquipArmor = new Item();
-                CurrentHp -= _selectItem.AdditionalHP;
+                ExtraHp = _selectItem.AdditionalHP;
             }
+
+            UpdateStat();
+
+            //if (_selectItem.ItemType == ITEMTYPE.MainWeapon && _selectItem != EquipWeapon)
+            //{
+            //    CurrentHp -= EquipWeapon.AdditionalHP;
+            //    EquipWeapon = _selectItem;
+            //    CurrentHp += _selectItem.AdditionalHP;
+            //}
+            //else if (_selectItem.ItemType == ITEMTYPE.Armor && _selectItem != EquipArmor)
+            //{
+            //    CurrentHp -= EquipArmor.AdditionalHP;
+            //    EquipArmor = _selectItem;
+            //    CurrentHp += _selectItem.AdditionalHP;
+            //}
+            //else if (_selectItem == EquipWeapon)
+            //{
+            //    EquipWeapon = new Item();
+            //    CurrentHp -= _selectItem.AdditionalHP;
+            //}
+            //else if (_selectItem == EquipArmor)
+            //{
+            //    EquipArmor = new Item();
+            //    CurrentHp -= _selectItem.AdditionalHP;
+            //}
         }
 
         void ManageRecovery(Item selectItem)
@@ -437,7 +460,7 @@ namespace SpartaDungeon
                             {
                                 float? _oldHP = CurrentHp;
 
-                                recoverySystem.InitializeHp(MaxHp, CurrentHp);
+                                recoverySystem.InitializeHp(TotalMaxHp, CurrentHp);
                                 CurrentHp = recoverySystem.HpRecover(selectItem.ItemNum);
 
                                 myInventory.DelInventory(selectItem);
@@ -453,7 +476,7 @@ namespace SpartaDungeon
                             {
                                 float? _oldMP = CurrentMp;
 
-                                recoverySystem.InitializeMp(MaxMp, CurrentMp);
+                                recoverySystem.InitializeMp(TotalMaxMp, CurrentMp);
                                 CurrentMp = recoverySystem.MpRecover(selectItem.ItemNum);
 
                                 myInventory.DelInventory(selectItem);

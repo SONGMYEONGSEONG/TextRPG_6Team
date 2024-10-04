@@ -55,7 +55,7 @@ namespace SpartaDungeon
                 Console.ResetColor();
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($" [{i + 1}] {SelectTypeItemList[i].Name}({SelectTypeItemList[i].ItemTypeKorean})" +
+                Console.WriteLine($" [{i + 1}] {SelectTypeItemList[i].Name}" +
                                   $" | {SelectTypeItemList[i].Description}" +
                                   $" | 공격력 +{SelectTypeItemList[i].Atk}" +
                                   $" 방어력 +{SelectTypeItemList[i].Def}" +
@@ -268,7 +268,7 @@ namespace SpartaDungeon
                     Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
                     
                     Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine($" [{i + 1}] {player.myInventory.Inventory[i].Name}({player.myInventory.Inventory[i].ItemTypeKorean})" +
+                    Console.WriteLine($" [{i + 1}] {player.myInventory.Inventory[i].Name}" +
                                       $" | {player.myInventory.Inventory[i].Description}" +
                                       $" | 공격력 +{player.myInventory.Inventory[i].Atk}" +
                                       $" 방어력 +{player.myInventory.Inventory[i].Def}" +

@@ -323,6 +323,10 @@ namespace SpartaDungeon
                                     _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
                                     _strbuilder.AppendLine($"{_curPlayer.Name}는 회피 하였습니다. [데미지 : 0]");
                                     _strbuilder.AppendLine();
+
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.Write(_strbuilder.ToString());
+                                    Console.ReadLine();
                                 }
                                 else
                                 {
@@ -388,6 +392,7 @@ namespace SpartaDungeon
             }
 
             /*Debug*/
+            //퀘스트 스킬사용 관련 코드
             foreach (KeyValuePair<int, Quest> questData in _playerUseSkillQuest)
             {
                 _curPlayer.PlayerQuest[questData.Key] = questData.Value;
@@ -869,32 +874,19 @@ namespace SpartaDungeon
 
                         _strbuilder.Clear();
                         _strbuilder.AppendLine($"Lv.{_curPlayer.Level} {_curPlayer.Name}");
-                        _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> 0\n");
+                        if( _curPlayer.CurrentHp >= 0) //현재 체력이 0 이상인경우 
+                        {
+                            _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> {_curPlayer.CurrentHp}\n");
+                        }
+                        else //현재 체력이 0 미만인경우
+                        {
+                            _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> 0\n");
+                        }
+                        
                         break;
                 }
 
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(_strbuilder.ToString());
-
-                _strbuilder.Clear();
-                //잡은 몬스터에 대한 경험치 지급
-                _strbuilder.AppendLine("[획득 경험치]");
-                _strbuilder.AppendLine($"EXP {_curPlayer.Exp} -> {_curPlayer.Exp + _gainExp}");
-
-                if (_curPlayer.LevelUpCheck())
-                {
-                    _strbuilder.AppendLine($"\n축하합니다!! \n{_curPlayer.Name}의 Lv이 {_curPlayer.Level}로 레벨업 하였습니다!!");
-                }
-
-                //잡은 몬스터에 보상 문구 출력
-                _strbuilder.AppendLine("\n[획득 아이템]");
-                _strbuilder.AppendLine($"{_gainGold} Gold");
-                foreach (KeyValuePair<string, Item> _itemData in _gainItem)
-                {
-                    _strbuilder.AppendLine($"{_itemData.Value.Name} x {_itemData.Value.Count}");
-                }
-
-                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(_strbuilder.ToString());
 
                 //잡은 몬스터의 보상 data 적용
@@ -922,6 +914,29 @@ namespace SpartaDungeon
                     }
 
                 }
+
+                _strbuilder.Clear();
+                //잡은 몬스터에 대한 경험치 지급
+                _strbuilder.AppendLine("[획득 경험치]");
+                _strbuilder.AppendLine($"EXP {_curPlayer.Exp - _gainExp} / {_curPlayer.MaxExp} -> {_curPlayer.Exp} / {_curPlayer.MaxExp}");
+
+                if (_curPlayer.LevelUpCheck())
+                {
+                    _strbuilder.AppendLine($"\n축하합니다!! \n{_curPlayer.Name}의 Lv이 {_curPlayer.Level}로 레벨업 하였습니다!!");
+                }
+
+                //잡은 몬스터에 보상 문구 출력
+                _strbuilder.AppendLine("\n[획득 아이템]");
+                _strbuilder.AppendLine($"{_gainGold} Gold");
+                foreach (KeyValuePair<string, Item> _itemData in _gainItem)
+                {
+                    _strbuilder.AppendLine($"{_itemData.Value.Name} x {_itemData.Value.Count}");
+                }
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(_strbuilder.ToString());
+
+               
 
                 _strbuilder.Clear();
                 _strbuilder.AppendLine("\n0. 다음\n");

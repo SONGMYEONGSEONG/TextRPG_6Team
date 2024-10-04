@@ -97,7 +97,7 @@
   },
   {
     "itemNum": "007",
-    "itemType": "Armor",
+    "itemType": "ExtraItem",
     "name": "고블린의 가죽 옷",
     "price": 15,
     "atk": 5,
@@ -113,7 +113,7 @@
   },
   {
     "itemNum": "008",
-    "itemType": "MainWeapon",
+    "itemType": "ExtraItem",
     "name": "오크의 뭉둥이",
     "price": 50,
     "atk": 10,
@@ -234,7 +234,7 @@
     "acc": 0,
     "luc": 0,
     "additionalHP": 0,
-    "description": "쓸만해 보이는 모자지만 나는 사용 할수 없다.",
+    "description": "쓸만해 보이는 모자",
     "isPurchased": "false",
     "isNotForSale": "true",
     "count": 0
@@ -250,7 +250,7 @@
     "acc": 0,
     "luc": 0,
     "additionalHP": 0,
-    "description": "쓸만해 보이는 방패지만 나는 사용 할수 없다.",
+    "description": "쓸만해 보이는 방패",
     "isPurchased": "false",
     "isNotForSale": "true",
     "count": 0
@@ -449,7 +449,7 @@
   },
   {
     "itemNum": 404,
-    "itemType": "MainWeapon",
+    "itemType": "ExtraItem",
     "name": "주술사의 지팡이",
     "price": 120,
     "atk": 3,
