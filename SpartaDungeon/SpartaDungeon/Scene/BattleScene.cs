@@ -323,6 +323,10 @@ namespace SpartaDungeon
                                     _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
                                     _strbuilder.AppendLine($"{_curPlayer.Name}는 회피 하였습니다. [데미지 : 0]");
                                     _strbuilder.AppendLine();
+
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.Write(_strbuilder.ToString());
+                                    Console.ReadLine();
                                 }
                                 else
                                 {
