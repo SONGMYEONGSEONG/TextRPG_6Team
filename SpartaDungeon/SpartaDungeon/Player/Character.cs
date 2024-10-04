@@ -296,7 +296,7 @@ namespace SpartaDungeon
                     Console.Write($" { itemEquipState }");
 
                     Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write($" {myInventory.Inventory[i].Name}({myInventory.Inventory[i].ItemTypeKorean}");
+                    Console.Write($" {myInventory.Inventory[i].Name}");
                     Console.WriteLine(
                                       $" | {myInventory.Inventory[i].Description}" +
                                       $" | 공격력 +{myInventory.Inventory[i].Atk}" +
@@ -437,7 +437,7 @@ namespace SpartaDungeon
                             {
                                 float? _oldHP = CurrentHp;
 
-                                recoverySystem.InitializeHp(MaxHp, CurrentHp);
+                                recoverySystem.InitializeHp(TotalMaxHp, CurrentHp);
                                 CurrentHp = recoverySystem.HpRecover(selectItem.ItemNum);
 
                                 myInventory.DelInventory(selectItem);
@@ -453,7 +453,7 @@ namespace SpartaDungeon
                             {
                                 float? _oldMP = CurrentMp;
 
-                                recoverySystem.InitializeMp(MaxMp, CurrentMp);
+                                recoverySystem.InitializeMp(TotalMaxMp, CurrentMp);
                                 CurrentMp = recoverySystem.MpRecover(selectItem.ItemNum);
 
                                 myInventory.DelInventory(selectItem);
