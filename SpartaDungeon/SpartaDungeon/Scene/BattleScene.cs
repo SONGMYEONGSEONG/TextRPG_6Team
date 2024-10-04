@@ -876,27 +876,6 @@ namespace SpartaDungeon
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(_strbuilder.ToString());
 
-                _strbuilder.Clear();
-                //잡은 몬스터에 대한 경험치 지급
-                _strbuilder.AppendLine("[획득 경험치]");
-                _strbuilder.AppendLine($"EXP {_curPlayer.Exp} -> {_curPlayer.Exp + _gainExp}");
-
-                if (_curPlayer.LevelUpCheck())
-                {
-                    _strbuilder.AppendLine($"\n축하합니다!! \n{_curPlayer.Name}의 Lv이 {_curPlayer.Level}로 레벨업 하였습니다!!");
-                }
-
-                //잡은 몬스터에 보상 문구 출력
-                _strbuilder.AppendLine("\n[획득 아이템]");
-                _strbuilder.AppendLine($"{_gainGold} Gold");
-                foreach (KeyValuePair<string, Item> _itemData in _gainItem)
-                {
-                    _strbuilder.AppendLine($"{_itemData.Value.Name} x {_itemData.Value.Count}");
-                }
-
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write(_strbuilder.ToString());
-
                 //잡은 몬스터의 보상 data 적용
                 if (!_isReward)
                 {
@@ -922,6 +901,29 @@ namespace SpartaDungeon
                     }
 
                 }
+
+                _strbuilder.Clear();
+                //잡은 몬스터에 대한 경험치 지급
+                _strbuilder.AppendLine("[획득 경험치]");
+                _strbuilder.AppendLine($"EXP {_curPlayer.Exp - _gainExp} / {_curPlayer.MaxExp} -> {_curPlayer.Exp} / {_curPlayer.MaxExp}");
+
+                if (_curPlayer.LevelUpCheck())
+                {
+                    _strbuilder.AppendLine($"\n축하합니다!! \n{_curPlayer.Name}의 Lv이 {_curPlayer.Level}로 레벨업 하였습니다!!");
+                }
+
+                //잡은 몬스터에 보상 문구 출력
+                _strbuilder.AppendLine("\n[획득 아이템]");
+                _strbuilder.AppendLine($"{_gainGold} Gold");
+                foreach (KeyValuePair<string, Item> _itemData in _gainItem)
+                {
+                    _strbuilder.AppendLine($"{_itemData.Value.Name} x {_itemData.Value.Count}");
+                }
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(_strbuilder.ToString());
+
+               
 
                 _strbuilder.Clear();
                 _strbuilder.AppendLine("\n0. 다음\n");
