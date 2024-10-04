@@ -79,6 +79,7 @@ namespace SpartaDungeon
                         case ((int)MainSceneChoice.Save):
                             Console.Clear();
                             SaveGame(_player);
+                            Console.ReadLine();
                             break;
                         case ((int)MainSceneChoice.Status):
                             Console.Clear();
