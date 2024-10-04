@@ -323,6 +323,10 @@ namespace SpartaDungeon
                                     _strbuilder.AppendLine($"Lv.{_enemyList[i].Level} {_enemyList[i].Name} 의 공격!");
                                     _strbuilder.AppendLine($"{_curPlayer.Name}는 회피 하였습니다. [데미지 : 0]");
                                     _strbuilder.AppendLine();
+
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.Write(_strbuilder.ToString());
+                                    Console.ReadLine();
                                 }
                                 else
                                 {
@@ -388,6 +392,7 @@ namespace SpartaDungeon
             }
 
             /*Debug*/
+            //퀘스트 스킬사용 관련 코드
             foreach (KeyValuePair<int, Quest> questData in _playerUseSkillQuest)
             {
                 _curPlayer.PlayerQuest[questData.Key] = questData.Value;
@@ -869,7 +874,15 @@ namespace SpartaDungeon
 
                         _strbuilder.Clear();
                         _strbuilder.AppendLine($"Lv.{_curPlayer.Level} {_curPlayer.Name}");
-                        _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> 0\n");
+                        if( _curPlayer.CurrentHp >= 0) //현재 체력이 0 이상인경우 
+                        {
+                            _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> {_curPlayer.CurrentHp}\n");
+                        }
+                        else //현재 체력이 0 미만인경우
+                        {
+                            _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> 0\n");
+                        }
+                        
                         break;
                 }
 
