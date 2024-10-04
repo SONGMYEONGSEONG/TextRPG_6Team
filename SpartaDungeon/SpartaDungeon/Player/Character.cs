@@ -296,7 +296,7 @@ namespace SpartaDungeon
                     Console.Write($" { itemEquipState }");
 
                     Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write($" {myInventory.Inventory[i].Name}({myInventory.Inventory[i].ItemTypeKorean}");
+                    Console.Write($" {myInventory.Inventory[i].Name}");
                     Console.WriteLine(
                                       $" | {myInventory.Inventory[i].Description}" +
                                       $" | 공격력 +{myInventory.Inventory[i].Atk}" +
