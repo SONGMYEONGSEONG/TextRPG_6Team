@@ -326,7 +326,6 @@ namespace SpartaDungeon
 
                                     Console.ForegroundColor = ConsoleColor.White;
                                     Console.Write(_strbuilder.ToString());
-                                    Console.ReadLine();
                                 }
                                 else
                                 {
