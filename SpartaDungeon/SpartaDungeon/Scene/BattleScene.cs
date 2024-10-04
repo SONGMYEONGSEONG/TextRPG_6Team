@@ -874,7 +874,7 @@ namespace SpartaDungeon
 
                         _strbuilder.Clear();
                         _strbuilder.AppendLine($"Lv.{_curPlayer.Level} {_curPlayer.Name}");
-                        _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> 0\n");
+                        _strbuilder.AppendLine($"HP {_curPlayerBattleHP} -> {_curPlayer.CurrentHp}\n");
                         break;
                 }
 
