@@ -124,13 +124,13 @@ TextRPG - Sparta Dungeon
 ---
 
 #### 8. 퀘스트
-
+퀘스트 목록이 저장된 csv파일을 읽어와 표시합니다.
 퀘스트 목록이 표시되고 각 퀘스트를 확인하여 수락/거절을 선택할 수 있습니다.   
 ![QuestMain](https://github.com/user-attachments/assets/1d321f7f-7d10-4926-9cd0-9f05b6351778)   
 ![SlectQuest](https://github.com/user-attachments/assets/d7810ce1-5b11-4053-99aa-c760fc3b1b75)
 ![SlectQuestList](https://github.com/user-attachments/assets/299795b5-97bd-4918-bac9-19f1fd6db0ee)   
 퀘스트를 수락하면 수락중인 퀘스트 목록이 갱신됩니다.   
-수락중인 퀘스트 목록은 플레이어가 Dictionary로 갖고 있습니다.
+수락중인 퀘스트는 플레이어가 Dictionary로 갖고 있습니다.
 
 퀘스트 완료   
 ![CompleteQuest](https://github.com/user-attachments/assets/e52194bd-adc2-4b85-bfa0-284e8d4b31af)   
@@ -160,6 +160,9 @@ TextRPG - Sparta Dungeon
 
 #### 10. 저장 및 종료
 Json 직렬화, 역직렬화를 통해 플레이어의 캐릭터 데이터를 저장하고 불러올 수 있게 했습니다.   
+캐릭터 클래스 객체를 직렬화하여 Json파일로 저장합니다.   
+능력치, 스킬리스트, 퀘스트목록 딕셔너리, 인벤토리, 장착된 아이템 데이터가 저장됩니다.   
+
 게임 종료 시 플레이어 데이터가 자동으로 저장됩니다.   
 ![endGame](https://github.com/user-attachments/assets/67de7c5b-b061-4967-9cc4-c06dac587b95)
 
